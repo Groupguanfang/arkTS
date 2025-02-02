@@ -13,7 +13,7 @@
 	"displayName": "Naily's ArkTS Support",
 	"description": "Naily's ArkTS Support",
 	"author": "Naily Zero <zero@naily.cc>",
-	"publisher": "Naily Zero",
+	"publisher": "NailyZero",
 	"engines": {
 		"vscode": "^1.82.0"
 	},
