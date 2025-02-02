@@ -17,3 +17,19 @@
 Marketplace安装: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
 
 或者直接在VSCode中搜索`ArkTS Support`即可。
+
+## ArkTS源码跳转
+
+ArkTS源码跳转需要依赖`@arkts/declarations`，所以需要在你的鸿蒙项目中用`npm`安装`@arkts/declarations`。
+
+```bash
+npm install @arkts/declarations
+```
+
+然后，重启你的VSCode！！一定要重启你的VSCode，才会生效！最终效果如下图所示:
+
+![截图](./image.png)
+
+点进去是完全没问题的，可以正常跳转。
+
+⚠️注意：目前该包是基于最新的`API 13`的，所以如果鸿蒙版本低于`API 13`，可能会有一些问题，欢迎PR。
