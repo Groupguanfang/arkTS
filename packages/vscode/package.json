@@ -4,20 +4,27 @@
 	"version": "0.0.1",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/volarjs/starter.git",
+		"url": "https://github.com/Groupguanfang/arkTS",
 		"directory": "packages/vscode"
+	},
+	"bugs": {
+		"url": "https://github.com/Groupguanfang/arkTS/issues",
+		"email": "zero@naily.cc"
 	},
 	"categories": [
 		"Programming Languages"
 	],
+	"keywords": [
+		"ArkTS",
+		"ets",
+		"huawei"
+	],
 	"displayName": "Naily's ArkTS Support",
-	"description": "Naily's ArkTS Support",
+	"description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
 	"author": "Naily Zero <zero@naily.cc>",
 	"publisher": "NailyZero",
-	"engines": {
-		"vscode": "^1.82.0"
-	},
 	"main": "./dist/client.js",
+	"icon": "icon.png",
 	"contributes": {
 		"jsonValidation": [
 			{
