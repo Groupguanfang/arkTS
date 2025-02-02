@@ -19,6 +19,9 @@
 		"ets",
 		"huawei"
 	],
+	"engines": {
+    "vscode": "^1.87.0"
+  },
 	"displayName": "Naily's ArkTS Support",
 	"description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
 	"author": "Naily Zero <zero@naily.cc>",
