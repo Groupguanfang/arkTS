@@ -16,6 +16,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "pnpx tsx ./src/index.ts",
     "prepublishOnly": "pnpm run build"
