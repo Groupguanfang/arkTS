@@ -12,8 +12,6 @@
 - 🪐 `几乎`完美的ArkTS语法高亮，补全，`不支持诊断，欢迎PR`
 - ✨ 支持源码跳转，注意暂时仅限ArkTS内部源码，import/export的暂未支持，欢迎PR
 
-## 安装
+仓库地址: [https://github.com/Groupguanfang/arkTS](https://github.com/Groupguanfang/arkTS)
 
-Marketplace安装: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
-
-或者直接在VSCode中搜索`ArkTS Support`即可。
+给个Star吧，谢谢🥹
