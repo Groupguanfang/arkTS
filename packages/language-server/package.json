@@ -1,0 +1,24 @@
+{
+	"name": "@html1/language-server",
+	"version": "0.0.1",
+	"main": "out/index.js",
+	"license": "MIT",
+	"files": [
+		"out/**/*.js",
+		"out/**/*.d.ts"
+	],
+	"bin": {
+		"html1-language-server": "./bin/html1-language-server.js"
+	},
+	"dependencies": {
+		"@volar/language-core": "~2.4.0",
+		"@volar/language-server": "~2.4.0",
+		"@volar/typescript": "~2.4.0",
+		"volar-service-css": "volar-2.4",
+		"volar-service-emmet": "volar-2.4",
+		"volar-service-html": "volar-2.4",
+		"volar-service-typescript": "volar-2.4",
+		"vscode-html-languageservice": "^5.3.1",
+		"vscode-uri": "^3.0.8"
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"private": true,
+	"packageManager": "pnpm@9.1.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/volarjs/starter.git"
+	},
+	"scripts": {
+		"build": "cd ./packages/vscode && npm run build",
+		"watch": "cd ./packages/vscode && npm run watch",
+		"pack": "cd ./packages/vscode && npm run pack",
+		"release": "cd ./packages/vscode && npm run release"
+	},
+	"devDependencies": {
+		"@types/node": "latest",
+		"fast-glob": "^3.3.3",
+		"typescript": "latest"
+	},
+	"dependencies": {
+		"magic-string": "^0.30.17",
+		"muggle-string": "^0.4.1"
+	}
+}

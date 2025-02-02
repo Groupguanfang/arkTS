@@ -1,0 +1,16 @@
+@Entry
+@ComponentV2
+struct Index {
+  private message: string = "Hello world"
+
+  build() {
+    Column({ space: 100 }) {
+      Text(this.message)
+        .fontSize(100)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(Color.White)
+    }
+
+    Flex({ direction: FlexDirection.Column })
+  }
+}

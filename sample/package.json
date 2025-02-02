@@ -1,0 +1,7 @@
+{
+  "name": "sample",
+  "private": true,
+  "dependencies": {
+    "@arkts/declarations": "workspace:*"
+  }
+}

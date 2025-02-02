@@ -1,0 +1,88 @@
+{
+	"private": true,
+	"name": "vscode-naily-ets",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/volarjs/starter.git",
+		"directory": "packages/vscode"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"displayName": "Naily's ArkTS Support",
+	"description": "Naily's ArkTS Support",
+	"author": "Naily Zero <zero@naily.cc>",
+	"publisher": "Naily Zero <zero@naily.cc>",
+	"engines": {
+		"vscode": "^1.82.0"
+	},
+	"main": "./dist/client.js",
+	"contributes": {
+		"jsonValidation": [
+			{
+				"fileMatch": "module.json5",
+				"url": "./schemas/module.schema.json"
+			},
+			{
+				"fileMatch": "oh-package.json5",
+				"url": "./schemas/oh-package.schema.json"
+			},
+			{
+				"fileMatch": "build-profile.json5",
+				"url": "./schemas/build-profile.schema.json"
+			},
+			{
+				"fileMatch": "main_pages.json",
+				"url": "./schemas/main_pages.schema.json"
+			},
+			{
+				"fileMatch": ["**/resources/**/element/*.json"],
+				"url": "./schemas/element.schema.json"
+			},
+			{
+				"fileMatch": "code-linter.json5",
+				"url": "./schemas/code-linter.schema.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "ets",
+				"extensions": [
+					".ets"
+				],
+				"aliases": ["ArkTS", "ets"],
+				"configuration": "./language-configuration.json",
+				"bases": ["typescript"]
+			}
+		],
+		"grammars": [
+			{
+				"language": "ets",
+				"scopeName": "source.ets",
+				"path": "./syntaxes/ets.tmLanguage.json"
+			}
+		],
+		"commands": [
+			{
+				"command": "ets.restartServer",
+				"title": "Restart ETS Language Server",
+				"category": "ETS"
+			}
+		]
+	},
+	"scripts": {
+		"build": "node scripts/build -- --minify",
+		"watch": "npm run build -- --watch",
+		"pack": "npm run build && vsce package --pre-release",
+		"release": "npm run build && vsce publish --pre-release"
+	},
+	"devDependencies": {
+		"@html1/language-server": "workspace:*",
+		"@types/vscode": "^1.82.0",
+		"@volar/language-server": "~2.4.0",
+		"@volar/vscode": "~2.4.0",
+		"esbuild": "latest",
+		"vsce": "latest"
+	}
+}
