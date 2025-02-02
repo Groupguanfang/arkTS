@@ -2,10 +2,22 @@
   "name": "@arkts/declarations",
   "version": "0.0.1",
   "main": "dist/index.d.ts",
+  "author": "Naily Zero <zero@naily.cc>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Groupguanfang/arkTS",
+    "directory": "packages/declarations"
+  },
+  "bugs": {
+    "url": "https://github.com/Groupguanfang/arkTS/issues",
+    "email": "zero@naily.cc"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "pnpx tsx ./src/index.ts"
+    "build": "pnpx tsx ./src/index.ts",
+    "prepublishOnly": "pnpm run build"
   }
 }
