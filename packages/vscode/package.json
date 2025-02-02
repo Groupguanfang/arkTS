@@ -71,6 +71,7 @@
 			}
 		]
 	},
+	"activationEvents": [],
 	"scripts": {
 		"build": "node scripts/build -- --minify",
 		"watch": "npm run build -- --watch",
