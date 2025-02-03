@@ -4,13 +4,18 @@ import fs from 'node:fs'
 
 async function main() {
   mergeComponent()
-  await mergeApi()
+  mergeApi()
 
   if (!fs.existsSync('dist'))
     fs.mkdirSync('dist')
   fs.writeFileSync('dist/index.d.ts', `
 /// <reference types="./component-all.d.ts" />
 `)
+
+  fs.writeFileSync('dist/tsconfig.json', JSON.stringify({
+    extends: './tsconfig.base.json',
+    include: ['./kits/**/*']
+  }, null, 2))
 }
 
 main()
