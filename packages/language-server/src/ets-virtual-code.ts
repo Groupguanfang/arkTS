@@ -44,11 +44,10 @@ export class EtsVirtualCode implements VirtualCode {
 }
 
 function replaceStructWithClass(input: string): string {
-  const structRegex = /(?<![_$[:alnum:]])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b(?=\s+|\/[/*])/g;
+  const structRegex = /\b(?:export\s+)?(?:declare\s+)?(?:abstract\s+)?struct\b/g;
 
-  return input.replace(structRegex, (_match, exportKeyword, declareKeyword, abstractKeyword) => {
-      const keywords = [exportKeyword, declareKeyword, abstractKeyword].filter(Boolean).join(' ');
-      return `${keywords} class`;
+  return input.replace(structRegex, (match) => {
+      return match.replace('struct', ' class');
   });
 }
 

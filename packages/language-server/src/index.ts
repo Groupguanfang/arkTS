@@ -21,6 +21,7 @@ connection.onInitialize(params => {
 						extraFileExtensions: [
 							{ extension: '.ets', isMixedContent: true, scriptKind: ts.ScriptKind.TS, }
 						],
+						resolveHiddenExtensions: true,
 						getServiceScript(root) {
 							return {
 								code: root,

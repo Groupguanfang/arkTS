@@ -1,6 +1,8 @@
+import {} from '../entryability/Test'
+
 @Entry
 @ComponentV2
-struct Index {
+export struct Index {
   private message: string = "Hello world"
 
   build() {
