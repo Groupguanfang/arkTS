@@ -19,6 +19,17 @@ function mergeAllApi() {
   }
 }
 
+function mergeAllKits() {
+  const kits = fg.sync('ets/kits/**/*.d.ts')
+  for (const kit of kits) {
+    const content = fs.readFileSync(kit, 'utf-8')
+    const distContentPath = path.resolve('dist/kits', kit.replace('ets/kits/', ''))
+    if (!fs.existsSync(path.dirname(distContentPath)))
+      fs.mkdirSync(path.dirname(distContentPath), { recursive: true })
+    fs.writeFileSync(distContentPath, content)
+  }
+}
+
 function generateModuleDeclaration() {
   const apis = fs.readdirSync('ets/api')
     .filter(api => api.endsWith('.d.ts'))
@@ -30,6 +41,13 @@ function generateModuleDeclaration() {
     paths[api.replace('.d.ts', '')] = [`./api/${api}`]
   }
 
+  const kits = fs.readdirSync('ets/kits').filter(file => file.endsWith('.d.ts'))
+  for (const kit of kits) {
+    const content = fs.readFileSync(path.resolve('ets/kits', kit), 'utf-8')
+    if (!content.includes('export')) return
+    paths[kit.replace('.d.ts', '')] = [`./kits/${kit}`]
+  }
+
   fs.writeFileSync(path.resolve('dist/tsconfig.base.json'), JSON.stringify({
     compilerOptions: {
       paths: paths
@@ -39,5 +57,6 @@ function generateModuleDeclaration() {
 
 export function mergeApi() {
   mergeAllApi()
+  mergeAllKits()
   generateModuleDeclaration()
 }

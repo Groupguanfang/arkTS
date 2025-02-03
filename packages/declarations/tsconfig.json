@@ -1,8 +1,9 @@
 {
+  "extends": "./dist/tsconfig.base.json",
   "compilerOptions": {
     "target": "ES6",
     "lib": ["ESNext"],
     "types": []
   },
-  "include": ["dist/**/*"]
+  "include": ["dist/**/*", "ets/kits/**/*"]
 }
