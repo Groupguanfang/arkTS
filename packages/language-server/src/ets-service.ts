@@ -3,6 +3,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import { URI } from 'vscode-uri'
 import { CompletionItemKind } from 'vscode-languageserver-types'
+import ts from 'typescript'
 
 export function createEtsService(): LanguageServicePlugin {
   return {
@@ -20,6 +21,8 @@ export function createEtsService(): LanguageServicePlugin {
       },
     },
     create(context) {
+      const _languageService: ts.LanguageService = context.inject('typescript/languageService')
+
       return {
         provideCompletionItems(document, position) {
           const text = document.getText({ start: { line: position.line, character: 0 }, end: { line: position.line, character: position.character } })

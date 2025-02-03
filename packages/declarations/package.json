@@ -2,6 +2,14 @@
   "name": "@arkts/declarations",
   "version": "0.0.1",
   "main": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.d.ts"
+    },
+    "./dist/*": "./dist/*"
+  },
   "author": "Naily Zero <zero@naily.cc>",
   "license": "MIT",
   "repository": {

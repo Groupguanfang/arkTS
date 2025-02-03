@@ -17,6 +17,7 @@
 		"typescript": "latest"
 	},
 	"dependencies": {
+		"chokidar": "^4.0.3",
 		"magic-string": "^0.30.17",
 		"muggle-string": "^0.4.1"
 	}

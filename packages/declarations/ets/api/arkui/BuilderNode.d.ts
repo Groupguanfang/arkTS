@@ -38,7 +38,7 @@ import { Size } from './Graphics';
  * @atomicservice
  * @since 12
  */
-declare enum NodeRenderType {
+export declare enum NodeRenderType {
     /**
      * Display type.The node will be shown on the display.
      *

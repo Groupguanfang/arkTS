@@ -33,7 +33,7 @@ import type cert from './@ohos.security.cert';
  * @since 10
  */
 declare namespace socket {
-    export import NetAddress = connection.NetAddress;
+    export type NetAddress = connection.NetAddress;
     /**
      * Deposit certificate
      * @syscap SystemCapability.Communication.NetStack

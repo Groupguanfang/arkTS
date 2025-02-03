@@ -109,7 +109,7 @@ export { DividerModifier } from './arkui/DividerModifier';
  * @crossplatform
  * @since 12
  */
-export { FormComponentModifier } from './arkui/FormComponentModifier';
+// export { FormComponentModifier } from './arkui/FormComponentModifier';
 /**
  * Export GaugeModifier, which is used to expose applyNormalAttribute function.
  * @syscap SystemCapability.ArkUI.ArkUI.Full

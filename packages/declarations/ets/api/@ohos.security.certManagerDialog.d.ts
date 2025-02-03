@@ -16,7 +16,7 @@
  * @file
  * @kit DeviceCertificateKit
  */
-import type common from '@ohos.app.ability.common';
+import type common from './@ohos.app.ability.common';
 /**
  * OpenHarmony Universal CertificateManager
  *

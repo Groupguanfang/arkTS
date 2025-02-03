@@ -1,4 +1,4 @@
-import {} from '../entryability/Test'
+import {} from '../entryability/EntryAbility'
 
 @Entry
 @ComponentV2

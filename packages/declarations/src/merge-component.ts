@@ -9,9 +9,7 @@ export function mergeComponent() {
 
   if (!fs.existsSync('dist'))
     fs.mkdirSync('dist')
-  if (!fs.existsSync('dist/component'))
-    fs.mkdirSync('dist/component')
-  fs.writeFileSync('dist/component.d.ts', content.join('\n'))
+  fs.writeFileSync('dist/component-all.d.ts', content.join('\n'))
 
   for (const component of components) {
     const content = fs.readFileSync(`ets/component/${component}`, 'utf-8')

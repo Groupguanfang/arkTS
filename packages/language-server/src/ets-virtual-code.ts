@@ -20,7 +20,7 @@ export class EtsVirtualCode implements VirtualCode {
       ms.overwrite(struct.start, struct.end, replacedText)
     }
 
-    ms.append('\nimport {} from \'@arkts/declarations\'\n')
+    ms.append('\nimport {} from \'@arkts/declarations\';\n')
     const newMs = new MagicString(ms.toString())
     newCode.mappings = [
       {
@@ -47,7 +47,7 @@ function replaceStructWithClass(input: string): string {
   const structRegex = /\b(?:export\s+)?(?:declare\s+)?(?:abstract\s+)?struct\b/g;
 
   return input.replace(structRegex, (match) => {
-      return match.replace('struct', ' class');
+    return match.replace('struct', ' class');
   });
 }
 

@@ -30,7 +30,7 @@ import { ComponentContent } from './ComponentContent';
  * @atomicservice
  * @since 12
  */
-declare interface LayoutConstraint {
+export declare interface LayoutConstraint {
     /**
      * MaxSize
      *
@@ -1155,7 +1155,7 @@ export namespace typeNode {
  * @atomicservice
  * @since 12
  */
-declare class NodeAdapter {
+export declare class NodeAdapter {
     /**
      * Constructor.
      *
