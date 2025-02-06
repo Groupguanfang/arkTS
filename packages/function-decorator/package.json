@@ -1,7 +1,7 @@
 {
   "name": "@arkts/ts-plugin-function-decorator",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typescript plugin to allow function decorator.",
   "author": "Naily Zero <zero@naily.cc> (https://naily.cc)",
   "keywords": [
@@ -28,8 +28,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "devDependencies": {
-    "tsup": "^8.3.0"
   }
 }
