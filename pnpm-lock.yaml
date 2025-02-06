@@ -35,7 +35,7 @@ importers:
   packages/function-decorator-vscode:
     dependencies:
       '@arkts/ts-plugin-function-decorator':
-        specifier: latest
+        specifier: 0.0.2
         version: link:../function-decorator
 
   packages/language-server:

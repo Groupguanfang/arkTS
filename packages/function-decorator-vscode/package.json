@@ -40,6 +40,6 @@
 		"release": "npm run build && vsce publish"
 	},
   "dependencies": {
-    "@arkts/ts-plugin-function-decorator": "latest"
+    "@arkts/ts-plugin-function-decorator": "0.0.2"
   }
 }
