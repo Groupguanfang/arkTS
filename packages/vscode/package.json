@@ -93,6 +93,7 @@
 		"@types/vscode": "^1.82.0",
 		"@volar/language-server": "~2.4.0",
 		"@volar/vscode": "~2.4.0",
+		"@arkts/ts-plugin-function-decorator": "workspace:*",
 		"esbuild": "latest",
 		"vsce": "latest"
 	}

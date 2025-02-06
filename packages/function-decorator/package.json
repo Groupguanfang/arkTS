@@ -1,0 +1,35 @@
+{
+  "name": "@arkts/ts-plugin-function-decorator",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Typescript plugin to allow function decorator.",
+  "author": "Naily Zero <zero@naily.cc> (https://naily.cc)",
+  "keywords": [
+    "es-project-template"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./exported": {
+      "types": "./dist/exported.d.ts",
+      "import": "./dist/exported.js",
+      "require": "./dist/exported.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "watch": "tsup -w"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0"
+  }
+}
