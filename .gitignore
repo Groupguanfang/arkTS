@@ -4,3 +4,4 @@ node_modules
 *.tsbuildinfo
 *.vsix
 .DS_Store
+coverage

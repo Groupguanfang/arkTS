@@ -1,18 +1,17 @@
-import {} from '../entryability/EntryAbility'
+import { hilog } from '@kit.PerformanceAnalysisKit'
 
 @Entry
-@ComponentV2
-export struct Index {
-  private message: string = "Hello world"
-
+@Component
+struct Index {
   build() {
-    Column({ space: 100 }) {
-      Text(this.message)
-        .fontSize(100)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(Color.White)
+    Column() {
+      Row() {
+        Index() {
+          Text("")
+        }.onClick(() => {
+          hilog.info(0x00, 'test', 'qwq')
+        })
+      }.align(Alignment.Center)
     }
-
-    Flex({ direction: FlexDirection.Column })
   }
 }

@@ -1,10 +1,13 @@
 {
   "extends": "@arkts/declarations/dist/tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["ES6"],
-    "types": [],
-    "module": "ES6",
-    "moduleResolution": "bundler"
-  }
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "lib": ["ESNext"],
+    "types": ["@arkts/declarations"]
+  },
+  "files": [],
+  "include": ["./**/*.ets"]
 }

@@ -19,6 +19,7 @@
 		"volar-service-html": "volar-2.4",
 		"volar-service-typescript": "volar-2.4",
 		"vscode-html-languageservice": "^5.3.1",
-		"vscode-uri": "^3.0.8"
+		"vscode-uri": "^3.0.8",
+		"ts-macro": "^0.1.17"
 	}
 }

@@ -1,76 +1,8 @@
-import { CodeMapping, VirtualCode } from "@volar/language-core";
-import MagicString from "magic-string";
-import ts from "typescript";
+import { VirtualCode } from "@volar/language-core";
+import { TsmVirtualCode } from "ts-macro";
 
-export class EtsVirtualCode implements VirtualCode {
-  id = "ets";
-  mappings: CodeMapping[] = [];
-  languageId = "ets";
-
-  constructor(public snapshot: ts.IScriptSnapshot) {
-    this.update(snapshot, this)
+export class EtsVirtualCode extends TsmVirtualCode implements VirtualCode {
+  constructor(filePath: string, ast: import('typescript').SourceFile, languageId?: string, plugins?: import('ts-macro').TsmLanguagePlugin[]) {
+    super(filePath, ast, languageId, plugins)
   }
-
-  update(newSnapshot: ts.IScriptSnapshot, newCode: EtsVirtualCode) {
-    const text = newSnapshot.getText(0, newSnapshot.getLength());
-    const ms = new MagicString(text);
-    const structs = extractStructs(text);
-    for (const struct of structs) {
-      const replacedText = replaceStructWithClass(struct.text)
-      ms.overwrite(struct.start, struct.end, replacedText)
-    }
-
-    ms.append('\nimport {} from \'@arkts/declarations\';\n')
-    const newMs = new MagicString(ms.toString())
-    newCode.mappings = [
-      {
-        sourceOffsets: [0],
-        generatedOffsets: [0],
-        lengths: [newMs.length()],
-        data: {
-          completion: true,
-          format: true,
-          navigation: true,
-          semantic: true,
-          structure: true,
-          // verification: true
-        }
-      }
-    ]
-    newCode.snapshot.getText = (start, end) => newMs.slice(start, end);
-    newCode.snapshot.getLength = () => newMs.length();
-    return newCode;
-  }
-}
-
-function replaceStructWithClass(input: string): string {
-  const structRegex = /\b(?:export\s+)?(?:declare\s+)?(?:abstract\s+)?struct\b/g;
-
-  return input.replace(structRegex, (match) => {
-    return match.replace('struct', ' class');
-  });
-}
-
-function extractStructs(input: string) {
-  const structRegex = /(?<![_$[:alnum:]])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b\s+\w+\s*{/g;
-  const matches = [];
-
-  let match;
-  while ((match = structRegex.exec(input)) !== null) {
-      const start = match.index;
-      let braceCount = 1;
-      let i = structRegex.lastIndex;
-
-      while (braceCount > 0 && i < input.length) {
-          if (input[i] === '{') braceCount++;
-          if (input[i] === '}') braceCount--;
-          i++;
-      }
-
-      const end = i;
-      const text = input.slice(start, end);
-      matches.push({ start, end, text });
-  }
-
-  return matches;
 }

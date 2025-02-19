@@ -9,16 +9,20 @@
 		"build": "cd ./packages/vscode && npm run build",
 		"watch": "cd ./packages/vscode && npm run watch",
 		"pack": "cd ./packages/vscode && npm run pack",
-		"release": "cd ./packages/vscode && npm run release"
+		"release": "cd ./packages/vscode && npm run release",
+		"test": "vitest --ui"
 	},
 	"devDependencies": {
 		"@types/node": "latest",
+		"@vitest/coverage-v8": "3.0.6",
+		"@vitest/ui": "3.0.6",
 		"fast-glob": "^3.3.3",
 		"typescript": "latest"
 	},
 	"dependencies": {
 		"chokidar": "^4.0.3",
 		"magic-string": "^0.30.17",
-		"muggle-string": "^0.4.1"
+		"muggle-string": "^0.4.1",
+		"vitest": "^3.0.6"
 	}
 }

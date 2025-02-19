@@ -10,6 +10,9 @@ async function main() {
     fs.mkdirSync('dist')
   fs.writeFileSync('dist/index.d.ts', `
 /// <reference types="./component-all.d.ts" />
+declare function ___defineStruct___<T>(struct: T): T & {
+  (): T extends new (...args: any[]) => infer R ? R & CustomComponent : CustomComponent
+}
 `)
 
   fs.writeFileSync('dist/tsconfig.json', JSON.stringify({
