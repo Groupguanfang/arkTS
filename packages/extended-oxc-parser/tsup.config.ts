@@ -3,7 +3,6 @@ import { defineConfig } from 'tsup'
 export default defineConfig({
   entry: {
     index: './src/index.ts',
-    exported: './src/plugin.ts',
   },
   dts: true,
   sourcemap: true,

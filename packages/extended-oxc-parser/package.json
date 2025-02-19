@@ -1,22 +1,17 @@
 {
-  "name": "@arkts/ts-plugin-function-decorator",
+  "name": "@arkts/oxc-parser",
   "type": "module",
-  "version": "0.0.2",
-  "description": "Typescript plugin to allow function decorator.",
+  "version": "0.0.1",
+  "description": "Add arkts struct&#x27;s and function decorator support to OxC Parser.",
   "author": "Naily Zero <zero@naily.cc> (https://naily.cc)",
   "keywords": [
     "es-project-template"
   ],
   "exports": {
-    ".": {
+    "./index": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./exported": {
-      "types": "./dist/exported.d.ts",
-      "import": "./dist/exported.js",
-      "require": "./dist/exported.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -28,5 +23,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0"
   }
 }

@@ -1,1 +1,0 @@
-> Note 🚧: This package is move to [https://github.com/Groupguanfang/function-decorator](https://github.com/Groupguanfang/function-decorator)
