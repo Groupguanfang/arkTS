@@ -4,7 +4,8 @@
 		"lib": [
 			"ES2021",
 		],
-		"module": "Node16",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"sourceMap": true,
 		"composite": true,
 		"declaration": true,

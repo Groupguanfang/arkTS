@@ -38,6 +38,7 @@ function main() {
 			params,
 			createTypeScriptProject(tsdk.typescript, tsdk.diagnosticMessages, () => {
 				const compilerOptions = getCompilerOptions(tsdk.typescript)
+
 				return {
 					languagePlugins: [
 						...getLanguagePlugins(tsdk.typescript, compilerOptions),

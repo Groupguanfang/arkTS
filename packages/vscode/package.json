@@ -29,6 +29,15 @@
 	"main": "./dist/client.js",
 	"icon": "icon.png",
 	"contributes": {
+		"configuration": [
+			{
+				"id": "ets.verification.enabled",
+				"title": "Verification",
+				"type": "boolean",
+				"default": true,
+				"description": "是否启用验证"
+			}
+		],
 		"jsonValidation": [
 			{
 				"fileMatch": "module.json5",
