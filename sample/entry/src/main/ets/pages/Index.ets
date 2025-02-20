@@ -9,14 +9,16 @@ export struct Index {
   build() {
     Column() {
       Row() {
-        Index() {
-          Text("hello world") {
-            
-          }
+        Text(this.message)
+          .fontSize(20)
+          .fontWeight(FontWeight.Bold)
+
+        Button() {
+          Text("Click me")
         }.onClick(() => {
-          hilog.info(0x00, 'test', 'qwq')
+          this.message = 'clicked!'
         })
-      }.align(Alignment.Center)
+      }
     }
   }
 }
