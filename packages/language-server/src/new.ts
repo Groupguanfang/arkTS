@@ -101,16 +101,18 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
       transformCallExpression(text, codes, ast, ts)
       // 提取结构体
       const structs = extractStructs(text)
+
+
       // 替换结构体名称
       for (const struct of structs) {
         // replaceRange(codes, struct.start, struct.structNameEnd, `const ${toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)} = ___defineStruct___(class `)
         // replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
 
-        const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)
+        const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd).trim()
         const structNameId = nanoid().replace(/-/g, '_')
-        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `${structName}_${structNameId}`)
+        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} implements Partial<CustomComponent>`)
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
-        replaceRange(codes, struct.end, struct.end + 1, `export const ${structName} = ___defineStruct___(${structName}_${structNameId})`)
+        replaceRange(codes, struct.end, struct.end + 1, `export var ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
       }
     },
   }
