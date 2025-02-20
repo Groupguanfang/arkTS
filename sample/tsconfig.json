@@ -6,7 +6,9 @@
     "moduleResolution": "bundler",
     "strict": true,
     "lib": ["ESNext"],
-    "types": ["@arkts/declarations"]
+    "types": ["@arkts/declarations"],
+    "experimentalDecorators": true,
+    "allowArbitraryExtensions": true
   },
   "files": [],
   "include": ["./**/*.ets"]

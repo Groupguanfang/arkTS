@@ -12,7 +12,7 @@ export const getLanguagePlugins = (
     {
       typescript: {
         extraFileExtensions: [
-          { extension: '.ets', isMixedContent: true, scriptKind: ts.ScriptKind.TS, }
+          { extension: 'ets', isMixedContent: false, scriptKind: ts.ScriptKind.TS }
         ],
         resolveHiddenExtensions: true,
         getServiceScript(root) {

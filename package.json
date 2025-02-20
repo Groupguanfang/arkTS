@@ -23,6 +23,7 @@
 		"chokidar": "^4.0.3",
 		"magic-string": "^0.30.17",
 		"muggle-string": "^0.4.1",
+		"nanoid": "^5.1.0",
 		"reactive-vscode": "^0.2.10",
 		"vitest": "^3.0.6"
 	}

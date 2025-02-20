@@ -46,6 +46,7 @@ function main() {
 					setup(options) {
 						if (!options.project || !options.project.typescript || !options.project.typescript.languageServiceHost) return
 						const originalSettings = options.project.typescript?.languageServiceHost.getCompilationSettings()
+
 						const userTsConfig = (() => {
 							if (!params.rootPath) return
 							const tsConfigPath = path.resolve(params.rootPath, 'tsconfig.json')

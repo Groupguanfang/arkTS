@@ -1,4 +1,5 @@
 import { replaceRange, toString } from 'ts-macro'
+import { nanoid } from 'nanoid';
 
 function extractStructs(input: string) {
   const structRegex = /(?<![_$[:alnum:]])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b\s+(\w+)\s*{/g;
@@ -102,8 +103,14 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
       const structs = extractStructs(text)
       // 替换结构体名称
       for (const struct of structs) {
-        replaceRange(codes, struct.start, struct.structNameEnd, `const ${toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)} = ___defineStruct___(class `)
-        replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
+        // replaceRange(codes, struct.start, struct.structNameEnd, `const ${toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)} = ___defineStruct___(class `)
+        // replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
+
+        const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)
+        const structNameId = nanoid().replace(/-/g, '_')
+        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `${structName}_${structNameId}`)
+        replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
+        replaceRange(codes, struct.end, struct.end + 1, `export const ${structName} = ___defineStruct___(${structName}_${structNameId})`)
       }
     },
   }
