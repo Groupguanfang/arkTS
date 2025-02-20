@@ -1,0 +1,23 @@
+name: 🐛 报告 Bug
+description: 请提供尽可能多的信息，以便我们更好地理解问题并找到解决方案。
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+assignees:
+  - groupguanfang
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 请描述您遇到的问题
+      description: 请提供尽可能多的信息，以便我们更好地理解问题并找到解决方案。
+      placeholder: 例如：我的语言服务器老是崩溃，重启后就好了...
+  - type: input
+    id: plugin-version
+    attributes:
+      label: 插件版本
+      description: 请提供您正在使用的插件版本
+      placeholder: 例如：1.0.0
+
+  
