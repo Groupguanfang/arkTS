@@ -72,6 +72,18 @@ npm install @arkts/declarations
 - QQ: 1203970284
 - WeChat: gcz-zero
 
+### Coffee ☕️
+
+如果觉得这个项目对你有帮助，可以请作者喝杯咖啡 ☕️
+
+<div style="display: flex; gap: 10px;">
+
+<img src="./screenshots/wechat-pay.JPG" width="200" />
+
+<img src="./screenshots/alipay.JPG" width="200" />
+
+</div>
+
 ## License
 
 [MIT](./LICENSE)
