@@ -1,5 +1,4 @@
 import { hilog } from '@kit.PerformanceAnalysisKit'
-import EntryAbility from '../entryability/EntryAbility'
 
 @Entry
 @Component

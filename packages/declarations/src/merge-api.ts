@@ -50,7 +50,8 @@ function generateModuleDeclaration() {
 
   fs.writeFileSync(path.resolve('dist/tsconfig.base.json'), JSON.stringify({
     compilerOptions: {
-      paths: paths
+      paths: paths,
+      allowArbitraryExtensions: true
     }
   }, null, 2))
 }

@@ -1,6 +1,6 @@
 {
   "name": "@arkts/declarations",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "dist/index.d.ts",
   "types": "dist/index.d.ts",
   "exports": {

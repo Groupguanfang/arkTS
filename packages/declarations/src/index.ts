@@ -17,7 +17,10 @@ declare function ___defineStruct___<T>(struct: T): T & {
 
   fs.writeFileSync('dist/tsconfig.json', JSON.stringify({
     extends: './tsconfig.base.json',
-    include: ['./kits/**/*']
+    include: ['./kits/**/*'],
+    compilerOptions: {
+      allowArbitraryExtensions: true
+    }
   }, null, 2))
 }
 
