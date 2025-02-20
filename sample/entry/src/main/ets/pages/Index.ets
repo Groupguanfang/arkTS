@@ -1,5 +1,3 @@
-import { hilog } from '@kit.PerformanceAnalysisKit'
-
 @Entry
 @Component
 export struct Index {
@@ -13,11 +11,11 @@ export struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
 
-        Button() {
-          Text("Click me")
-        }.onClick(() => {
-          this.message = 'clicked!'
-        })
+        ForEach([1, 2, 3], () => {
+          Row() {
+            Text("item")
+          }
+        }, (_, i) => i.toString())
       }
     }
   }

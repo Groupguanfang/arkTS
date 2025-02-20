@@ -10,6 +10,6 @@
     "experimentalDecorators": true,
     "allowArbitraryExtensions": true
   },
-  "files": [],
-  "include": ["./**/*.ets"]
+  "include": ["./**/*.ets"],
+  "files": []
 }

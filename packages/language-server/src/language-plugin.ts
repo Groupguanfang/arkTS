@@ -33,16 +33,16 @@ export const getLanguagePlugins = (
             : undefined
       },
       createVirtualCode(uri, _languageId, snapshot) {
-        return new EtsVirtualCode(
-          typeof uri === 'string' ? uri : uri.path,
-          ts.createSourceFile(
+        return new EtsVirtualCode({
+          filePath: typeof uri === 'string' ? uri : uri.path,
+          ast: ts.createSourceFile(
             `index.ts`,
             snapshot.getText(0, snapshot.getLength()).toString(),
             99 satisfies typeof ts.ScriptTarget.Latest,
           ),
-          'ets',
-          resolvePlugins([etsPlugin({ ts, compilerOptions })]),
-        )
+          languageId: 'ets',
+          plugins: resolvePlugins([etsPlugin({ ts, compilerOptions })]),
+        })
       },
     }
   ]

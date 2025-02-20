@@ -29,15 +29,21 @@
 	"main": "./dist/client.js",
 	"icon": "icon.png",
 	"contributes": {
-		"configuration": [
-			{
-				"id": "ets.verification.enabled",
-				"title": "Verification",
-				"type": "boolean",
-				"default": true,
-				"description": "是否启用验证"
+		"configuration": {
+			"title": "Naily's ArkTS Support",
+			"properties": {
+				"ets.verification.enabled": {
+					"type": "boolean",
+					"description": "是否启用TypeScript验证。更改此选项需要重启您的IDE,默认启用。如果关闭,将丧失TypeScript的类型校验以及红线提示。",
+					"default": true
+				},
+				"ets.codelinterBinPath": {
+					"type": "string",
+					"description": "Code Linter的二进制文件路径。",
+					"default": ""
+				}
 			}
-		],
+		},
 		"jsonValidation": [
 			{
 				"fileMatch": "module.json5",
