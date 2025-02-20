@@ -64,3 +64,14 @@ npm install @arkts/declarations
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
+
+## Contact to Author
+
+- Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
+- X (Twitter): [@GCZ_Zero](https://x.com/GCZ_Zero)
+- QQ: 1203970284
+- WeChat: gcz-zero
+
+## License
+
+[MIT](./LICENSE)

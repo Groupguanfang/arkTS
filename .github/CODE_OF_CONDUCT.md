@@ -43,6 +43,13 @@
 
 如果您遇到任何不尊重的行为或有任何其他担忧，可以立即联系 [项目维护者的邮件地址](mailto:zero@naily.cc)。所有投诉都将得到认真调查和回应。
 
+您也可以通过这些方式联系到作者：
+
+- Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
+- X (Twitter): [@GCZ_Zero](https://x.com/GCZ_Zero)
+- QQ: 1203970284
+- WeChat: gcz-zero
+
 ## 勇气声明
 
 此行为准则是为了创建一个友好、尊重和包容的社区，我们鼓励社区成员积极参与、互相支持，共同创造积极的环境。
