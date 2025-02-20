@@ -51,9 +51,11 @@ npm install @arkts/declarations
 
 继承这个配置，然后，`重启你的VSCode`或者`保存一下这个文件`，ArkTS服务器会自动重载配置。
 
-![截图](./image.png)
+![截图](./screenshots/navigation-tip.png)
 
 导入模块的时候也有相应提示（前提是你的`tsconfig.json`按照上面的要求配置对了）。导入模块的原理很简单，就是扫了一遍ArkTS官方的API，然后生成了一系列的`compilerOptions.paths` alias，你只管继承就行😋
+
+![截图2](./screenshots/import-tip.png)
 
 ## 其他
 
