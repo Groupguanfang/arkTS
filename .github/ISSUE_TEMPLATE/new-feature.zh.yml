@@ -1,0 +1,23 @@
+name: 🚀 新功能建议
+description: 如果有什么功能您觉得缺少，请使用此模版提出。
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+assignees:
+  - groupguanfang
+body:
+  - type: textarea
+    id: what-feature
+    attributes:
+      label: 请描述您想要的功能
+      description: 请提供尽可能多的信息，以便我们更好地理解您的问题并找到解决方案。
+      placeholder: 例如：我希望有一个功能可以自动补全代码
+  - type: dropdown
+    id: i-will-do-it
+    attributes:
+      label: 我愿意为此功能贡献代码
+      options:
+        - 是
+        - 否
+

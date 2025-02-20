@@ -1,0 +1,22 @@
+name: 🚀 New Feature Suggestion
+description: If you have any features you think are missing, please use this template to suggest them.
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+assignees:
+  - groupguanfang
+body:
+  - type: textarea
+    id: what-feature
+    attributes:
+      label: Please describe the feature you want
+      description: Please provide as much information as possible to help us understand the problem and find a solution.
+      placeholder: e.g. I want a feature that can automatically complete code
+  - type: dropdown
+    id: i-will-do-it
+    attributes:
+      label: I will contribute to this feature
+      options:
+        - Yes
+        - No

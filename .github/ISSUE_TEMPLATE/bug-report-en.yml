@@ -1,0 +1,19 @@
+name: 🐛 Report Plugin Bug
+description: Please provide as much information as possible to help us understand the problem and find a solution.
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+assignees:
+  - groupguanfang
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Please describe the problem you encountered
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin Version
+      description: Please provide the version of the plugin you are using
+      placeholder: e.g. 1.0.0
