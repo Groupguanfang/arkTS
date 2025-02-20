@@ -8,7 +8,7 @@ export class OhpmInstaller extends FileSystem {
     if (!workspaceRoot) return
 
     const terminal = vscode.window.createTerminal({
-      name: 'ohpm install'
+      name: 'ohpm install',
     })
 
     terminal.sendText(`${ohpmPath} install`)

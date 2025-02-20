@@ -8,7 +8,13 @@
     "lib": ["ESNext"],
     "types": ["@arkts/declarations"],
     "experimentalDecorators": true,
-    "allowArbitraryExtensions": true
+    "allowArbitraryExtensions": true,
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "paths": {
+      "@ohos/hypium": ["./oh_modules/@ohos/hypium/index.d.ts"]
+    }
   },
   "include": ["./**/*.ets"],
   "files": []

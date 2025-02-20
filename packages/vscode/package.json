@@ -51,6 +51,16 @@
 					"type": "boolean",
 					"description": "打开一个新项目时，是否自动安装依赖。",
 					"default": true
+				},
+				"ets.hvigorwPath": {
+					"type": "string",
+					"description": "hvigorw编译器的路径。",
+					"default": ""
+				},
+				"ets.hvigorwAutoSync": {
+					"type": "boolean",
+					"description": "打开一个新项目时，是否自动同步hvigorw编译器信息。",
+					"default": true
 				}
 			}
 		},
