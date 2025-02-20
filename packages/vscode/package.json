@@ -41,6 +41,16 @@
 					"type": "string",
 					"description": "Code Linter的二进制文件路径。",
 					"default": ""
+				},
+				"ets.ohpmPath": {
+					"type": "string",
+					"description": "ohpm的路径。",
+					"default": ""
+				},
+				"ets.ohpmAutoInstall": {
+					"type": "boolean",
+					"description": "打开一个新项目时，是否自动安装依赖。",
+					"default": true
 				}
 			}
 		},
