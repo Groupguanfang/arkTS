@@ -1,9 +1,9 @@
 import { FileSystem } from "./file-system";
-import child_process from 'child_process'
-import fs from 'node:fs'
-import * as vscode from 'vscode'
+import * as vscode from 'vscode';
+import { Worker} from 'node:worker_threads'
+import path from "node:path";
 
-interface CodeLinterResult {
+export interface CodeLinterResult {
   filePath: string;
   messages: {
     line: number;
@@ -12,6 +12,11 @@ interface CodeLinterResult {
     message: string;
     rule: string;
   }[];
+}
+
+export interface CodeLinterWorkerData {
+  codelinterPath: string;
+  workspaceRoot: string;
 }
 
 export class CodeLinterExecutor extends FileSystem {
@@ -31,17 +36,24 @@ export class CodeLinterExecutor extends FileSystem {
   }
 
   public async run(): Promise<void> {
-    const statusBarMessage = vscode.window.setStatusBarMessage('Running Code Linter...')
     const codelinterBinPath = vscode.workspace.getConfiguration('ets').get('codelinterBinPath') as string
     if (!codelinterBinPath) {
       vscode.window.showInformationMessage('Code Linter is disabled.')
       return
     }
-    const result = await this.getJSONOutput(codelinterBinPath)
-    this.diagnosticCollection.clear()
-    await this.lint(result)
-    statusBarMessage.dispose()
-    vscode.window.setStatusBarMessage('Code Linter finished.', 1000)
+    const statusBarMessage = vscode.window.setStatusBarMessage('Running Code Linter...')
+    
+    try {
+      const result = await this.getJSONOutput(codelinterBinPath)
+      this.diagnosticCollection.clear()
+      await this.lint(result)
+      vscode.window.setStatusBarMessage('Code Linter finished.', 1000)
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to run Code Linter. Please check your configuration.`)
+      console.error(error)
+    } finally {
+      statusBarMessage.dispose()
+    }
   }
 
   private async lint(result: CodeLinterResult[]): Promise<void> {
@@ -65,39 +77,20 @@ export class CodeLinterExecutor extends FileSystem {
     }
   }
 
+  private _worker = new Worker(path.resolve(__dirname, 'code-linter-worker.js'))
+
   getJSONOutput(codelinterPath: string): Promise<CodeLinterResult[]> {
     const workspaceRoot = this.getWorkspaceRoot()
     if (!workspaceRoot) return Promise.resolve([])
 
-    if (!fs.existsSync(codelinterPath)) {
-      vscode.window.showErrorMessage(`Code Linter not found at ${codelinterPath}. Please check your configuration.`)
-      return Promise.resolve([])
-    }
-
+    this._worker.postMessage({ codelinterPath, workspaceRoot } as CodeLinterWorkerData)
     return new Promise<CodeLinterResult[]>((resolve, reject) => {
-      child_process.exec(`${codelinterPath} -f json`, {
-        cwd: workspaceRoot,
-      }, (error, stdout) => {
-        if (error) {
-          vscode.window.showErrorMessage(`Failed to execute Code Linter. Please check your configuration.`)
-          return reject(error)
-        }
-  
-        const output = stdout.toString()
-        console.log('======EXECUTE CODE LINTER OUTPUT START======')
-        console.log(output)
-        console.log('======EXECUTE CODE LINTER OUTPUT END======')
-  
-        const jsonOutput = output.split('\n')[3]
-        
-        try {
-          const result = JSON.parse(jsonOutput)
-          resolve(result)
-        } catch (error) {
-          vscode.window.showErrorMessage(`Failed to parse Code Linter output, maybe the codelinter no compatible with the current version of Naily's ArkTS Support plugin, please contact the author.`)
-          console.error(error)
-        }
-      })
+      this._worker.on('message', (result: CodeLinterResult[]) => resolve(result))
+        .on('error', (error) => reject(error))
+        .on('exit', (code) => {
+          if (code !== 0) reject(new Error(`Code Linter exited with code ${code}`))
+          else resolve([])
+        })
     })
   }
 
