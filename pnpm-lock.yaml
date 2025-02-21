@@ -80,7 +80,7 @@ importers:
 
   packages/vscode:
     devDependencies:
-      '@html1/language-server':
+      '@arkts/language-server':
         specifier: workspace:*
         version: link:../language-server
       '@types/vscode':
