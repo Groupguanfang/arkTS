@@ -74,6 +74,13 @@ function transformCallExpression(fullText: string, codes: import('ts-macro').Cod
       if (nextScopeEndChar !== '.') return
       replaceRange(codes, scopeEnd + 1, scopeEnd + 1, node.getText(ast))
     }
+
+    if (ts.isFunctionDeclaration(node)) {
+      if (!node.body) return
+      const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
+      if (nextChar !== '.') return
+      replaceRange(codes, node.body.getStart(ast) + 1, node.body.getStart(ast) + 1, `new CustomComponent()`)
+    }
   }
 }
 
@@ -95,6 +102,8 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
       //     verification: true
       //   },
       // ])
+      // Add a placeholder to the end of the file
+      codes.push('\n\n\n/** placeholder end */\n')
       // 获取完整的文本
       const text = toString(codes)
       // 转换调用表达式
@@ -108,11 +117,16 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
         // replaceRange(codes, struct.start, struct.structNameEnd, `const ${toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)} = ___defineStruct___(class `)
         // replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
 
+        // get the raw struct name
         const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd).trim()
+        // generate a unique id for the struct
         const structNameId = nanoid().replace(/-/g, '_')
+        // implements Partial<CustomComponent> to support custom component chain call
         replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} implements Partial<CustomComponent>`)
+        // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
-        replaceRange(codes, struct.end, struct.end + 1, `export var ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
+        // Add to the end of the struct
+        replaceRange(codes, struct.end, struct.end, `export var ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
       }
     },
   }
