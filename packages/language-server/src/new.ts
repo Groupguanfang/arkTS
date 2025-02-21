@@ -60,7 +60,7 @@ function findNextCharExcludeWrapAndSpace(fullText: string, index: number): strin
   return ''
 }
 
-function transformCallExpression(fullText: string, codes: import('ts-macro').Code[], ast: import('typescript').SourceFile, ts: typeof import('typescript')) {
+function transform(fullText: string, codes: import('ts-macro').Code[], ast: import('typescript').SourceFile, ts: typeof import('typescript')) {
   ts.forEachChild(ast, (node) => walk(node, []))
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
     ts.forEachChild(node, (child) => walk(child, [...parents, node]))
@@ -106,8 +106,8 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
       codes.push('\n\n\n/** placeholder end */\n')
       // 获取完整的文本
       const text = toString(codes)
-      // 转换调用表达式
-      transformCallExpression(text, codes, ast, ts)
+      // 转换
+      transform(text, codes, ast, ts)
       // 提取结构体
       const structs = extractStructs(text)
 
