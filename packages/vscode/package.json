@@ -124,7 +124,7 @@
 		"release": "npm run build && vsce publish"
 	},
 	"devDependencies": {
-		"@html1/language-server": "workspace:*",
+		"@arkts/language-server": "workspace:*",
 		"@types/vscode": "^1.82.0",
 		"@volar/language-server": "~2.4.0",
 		"@volar/vscode": "~2.4.0",

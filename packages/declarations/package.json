@@ -1,5 +1,6 @@
 {
   "name": "@arkts/declarations",
+  "description": "ArkTS type definitions.",
   "version": "0.0.8",
   "main": "dist/index.d.ts",
   "types": "dist/index.d.ts",

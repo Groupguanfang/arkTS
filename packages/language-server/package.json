@@ -1,14 +1,19 @@
 {
-	"name": "@html1/language-server",
+	"name": "@arkts/language-server",
+	"description": "ArkTS Language Server",
 	"version": "0.0.1",
 	"main": "out/index.js",
 	"license": "MIT",
 	"files": [
-		"out/**/*.js",
-		"out/**/*.d.ts"
+		"out",
+		"src",
+		"bin"
 	],
 	"bin": {
-		"html1-language-server": "./bin/html1-language-server.js"
+		"ets-language-server": "./bin/ets-language-server.js"
+	},
+	"scripts": {
+		"build": "tsup --tsconfig ./tsconfig.build.json"
 	},
 	"dependencies": {
 		"@volar/language-core": "~2.4.0",

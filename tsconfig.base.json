@@ -15,7 +15,7 @@
 		"noUnusedParameters": true,
 		"baseUrl": "./",
 		"paths": {
-			"@html1/language-server": [
+			"@arkts/language-server": [
 				"packages/language-server/src"
 			],
 		},
