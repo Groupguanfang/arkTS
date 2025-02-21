@@ -79,9 +79,17 @@ npm install @arkts/declarations
 
 ![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
 
-记得填写之后，一定要重启一下你的`IDE`，然后就可以看到效果了。
+记得填写之后，一定要重启一下你的`IDE`，然后就可以看到效果了，比如：
+
+![codelinter-for-each-error](./screenshots/codelinter-for-each-error.png)
+
+这里的报错是提示你，为了性能，ForEach得有`keyGenerator`参数（即第三个参数）；当你填补了第三个参数之后，保存文件，`等待一会儿`（`codelinter`的运行需要时间），然后这个警告就会消失：
+
+![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
 ## Star History
+
+
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
 
