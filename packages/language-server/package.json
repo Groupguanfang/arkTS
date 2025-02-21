@@ -42,7 +42,8 @@
 		"ets-language-server": "./bin/ets-language-server.js"
 	},
 	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.build.json"
+		"build": "tsup --tsconfig ./tsconfig.build.json",
+		"prepublishOnly": "tsup --tsconfig ./tsconfig.build.json"
 	},
 	"dependencies": {
 		"@volar/language-core": "~2.4.0",
