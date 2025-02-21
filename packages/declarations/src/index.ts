@@ -11,7 +11,7 @@ async function main() {
   fs.writeFileSync('dist/index.d.ts', `
 /// <reference types="./component-all.d.ts" />
 declare function ___defineStruct___<T>(struct: T): T & {
-  (props: T extends new (...args: any[]) => infer R ? R : Record<string | number | symbol, any>): T extends new (...args: any[]) => infer R ? R & CustomComponent : CustomComponent
+  (props: T extends new (...args: any[]) => infer R ? Omit<Partial<R>, 'build'> : Record<string | number | symbol, any>): T extends new (...args: any[]) => infer R ? R & CustomComponent : CustomComponent
 }
 `)
 
