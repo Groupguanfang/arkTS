@@ -3,7 +3,36 @@
 	"description": "ArkTS Language Server",
 	"version": "0.0.1",
 	"main": "out/index.js",
+	"author": "Naily Zero <zero@naily.cc>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Groupguanfang/arkTS",
+		"directory": "packages/language-server"
+	},
+	"bugs": {
+		"url": "https://github.com/Groupguanfang/arkTS/issues",
+		"email": "zero@naily.cc"
+	},
+	"homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/language-server",
+	"exports": {
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.mjs",
+			"default": "./out/index.js"
+		},
+		"./dist/*": "./dist/*"
+	},
 	"license": "MIT",
+	"keywords": [
+		"language-server",
+		"language-server-protocol",
+		"harmonyos",
+		"arkts",
+		"ets"
+	],
+	"engines": {
+		"node": ">=16.0.0"
+	},
 	"files": [
 		"out",
 		"src",
