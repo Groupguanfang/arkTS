@@ -18,7 +18,7 @@ export function mergeComponent() {
     const unitsDTSRef = component === 'units.d.ts' ? '' : '/// <reference types="./units.d.ts" />'
     const common_ts_ets_apiDTSRef = component === 'common_ts_ets_api.d.ts' ? '' : '/// <reference types="./common_ts_ets_api.d.ts" />'
     const matrix2dDTSRef = component === 'matrix2d.d.ts' ? '' : '/// <reference types="./matrix2d.d.ts" />'
-    fs.writeFileSync(`dist/component/${component}`, `${commonDTSRef}\n${enumsDTSRef}\n${unitsDTSRef}\n${common_ts_ets_apiDTSRef}\n${matrix2dDTSRef}\n${content}`)
+    fs.writeFileSync(`dist/component/${component}`, `// @ts-nocheck\n${commonDTSRef}\n${enumsDTSRef}\n${unitsDTSRef}\n${common_ts_ets_apiDTSRef}\n${matrix2dDTSRef}\n${content}`)
   }
 }
 

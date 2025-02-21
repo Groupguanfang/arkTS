@@ -15,7 +15,7 @@ function mergeAllApi() {
     const distContentPath = path.resolve('dist/api', api.replace('ets/api/', ''))
     if (!fs.existsSync(path.dirname(distContentPath)))
       fs.mkdirSync(path.dirname(distContentPath), { recursive: true })
-    fs.writeFileSync(distContentPath, content)
+    fs.writeFileSync(distContentPath, `// @ts-nocheck\n${content}`)
   }
 }
 
@@ -26,7 +26,7 @@ function mergeAllKits() {
     const distContentPath = path.resolve('dist/kits', kit.replace('ets/kits/', ''))
     if (!fs.existsSync(path.dirname(distContentPath)))
       fs.mkdirSync(path.dirname(distContentPath), { recursive: true })
-    fs.writeFileSync(distContentPath, content)
+    fs.writeFileSync(distContentPath, `// @ts-nocheck\n${content}`)
   }
 }
 
