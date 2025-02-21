@@ -53,7 +53,6 @@ function main() {
 							if (!fs.existsSync(tsConfigPath)) return console.warn('tsconfig.json not found in', params.rootPath)
 							
 							const tsConfigRaw = fs.readFileSync(tsConfigPath, 'utf-8')
-							console.log('Try to read tsconfig.json:', tsConfigPath, tsConfigRaw)
 							return tsdk.typescript.parseJsonConfigFileContent(JSON.parse(tsConfigRaw), tsdk.typescript.sys, params.rootPath).options || {}
 						})();
 	
