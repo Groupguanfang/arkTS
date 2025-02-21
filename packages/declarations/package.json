@@ -1,7 +1,7 @@
 {
   "name": "@arkts/declarations",
-  "description": "ArkTS type definitions.",
-  "version": "0.0.8",
+  "description": "ArkTS unofficial type definitions.",
+  "version": "0.0.9",
   "main": "dist/index.d.ts",
   "types": "dist/index.d.ts",
   "exports": {
@@ -22,6 +22,7 @@
     "url": "https://github.com/Groupguanfang/arkTS/issues",
     "email": "zero@naily.cc"
   },
+  "homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/declarations",
   "files": [
     "dist"
   ],
