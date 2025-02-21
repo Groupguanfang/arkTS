@@ -1,10 +1,13 @@
 import { FileSystem } from "./file-system";
 import * as vscode from 'vscode';
+import fs from 'node:fs';
+import path from "node:path";
 
 export class HvigorwInstaller extends FileSystem {
   private async sync(hvigorwPath: string) {
     const workspaceRoot = this.getWorkspaceRoot()
     if (!workspaceRoot) return
+    if (!fs.existsSync(path.join(workspaceRoot, 'hvigorfile.ts'))) return
 
     const terminal = vscode.window.createTerminal({
       name: 'hvigorw --sync'

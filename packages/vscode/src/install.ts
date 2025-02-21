@@ -1,11 +1,13 @@
 import { FileSystem } from "./file-system";
 import * as vscode from 'vscode';
 import fs from 'node:fs';
+import path from "node:path";
 
 export class OhpmInstaller extends FileSystem {
   private async install(ohpmPath: string) {
     const workspaceRoot = this.getWorkspaceRoot()
     if (!workspaceRoot) return
+    if (!fs.existsSync(path.join(workspaceRoot, 'oh-package.json5'))) return
 
     const terminal = vscode.window.createTerminal({
       name: 'ohpm install',
