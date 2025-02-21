@@ -89,8 +89,6 @@ npm install @arkts/declarations
 
 ## Star History
 
-
-
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
 
 ## Contact to Author
