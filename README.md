@@ -11,8 +11,9 @@
   - `code-linter.json5` 模块级别/项目级别配置
   - `resources/element/`下所有的`color.json`等的kv值配置
   - `main_pages.json5`
-- 🪐 得益于强大的Volar，0.0.7版本升级之后，已经完美的ArkTS几乎所有语法高亮，补全😋👍
-- ✨ 支持源码跳转，注意暂时仅限ArkTS内部源码，import/export的暂未支持，欢迎PR
+- 🪐 得益于强大的Volar，0.0.7版本升级之后，已经完美的ArkTS几乎所有语法高亮、补全以及智能提示😋👍
+- 📦 打开项目时支持自动安装`ohpm`依赖以及同步`hvigor`配置
+- 🚧 支持像ESLint那样的行内`codelinter`提示，精准定位问题代码出在哪👍
 
 ![截图](./screenshots/edit.gif)
 
