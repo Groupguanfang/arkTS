@@ -27,7 +27,11 @@ function extractStructs(input: string) {
       const structBodyEnd = i; // The position after '}'
       const end = i;
       const text = input.slice(start, end);
-      matches.push({ start, end, text, structKeywordStart, structKeywordEnd, structNameStart, structNameEnd, structBodyStart, structBodyEnd });
+      
+      // Determine if the struct is exported
+      const isExport = !!match[1];
+
+      matches.push({ start, end, text, structKeywordStart, structKeywordEnd, structNameStart, structNameEnd, structBodyStart, structBodyEnd, isExport });
   }
 
   return matches;
@@ -61,25 +65,43 @@ function findNextCharExcludeWrapAndSpace(fullText: string, index: number): strin
 }
 
 function transform(fullText: string, codes: import('ts-macro').Code[], ast: import('typescript').SourceFile, ts: typeof import('typescript')) {
+  transformAllCalls()
   ts.forEachChild(ast, (node) => walk(node, []))
+
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
     ts.forEachChild(node, (child) => walk(child, [...parents, node]))
 
     if (ts.isCallExpression(node)) {
-      const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.getEnd())
-      if (nextChar !== '{') return
-      replaceRange(codes, node.getEnd(), node.getEnd(), '\n')
-      const scopeEnd = findClosestScopeEnd(fullText, node.getEnd())
-      const nextScopeEndChar = findNextCharExcludeWrapAndSpace(fullText, scopeEnd + 1)
-      if (nextScopeEndChar !== '.') return
-      replaceRange(codes, scopeEnd + 1, scopeEnd + 1, node.getText(ast))
+      transformCallExpression(node)
     }
+    else if (ts.isFunctionDeclaration(node)) {
+      transformFunctionDeclaration(node)
+    }
+  }
 
-    if (ts.isFunctionDeclaration(node)) {
-      if (!node.body) return
-      const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
-      if (nextChar !== '.') return
-      replaceRange(codes, node.body.getStart(ast) + 1, node.body.getStart(ast) + 1, `new CustomComponent()`)
+  function transformFunctionDeclaration(node: import('typescript').FunctionDeclaration) {
+    if (!node.body) return
+    const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
+    if (nextChar !== '.') return
+    replaceRange(codes, node.body.getStart(ast) + 1, node.body.getStart(ast) + 1, `new CustomComponent()`)
+  }
+
+  function transformCallExpression(node: import('typescript').CallExpression) {
+    const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.getEnd())
+    if (nextChar !== '{') return
+    replaceRange(codes, node.getEnd(), node.getEnd(), '\n')
+    const scopeEnd = findClosestScopeEnd(fullText, node.getEnd())
+    const nextScopeEndChar = findNextCharExcludeWrapAndSpace(fullText, scopeEnd + 1)
+    if (nextScopeEndChar !== '.') return
+    replaceRange(codes, scopeEnd + 1, scopeEnd + 1, node.getText(ast))
+  }
+
+  function transformAllCalls() {
+    const matchesParentheses = fullText.matchAll(/\(([^)]*)\)/g)
+    for (const match of matchesParentheses) {
+      const nextChar = findNextCharExcludeWrapAndSpace(fullText, match.index + match[0].length)
+      if (nextChar !== '{') continue
+      replaceRange(codes, match.index + match[0].length, match.index + match[0].length, '\n')
     }
   }
 }
@@ -126,7 +148,7 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
-        replaceRange(codes, struct.end, struct.end, `export var ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
+        replaceRange(codes, struct.end, struct.end, `${struct.isExport ? 'export' : ''} const ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
       }
     },
   }
