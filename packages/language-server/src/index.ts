@@ -3,6 +3,7 @@ import { create as createTypeScriptServices } from 'volar-service-typescript';
 import { getLanguagePlugins } from './language-plugin';
 import path from 'node:path';
 import fs from 'node:fs';
+import defu from 'defu'
 
 let connection: ReturnType<typeof createConnection>
 let server: ReturnType<typeof createServer>
@@ -48,12 +49,63 @@ function main() {
 						const originalSettings = options.project.typescript?.languageServiceHost.getCompilationSettings()
 
 						const userTsConfig = (() => {
-							if (!params.rootPath) return
-							const tsConfigPath = path.resolve(params.rootPath, 'tsconfig.json')
-							if (!fs.existsSync(tsConfigPath)) return console.warn('tsconfig.json not found in', params.rootPath)
-							
-							const tsConfigRaw = fs.readFileSync(tsConfigPath, 'utf-8')
-							return tsdk.typescript.parseJsonConfigFileContent(JSON.parse(tsConfigRaw), tsdk.typescript.sys, params.rootPath).options || {}
+							try {
+								if (!params.rootPath) return
+								const tsConfigPath = path.resolve(params.rootPath, 'tsconfig.json')
+								if (!fs.existsSync(tsConfigPath)) return console.warn('tsconfig.json not found in', params.rootPath)
+								
+								const tsConfigRaw = fs.readFileSync(tsConfigPath, 'utf-8')
+								const parsedTsConfig = JSON.parse(tsConfigRaw)
+
+								function resolveExtendsCompilerOptions(rootPath: string, extendsTsConfigPath: string, projectTsConfigPath: string): import('typescript').CompilerOptions {
+									const resolvedExtendsTsConfig = tsdk.typescript.resolveModuleName(
+										extendsTsConfigPath,
+										projectTsConfigPath,
+										{ 
+											target: tsdk.typescript.ScriptTarget.Latest,
+											module: tsdk.typescript.ModuleKind.ESNext,
+											moduleResolution: tsdk.typescript.ModuleResolutionKind.Bundler,
+											resolveJsonModule: true
+										},
+										tsdk.typescript.sys,
+									)
+									if (resolvedExtendsTsConfig.resolvedModule?.resolvedFileName) {
+										const extendsTsConfigRaw = fs.readFileSync(resolvedExtendsTsConfig.resolvedModule.resolvedFileName, 'utf-8')
+										const extendsTsConfigDir = path.dirname(resolvedExtendsTsConfig.resolvedModule.resolvedFileName)
+										const parsedExtendsTsConfig = JSON.parse(extendsTsConfigRaw)
+										const extendsCompilerOptions = tsdk.typescript.parseJsonConfigFileContent(parsedExtendsTsConfig, tsdk.typescript.sys, rootPath).options || {}
+										for (const key in extendsCompilerOptions.paths || {}) {
+											for (const i in extendsCompilerOptions.paths![key] || []) {
+												const resolvedAliasPath = path.relative(
+													rootPath,
+													path.resolve(extendsTsConfigDir, extendsCompilerOptions.paths![key]![i])
+												)
+												extendsCompilerOptions.paths![key]![i] = resolvedAliasPath
+											}
+										}
+										return extendsCompilerOptions
+									} else {
+										return {}
+									}
+								}
+
+								let extendsCompilerOptions: import('typescript').CompilerOptions = {}
+								if (typeof parsedTsConfig.extends === 'string') {
+									extendsCompilerOptions = resolveExtendsCompilerOptions(params.rootPath, parsedTsConfig.extends, tsConfigPath)
+								} else if (Array.isArray(parsedTsConfig.extends)) {
+									for (const extendsTsConfigPath of parsedTsConfig.extends) {
+										extendsCompilerOptions = defu(
+											resolveExtendsCompilerOptions(params.rootPath, extendsTsConfigPath, tsConfigPath),
+											extendsCompilerOptions,
+										)
+									}
+								}
+								const projectCompilerOptions = tsdk.typescript.parseJsonConfigFileContent(parsedTsConfig, tsdk.typescript.sys, params.rootPath).options || {}
+								return defu(projectCompilerOptions, extendsCompilerOptions)
+							} catch (error) {
+								console.error(error)
+								return {}
+							}
 						})();
 	
 						options.project.typescript.languageServiceHost.getCompilationSettings = () => {
