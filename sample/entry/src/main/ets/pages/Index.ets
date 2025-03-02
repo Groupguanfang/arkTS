@@ -19,5 +19,11 @@ export struct Index {
       }
     }
   }
-}
 
+  @Builder
+  testBuilder(): void {
+    Column() {
+      Text("testBuilder") {}
+    }
+  }
+}

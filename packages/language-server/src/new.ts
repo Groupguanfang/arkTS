@@ -2,6 +2,10 @@ import { replaceRange, toString } from 'ts-macro'
 import { nanoid } from 'nanoid';
 
 function extractStructs(input: string) {
+  /**
+   * From `typescript.tmLanguage.json` - `ClassDeclaration` - `begin`
+   * @see https://github.com/microsoft/vscode/blob/e8c27bc34442a660e50e97331ef7ace6bc9fa9be/extensions/typescript-basics/syntaxes/TypeScript.tmLanguage.json#L1701
+   */
   const structRegex = /(?<![_$[:alnum:]])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b\s+(\w+)\s*{/g;
   const matches = [];
 
@@ -37,35 +41,46 @@ function extractStructs(input: string) {
   return matches;
 }
 
-function findClosestScopeEnd(fullText: string, blockStart: number): number {
-  let braceCount = 1
-  let i = 0
-  let blockBraceCount: number | null = null
-  while (braceCount > 0 && i < fullText.length) {
-    if (i === blockStart) {
-      blockBraceCount = braceCount
-    }
+function findClosestScopeEnd(leftBraceStartingPoint: number, sourceFile: import('typescript').SourceFile, ts: typeof import('typescript')): number {
+    // 遍历 AST 节点
+    let result: number | null = null;
+    ts.forEachChild(sourceFile, function visit(node) {
+        if (node.kind === ts.SyntaxKind.Block) {
+            // 如果节点是块级作用域（即大括号包裹的区域）
+            const { pos, end } = node;
+            
+            // 如果 leftBraceStartingPoint 位于这个块的范围内
+            if (pos <= leftBraceStartingPoint && leftBraceStartingPoint < end) {
+                result = end - 1;  // 返回匹配的右大括号位置
+            }
+        }
+        ts.forEachChild(node, visit);  // 递归遍历 AST 的子节点
+    });
 
-    if (fullText[i] === '{') braceCount++
-    if (fullText[i] === '}') {
-      braceCount--
-      if (blockBraceCount === braceCount) return i
-    }
-    i++
-  }
-  return i
+    return result ?? -1; // 如果没有找到匹配的右大括号，返回 -1
 }
 
-function findNextCharExcludeWrapAndSpace(fullText: string, index: number): string {
-  for (let i = index; i < fullText.length; i++) {
+
+function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): [string, number] {
+  for (let i = startIndex; i < fullText.length; i++) {
     if (fullText[i] === '\n' || fullText[i] === ' ') continue
-    return fullText[i]
+    return [fullText[i], i]
   }
-  return ''
+  return ['', startIndex]
 }
 
-function transform(fullText: string, codes: import('ts-macro').Code[], ast: import('typescript').SourceFile, ts: typeof import('typescript')) {
-  transformAllCalls()
+function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-macro').Code[]) {
+  const matchesParentheses = fullText.matchAll(/\(([^)]*)\)/g)
+  for (const match of matchesParentheses) {
+    const index = match.index + match[0].length
+    const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, index)
+    if (nextChar !== '{') continue
+    replaceRange(codes, index, index, '\n')
+  }
+}
+
+function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript')) {
+  const ast = ts.createSourceFile(`index.ts`, fullText, 99 satisfies typeof ts.ScriptTarget.Latest)
   ts.forEachChild(ast, (node) => walk(node, []))
 
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
@@ -81,28 +96,21 @@ function transform(fullText: string, codes: import('ts-macro').Code[], ast: impo
 
   function transformFunctionDeclaration(node: import('typescript').FunctionDeclaration) {
     if (!node.body) return
-    const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
+    const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
     if (nextChar !== '.') return
     replaceRange(codes, node.body.getStart(ast) + 1, node.body.getStart(ast) + 1, `new CustomComponent()`)
   }
 
-  function transformCallExpression(node: import('typescript').CallExpression) {
-    const nextChar = findNextCharExcludeWrapAndSpace(fullText, node.getEnd())
+  function transformCallExpression(callExpression: import('typescript').CallExpression) {
+    // 首先，判断一个Call Expression后面是否跟着一个左大括号，如果不是，则不进行转换
+    const [nextChar, nextCharIndex] = findNextCharExcludeWrapAndSpace(fullText, callExpression.getEnd())
     if (nextChar !== '{') return
-    replaceRange(codes, node.getEnd(), node.getEnd(), '\n')
-    const scopeEnd = findClosestScopeEnd(fullText, node.getEnd())
-    const nextScopeEndChar = findNextCharExcludeWrapAndSpace(fullText, scopeEnd + 1)
-    if (nextScopeEndChar !== '.') return
-    replaceRange(codes, scopeEnd + 1, scopeEnd + 1, node.getText(ast))
-  }
 
-  function transformAllCalls() {
-    const matchesParentheses = fullText.matchAll(/\(([^)]*)\)/g)
-    for (const match of matchesParentheses) {
-      const nextChar = findNextCharExcludeWrapAndSpace(fullText, match.index + match[0].length)
-      if (nextChar !== '{') continue
-      replaceRange(codes, match.index + match[0].length, match.index + match[0].length, '\n')
-    }
+    // 然后，找到这个左大括号对应的右大括号
+    const scopeEnd = findClosestScopeEnd(nextCharIndex, ast, ts)
+    const [nextScopeEndChar, nextScopeEndIndex] = findNextCharExcludeWrapAndSpace(fullText, scopeEnd + 1)
+    if (nextScopeEndChar !== '.') return
+    replaceRange(codes, nextScopeEndIndex, nextScopeEndIndex, callExpression.getText(ast))
   }
 }
 
@@ -110,7 +118,7 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
   return {
     name: 'ets-plugin',
     enforce: 'pre' as const,
-    resolveVirtualCode({ ast, codes }) {
+    resolveVirtualCode({ codes }) {
       // codes.push([
       //   `\nimport '@arkts/declarations';`,
       //   `\nimport '@arkts/declarations';`,
@@ -128,11 +136,10 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
       codes.push('\n\n\n/** placeholder end */\n')
       // 获取完整的文本
       const text = toString(codes)
-      // 转换
-      transform(text, codes, ast, ts)
+      // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
+      addLineBreakAfterCallExpression(text, codes)
       // 提取结构体
       const structs = extractStructs(text)
-
 
       // 替换结构体名称
       for (const struct of structs) {
@@ -142,7 +149,7 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
         // get the raw struct name
         const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd).trim()
         // generate a unique id for the struct
-        const structNameId = nanoid().replace(/-/g, '_')
+        const structNameId = nanoid(5).replace(/-/g, '_')
         // implements Partial<CustomComponent> to support custom component chain call
         replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} implements Partial<CustomComponent>`)
         // Replace the struct keyword to class
@@ -150,6 +157,9 @@ export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOpt
         // Add to the end of the struct
         replaceRange(codes, struct.end, struct.end, `${struct.isExport ? 'export' : ''} const ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
       }
+
+      // 转换
+      transform(text, codes, ts)
     },
   }
 }
