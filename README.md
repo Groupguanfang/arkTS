@@ -25,13 +25,13 @@
 
 ![截图](./screenshots/edit.gif)
 
-## 安装
+## 安装 📦
 
 Marketplace安装: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
 
 或者直接在VSCode中搜索`ArkTS Support`即可。
 
-## ArkTS源码跳转
+## ArkTS源码跳转 🔍
 
 ArkTS源码跳转需要依赖`@arkts/declarations`，所以需要在你的鸿蒙项目中用`npm`安装`@arkts/declarations`。
 
@@ -70,7 +70,7 @@ npm install @arkts/declarations
 
 ![截图2](./screenshots/import-tip.png)
 
-## Code Linter
+## Code Linter 🚧
 
 0.1.0版本开始增加对code linter的支持（你可以理解为ArkTS版的ESLint）。
 
@@ -98,15 +98,15 @@ npm install @arkts/declarations
 
 ![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
-## Star History
+## Star History 🌟
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
 
-## Contact to Author
+## Contact to Author 📧
 
 - Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
 - X (Twitter): [@GCZ_Zero](https://x.com/GCZ_Zero)
-- QQ: 1203970284
+- QQ: 1203970284，QQ群: 746153004
 - WeChat: gcz-zero
 
 ### Coffee ☕️
@@ -125,6 +125,6 @@ npm install @arkts/declarations
 
 </div>
 
-## License
+## License 📝
 
 [MIT](./LICENSE)
