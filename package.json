@@ -11,7 +11,8 @@
     "watch": "cd ./packages/vscode && npm run watch",
     "pack": "cd ./packages/vscode && npm run pack",
     "release": "cd ./packages/vscode && npm run release",
-    "test": "vitest --ui"
+    "test": "vitest --ui",
+    "lint": "eslint"
   },
   "dependencies": {
     "chokidar": "^4.0.3",
