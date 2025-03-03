@@ -600,7 +600,7 @@
                       "items": {
                         "type": "string",
                         "pattern": "^[a-zA-Z][a-zA-Z_.]*$",
-                        "maxLength": 255    
+                        "maxLength": 255
                       }
                     },
                     "domainVerify": {
@@ -748,7 +748,7 @@
                   "portrait",
                   "landscape",
                   "landscape_auto"
-                  
+
                 ],
                 "default": "default"
               },
@@ -914,7 +914,7 @@
                   "action",
                   "adsService",
                   "embeddedUI",
-				  "insightIntentUI",
+                  "insightIntentUI",
                   "autoFill/password",
                   "hms/account",
                   "appAccountAuthorization",
@@ -936,11 +936,11 @@
                   "sysPicker/share",
                   "sysPicker/meetimeContact",
                   "sysPicker/meetimeCallLog",
-				  "sysPicker/photoPicker",
-				  "sysPicker/appSelector",
+                  "sysPicker/photoPicker",
+                  "sysPicker/appSelector",
                   "sysPicker/navigation",
-				  "sysPicker/photoEditor",
-				  "photoEditor",
+                  "sysPicker/photoEditor",
+                  "photoEditor",
                   "sysPicker/filePicker",
                   "sysPicker/audioPicker",
                   "sys/visualExtension",
@@ -1291,7 +1291,7 @@
         },
         "testRunner": {
           "description": "This tag is used for configure the test properties.",
-          "type":"object",
+          "type": "object",
           "required": [
             "name",
             "srcPath"
@@ -1302,7 +1302,7 @@
               "srcPath"
             ]
           },
-          "properties":{
+          "properties": {
             "name": {
               "description": "Indicates the name of testRunner,  The value is a string with a maximum of 255 bytes",
               "type": "string",
@@ -1331,7 +1331,7 @@
             "required": [
               "moduleName"
             ],
-            "properties":{
+            "properties": {
               "bundleName": {
                 "description": "Indicates the bundle name of the dependency shared library. It uniquely identifies the dependency shared library. The value is a string with 7 to 128 bytes of a reverse domain name, for example, com.huawei.himusic. It is recommended that the first label of this attribute is the top-level domain com, the second label is the vendor or individual name, and the third label is the dependency shared library name. This label is a string type and cannot be defaulted.",
                 "type": "string",

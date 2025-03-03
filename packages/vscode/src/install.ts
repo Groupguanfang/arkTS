@@ -1,7 +1,7 @@
-import { FileSystem } from "./file-system";
-import * as vscode from 'vscode';
-import fs from 'node:fs';
-import path from "node:path";
+import fs from 'node:fs'
+import path from 'node:path'
+import * as vscode from 'vscode'
+import { FileSystem } from './file-system'
 
 export class OhpmInstaller extends FileSystem {
   private async install(ohpmPath: string) {

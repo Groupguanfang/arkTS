@@ -1,65 +1,65 @@
+import { nanoid } from 'nanoid'
 import { replaceRange, toString } from 'ts-macro'
-import { nanoid } from 'nanoid';
 
 function extractStructs(input: string) {
   /**
    * From `typescript.tmLanguage.json` - `ClassDeclaration` - `begin`
    * @see https://github.com/microsoft/vscode/blob/e8c27bc34442a660e50e97331ef7ace6bc9fa9be/extensions/typescript-basics/syntaxes/TypeScript.tmLanguage.json#L1701
    */
-  const structRegex = /(?<![_$[:alnum:]])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b\s+(\w+)\s*{/g;
-  const matches = [];
+  // eslint-disable-next-line regexp/no-unused-capturing-group, regexp/no-useless-assertions
+  const structRegex = /(?<![_$[:alnum]\])(?:(?<=\.{3})|(?<!\.))(?:(\bexport)\s+)?(?:(\bdeclare)\s+)?\b(?:(abstract)\s+)?\b(struct)\b\s+(\w+)\s*\{/g
+  const matches = []
 
-  let match;
+  let match
   while ((match = structRegex.exec(input)) !== null) {
-      const start = match.index;
-      const structKeywordStart = match.index + match[0].indexOf('struct');
-      const structKeywordEnd = structKeywordStart + 'struct'.length;
-      
-      const structNameStart = match.index + match[0].indexOf(match[5]);
-      const structNameEnd = structNameStart + match[5].length;
+    const start = match.index
+    const structKeywordStart = match.index + match[0].indexOf('struct')
+    const structKeywordEnd = structKeywordStart + 'struct'.length
 
-      let braceCount = 1;
-      let i = structRegex.lastIndex;
-      const structBodyStart = i - 1; // Adjust to include the '{'
+    const structNameStart = match.index + match[0].indexOf(match[5])
+    const structNameEnd = structNameStart + match[5].length
 
-      while (braceCount > 0 && i < input.length) {
-          if (input[i] === '{') braceCount++;
-          if (input[i] === '}') braceCount--;
-          i++;
-      }
+    let braceCount = 1
+    let i = structRegex.lastIndex
+    const structBodyStart = i - 1 // Adjust to include the '{'
 
-      const structBodyEnd = i; // The position after '}'
-      const end = i;
-      const text = input.slice(start, end);
-      
-      // Determine if the struct is exported
-      const isExport = !!match[1];
+    while (braceCount > 0 && i < input.length) {
+      if (input[i] === '{') braceCount++
+      if (input[i] === '}') braceCount--
+      i++
+    }
 
-      matches.push({ start, end, text, structKeywordStart, structKeywordEnd, structNameStart, structNameEnd, structBodyStart, structBodyEnd, isExport });
+    const structBodyEnd = i // The position after '}'
+    const end = i
+    const text = input.slice(start, end)
+
+    // Determine if the struct is exported
+    const isExport = !!match[1]
+
+    matches.push({ start, end, text, structKeywordStart, structKeywordEnd, structNameStart, structNameEnd, structBodyStart, structBodyEnd, isExport })
   }
 
-  return matches;
+  return matches
 }
 
 function findClosestScopeEnd(leftBraceStartingPoint: number, sourceFile: import('typescript').SourceFile, ts: typeof import('typescript')): number {
-    // 遍历 AST 节点
-    let result: number | null = null;
-    ts.forEachChild(sourceFile, function visit(node) {
-        if (node.kind === ts.SyntaxKind.Block) {
-            // 如果节点是块级作用域（即大括号包裹的区域）
-            const { pos, end } = node;
-            
-            // 如果 leftBraceStartingPoint 位于这个块的范围内
-            if (pos <= leftBraceStartingPoint && leftBraceStartingPoint < end) {
-                result = end - 1;  // 返回匹配的右大括号位置
-            }
-        }
-        ts.forEachChild(node, visit);  // 递归遍历 AST 的子节点
-    });
+  // 遍历 AST 节点
+  let result: number | null = null
+  ts.forEachChild(sourceFile, function visit(node) {
+    if (node.kind === ts.SyntaxKind.Block) {
+      // 如果节点是块级作用域（即大括号包裹的区域）
+      const { pos, end } = node
 
-    return result ?? -1; // 如果没有找到匹配的右大括号，返回 -1
+      // 如果 leftBraceStartingPoint 位于这个块的范围内
+      if (pos <= leftBraceStartingPoint && leftBraceStartingPoint < end) {
+        result = end - 1 // 返回匹配的右大括号位置
+      }
+    }
+    ts.forEachChild(node, visit) // 递归遍历 AST 的子节点
+  })
+
+  return result ?? -1 // 如果没有找到匹配的右大括号，返回 -1
 }
-
 
 function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): [string, number] {
   for (let i = startIndex; i < fullText.length; i++) {
@@ -81,10 +81,10 @@ function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-mac
 
 function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript')) {
   const ast = ts.createSourceFile(`index.ts`, fullText, 99 satisfies typeof ts.ScriptTarget.Latest)
-  ts.forEachChild(ast, (node) => walk(node, []))
+  ts.forEachChild(ast, node => walk(node, []))
 
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
-    ts.forEachChild(node, (child) => walk(child, [...parents, node]))
+    ts.forEachChild(node, child => walk(child, [...parents, node]))
 
     if (ts.isCallExpression(node)) {
       transformCallExpression(node)
@@ -114,7 +114,7 @@ function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeo
   }
 }
 
-export const etsPlugin = ({ ts }: { ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions }): import('ts-macro').TsmLanguagePlugin => {
+export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions }): import('ts-macro').TsmLanguagePlugin {
   return {
     name: 'ets-plugin',
     enforce: 'pre' as const,

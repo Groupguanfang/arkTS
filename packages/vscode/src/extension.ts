@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
-import { ETSLanguageServer } from './ets-language-server';
-import { CodeLinterExecutor } from './code-linter';
-import { OhpmInstaller } from './install';
-import { HvigorwInstaller } from './hvigorw-installer';
+import type * as vscode from 'vscode'
+import { CodeLinterExecutor } from './code-linter'
+import { ETSLanguageServer } from './ets-language-server'
+import { HvigorwInstaller } from './hvigorw-installer'
+import { OhpmInstaller } from './install'
 
-let languageServer: ETSLanguageServer;
+let languageServer: ETSLanguageServer
 
 export async function activate(context: vscode.ExtensionContext) {
   // Initialize the volar language server
@@ -21,5 +21,5 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate(): Thenable<any> | undefined {
-	return languageServer?.stop();
+  return languageServer?.stop()
 }

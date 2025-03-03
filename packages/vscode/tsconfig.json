@@ -1,15 +1,15 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"outDir": "out",
-		"rootDir": "src",
-	},
-	"include": [
-		"src",
-	],
-	"references": [
-		{
-			"path": "../language-server/tsconfig.json"
-		}
-	]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "out"
+  },
+  "references": [
+    {
+      "path": "../language-server/tsconfig.json"
+    }
+  ],
+  "include": [
+    "src"
+  ]
 }

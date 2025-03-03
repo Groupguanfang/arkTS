@@ -1,32 +1,32 @@
 {
-    "name": "ArkTS",
-    "scopeName": "source.ets",
-    "patterns": [
-        {
-            "begin": "(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(?:(abstract)\\s+)?\\b(struct)\\b(?=\\s+|/[/*])",
-            "beginCaptures": {
-                "1": {
-					"name": "keyword.control.export.ts"
-				},
-				"2": {
-					"name": "storage.modifier.ts"
-				},
-				"3": {
-					"name": "storage.modifier.ts"
-				},
-				"4": {
-					"name": "storage.type.class.ts"
-				}
-            },
-            "end": "(?<=\\})",
-            "name": "meta.struct.ets",
-            "patterns": [
-				{
-					"include": "source.ts#class-declaration-or-expression-patterns"
-				}
-			]
+  "name": "ArkTS",
+  "scopeName": "source.ets",
+  "patterns": [
+    {
+      "begin": "(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))(?:(\\bexport)\\s+)?(?:(\\bdeclare)\\s+)?\\b(?:(abstract)\\s+)?\\b(struct)\\b(?=\\s+|/[/*])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.export.ts"
         },
-        { "include": "source.ts" }
-    ],
-    "fileTypes": ["ets"]
-} 
+        "2": {
+          "name": "storage.modifier.ts"
+        },
+        "3": {
+          "name": "storage.modifier.ts"
+        },
+        "4": {
+          "name": "storage.type.class.ts"
+        }
+      },
+      "end": "(?<=\\})",
+      "name": "meta.struct.ets",
+      "patterns": [
+        {
+          "include": "source.ts#class-declaration-or-expression-patterns"
+        }
+      ]
+    },
+    { "include": "source.ts" }
+  ],
+  "fileTypes": ["ets"]
+}

@@ -1,6 +1,6 @@
+import fs from 'node:fs'
 import { mergeApi } from './merge-api'
 import { mergeComponent } from './merge-component'
-import fs from 'node:fs'
 
 async function main() {
   mergeComponent()
@@ -66,8 +66,8 @@ declare function $r(value: keyof DetectedResource | (string & {}), ...params: an
     extends: './tsconfig.base.json',
     include: ['./kits/**/*'],
     compilerOptions: {
-      allowArbitraryExtensions: true
-    }
+      allowArbitraryExtensions: true,
+    },
   }, null, 2))
 }
 

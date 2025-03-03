@@ -1,18 +1,15 @@
-import { LanguagePlugin } from "@volar/language-core";
-import { URI } from "vscode-uri";
-import { EtsVirtualCode } from "./ets-virtual-code";
-import { etsPlugin } from "./new";
-import { TsmLanguagePlugin } from "ts-macro";
+import type { LanguagePlugin } from '@volar/language-core'
+import type { TsmLanguagePlugin } from 'ts-macro'
+import type { URI } from 'vscode-uri'
+import { EtsVirtualCode } from './ets-virtual-code'
+import { etsPlugin } from './new'
 
-export const getLanguagePlugins = (
-  ts: typeof import('typescript'),
-  compilerOptions: import('typescript').CompilerOptions,
-): LanguagePlugin<string | URI>[] => {
+export function getLanguagePlugins(ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions): LanguagePlugin<string | URI>[] {
   return [
     {
       typescript: {
         extraFileExtensions: [
-          { extension: 'ets', isMixedContent: false, scriptKind: ts.ScriptKind.TS }
+          { extension: 'ets', isMixedContent: false, scriptKind: ts.ScriptKind.TS },
         ],
         resolveHiddenExtensions: true,
         getServiceScript(root) {
@@ -24,8 +21,8 @@ export const getLanguagePlugins = (
         },
       },
       getLanguageId(uri) {
-        return typeof uri === 'string' 
-          ? uri.endsWith('.ets') 
+        return typeof uri === 'string'
+          ? uri.endsWith('.ets')
             ? 'ets'
             : undefined
           : uri.path.endsWith('.ets')
@@ -44,7 +41,7 @@ export const getLanguagePlugins = (
           plugins: resolvePlugins([etsPlugin({ ts, compilerOptions })]),
         })
       },
-    }
+    },
   ]
 }
 

@@ -1,134 +1,134 @@
 {
-	"private": true,
-	"name": "vscode-naily-ets",
-	"version": "0.1.4",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Groupguanfang/arkTS",
-		"directory": "packages/vscode"
-	},
-	"bugs": {
-		"url": "https://github.com/Groupguanfang/arkTS/issues",
-		"email": "zero@naily.cc"
-	},
-	"categories": [
-		"Programming Languages"
-	],
-	"keywords": [
-		"ArkTS",
-		"ets",
-		"huawei"
-	],
-	"engines": {
+  "publisher": "NailyZero",
+  "name": "vscode-naily-ets",
+  "displayName": "Naily's ArkTS Support",
+  "version": "0.1.4",
+  "private": true,
+  "description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
+  "author": "Naily Zero <zero@naily.cc>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Groupguanfang/arkTS",
+    "directory": "packages/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/Groupguanfang/arkTS/issues",
+    "email": "zero@naily.cc"
+  },
+  "keywords": [
+    "ArkTS",
+    "ets",
+    "huawei"
+  ],
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/client.js",
+  "icon": "icon.png",
+  "engines": {
     "vscode": "^1.87.0"
   },
-	"displayName": "Naily's ArkTS Support",
-	"description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
-	"author": "Naily Zero <zero@naily.cc>",
-	"publisher": "NailyZero",
-	"main": "./dist/client.js",
-	"icon": "icon.png",
-	"contributes": {
-		"configuration": {
-			"title": "Naily's ArkTS Support",
-			"properties": {
-				"ets.verification.enabled": {
-					"type": "boolean",
-					"description": "是否启用TypeScript验证。更改此选项需要重启您的IDE,默认启用。如果关闭,将丧失TypeScript的类型校验以及红线提示。",
-					"default": true
-				},
-				"ets.codelinterBinPath": {
-					"type": "string",
-					"description": "Code Linter的二进制文件路径。",
-					"default": ""
-				},
-				"ets.ohpmPath": {
-					"type": "string",
-					"description": "ohpm的路径。",
-					"default": ""
-				},
-				"ets.ohpmAutoInstall": {
-					"type": "boolean",
-					"description": "打开一个新项目时，是否自动安装依赖。",
-					"default": true
-				},
-				"ets.hvigorwPath": {
-					"type": "string",
-					"description": "hvigorw编译器的路径。",
-					"default": ""
-				},
-				"ets.hvigorwAutoSync": {
-					"type": "boolean",
-					"description": "打开一个新项目时，是否自动同步hvigorw编译器信息。",
-					"default": true
-				}
-			}
-		},
-		"jsonValidation": [
-			{
-				"fileMatch": "module.json5",
-				"url": "./schemas/module.schema.json"
-			},
-			{
-				"fileMatch": "oh-package.json5",
-				"url": "./schemas/oh-package.schema.json"
-			},
-			{
-				"fileMatch": "build-profile.json5",
-				"url": "./schemas/build-profile.schema.json"
-			},
-			{
-				"fileMatch": "main_pages.json",
-				"url": "./schemas/main_pages.schema.json"
-			},
-			{
-				"fileMatch": ["**/resources/**/element/*.json"],
-				"url": "./schemas/element.schema.json"
-			},
-			{
-				"fileMatch": "code-linter.json5",
-				"url": "./schemas/code-linter.schema.json"
-			}
-		],
-		"languages": [
-			{
-				"id": "ets",
-				"extensions": [
-					".ets"
-				],
-				"aliases": ["ArkTS", "ets"],
-				"configuration": "./language-configuration.json",
-				"bases": ["typescript"]
-			}
-		],
-		"grammars": [
-			{
-				"language": "ets",
-				"scopeName": "source.ets",
-				"path": "./syntaxes/ets.tmLanguage.json"
-			}
-		],
-		"commands": [
-			{
-				"command": "ets.restartServer",
-				"title": "Restart ETS Language Server",
-				"category": "ETS"
-			}
-		]
-	},
-	"activationEvents": [],
-	"scripts": {
-		"build": "node scripts/build -- --minify",
-		"watch": "npm run build -- --watch",
-		"pack": "npm run build && vsce package",
-		"release": "npm run build && vsce publish"
-	},
-	"devDependencies": {
-		"@arkts/language-server": "workspace:*",
-		"@types/vscode": "^1.82.0",
-		"@volar/language-server": "~2.4.0",
-		"@volar/vscode": "~2.4.0",
-		"esbuild": "latest",
-		"vsce": "latest"
-	}
+  "activationEvents": [],
+  "contributes": {
+    "configuration": {
+      "title": "Naily's ArkTS Support",
+      "properties": {
+        "ets.verification.enabled": {
+          "type": "boolean",
+          "description": "是否启用TypeScript验证。更改此选项需要重启您的IDE,默认启用。如果关闭,将丧失TypeScript的类型校验以及红线提示。",
+          "default": true
+        },
+        "ets.codelinterBinPath": {
+          "type": "string",
+          "description": "Code Linter的二进制文件路径。",
+          "default": ""
+        },
+        "ets.ohpmPath": {
+          "type": "string",
+          "description": "ohpm的路径。",
+          "default": ""
+        },
+        "ets.ohpmAutoInstall": {
+          "type": "boolean",
+          "description": "打开一个新项目时，是否自动安装依赖。",
+          "default": true
+        },
+        "ets.hvigorwPath": {
+          "type": "string",
+          "description": "hvigorw编译器的路径。",
+          "default": ""
+        },
+        "ets.hvigorwAutoSync": {
+          "type": "boolean",
+          "description": "打开一个新项目时，是否自动同步hvigorw编译器信息。",
+          "default": true
+        }
+      }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "module.json5",
+        "url": "./schemas/module.schema.json"
+      },
+      {
+        "fileMatch": "oh-package.json5",
+        "url": "./schemas/oh-package.schema.json"
+      },
+      {
+        "fileMatch": "build-profile.json5",
+        "url": "./schemas/build-profile.schema.json"
+      },
+      {
+        "fileMatch": "main_pages.json",
+        "url": "./schemas/main_pages.schema.json"
+      },
+      {
+        "fileMatch": ["**/resources/**/element/*.json"],
+        "url": "./schemas/element.schema.json"
+      },
+      {
+        "fileMatch": "code-linter.json5",
+        "url": "./schemas/code-linter.schema.json"
+      }
+    ],
+    "languages": [
+      {
+        "id": "ets",
+        "extensions": [
+          ".ets"
+        ],
+        "aliases": ["ArkTS", "ets"],
+        "configuration": "./language-configuration.json",
+        "bases": ["typescript"]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ets",
+        "scopeName": "source.ets",
+        "path": "./syntaxes/ets.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "ets.restartServer",
+        "title": "Restart ETS Language Server",
+        "category": "ETS"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node scripts/build -- --minify",
+    "watch": "npm run build -- --watch",
+    "pack": "npm run build && vsce package",
+    "release": "npm run build && vsce publish"
+  },
+  "devDependencies": {
+    "@arkts/language-server": "workspace:*",
+    "@types/vscode": "^1.82.0",
+    "@volar/language-server": "~2.4.0",
+    "@volar/vscode": "~2.4.0",
+    "esbuild": "latest",
+    "vsce": "latest"
+  }
 }

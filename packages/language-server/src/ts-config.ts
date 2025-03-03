@@ -1,7 +1,7 @@
-import path from 'node:path'
+import type { InitializeParams, loadTsdkByPath } from '@volar/language-server/node'
 import fs from 'node:fs'
+import path from 'node:path'
 import defu from 'defu'
-import { InitializeParams, loadTsdkByPath } from '@volar/language-server/node'
 import { resolveJsonModule } from './resolve-json-module'
 
 interface ResolveExtendsCompilerOptionsOptions {
@@ -17,7 +17,7 @@ interface ResolveExtendsCompilerOptionsOptions {
 
 /**
  * 解析单个tsconfig.json `extends` 配置字段, 如果有多个, 会递归解析并按顺序合并（using {@linkcode defu}）
- * 
+ *
  * @param options - 解析选项
  * @returns 合并后的compilerOptions
  */
@@ -44,7 +44,7 @@ function resolveExtendsCompilerOptions(options: ResolveExtendsCompilerOptionsOpt
       // 使用rootPath为
       const resolvedAliasPath = path.relative(
         options.rootPath,
-        path.resolve(extendsTsConfigDir, extendsCompilerOptions.paths![key]![i])
+        path.resolve(extendsTsConfigDir, extendsCompilerOptions.paths![key]![i]),
       )
       extendsCompilerOptions.paths![key]![i] = resolvedAliasPath
     }
@@ -54,7 +54,7 @@ function resolveExtendsCompilerOptions(options: ResolveExtendsCompilerOptionsOpt
 
 /**
  * 解析tsconfig.json，合并 extends 和项目下的compilerOptions，**包括`paths`**
- * 
+ *
  * @param tsdk - tsdk
  * @param params - 语言服务器初始化参数
  * @returns 解析后的compilerOptions
@@ -81,7 +81,8 @@ export function getCompilerOptions(tsdk: ReturnType<typeof loadTsdkByPath>, para
         projectTsConfigPath,
         tsdk,
       })
-    } else if (Array.isArray(parsedTsConfig.extends)) {
+    }
+    else if (Array.isArray(parsedTsConfig.extends)) {
       for (const extendsTsConfigPath of parsedTsConfig.extends) {
         extendsCompilerOptions = defu(
           resolveExtendsCompilerOptions({
@@ -99,7 +100,8 @@ export function getCompilerOptions(tsdk: ReturnType<typeof loadTsdkByPath>, para
     const projectCompilerOptions = tsdk.typescript.parseJsonConfigFileContent(parsedTsConfig, tsdk.typescript.sys, params.rootPath).options || {}
     // 合并 extends 和项目下的compilerOptions
     return defu(projectCompilerOptions, extendsCompilerOptions)
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error)
     return {}
   }

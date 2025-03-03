@@ -3,7 +3,7 @@ import fs from 'node:fs'
 export function mergeComponent() {
   const components = fs.readdirSync('ets/component').filter(file => file.endsWith('.d.ts'))
 
-  const content = components.map(filename => {
+  const content = components.map((filename) => {
     return `/// <reference types="./component/${filename}" />`
   })
 
@@ -21,4 +21,3 @@ export function mergeComponent() {
     fs.writeFileSync(`dist/component/${component}`, `// @ts-nocheck\n${commonDTSRef}\n${enumsDTSRef}\n${unitsDTSRef}\n${common_ts_ets_apiDTSRef}\n${matrix2dDTSRef}\n${content}`)
   }
 }
-

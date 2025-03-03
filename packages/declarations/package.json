@@ -1,18 +1,10 @@
 {
   "name": "@arkts/declarations",
-  "description": "ArkTS unofficial type definitions.",
   "version": "0.0.13",
-  "main": "dist/index.d.ts",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.d.ts"
-    },
-    "./dist/*": "./dist/*"
-  },
+  "description": "ArkTS unofficial type definitions.",
   "author": "Naily Zero <zero@naily.cc>",
   "license": "MIT",
+  "homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/declarations",
   "repository": {
     "type": "git",
     "url": "https://github.com/Groupguanfang/arkTS",
@@ -22,7 +14,15 @@
     "url": "https://github.com/Groupguanfang/arkTS/issues",
     "email": "zero@naily.cc"
   },
-  "homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/declarations",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.d.ts"
+    },
+    "./dist/*": "./dist/*"
+  },
+  "main": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],

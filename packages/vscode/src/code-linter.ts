@@ -1,22 +1,22 @@
-import { FileSystem } from "./file-system";
-import * as vscode from 'vscode';
-import { Worker} from 'node:worker_threads'
-import path from "node:path";
+import path from 'node:path'
+import { Worker } from 'node:worker_threads'
+import * as vscode from 'vscode'
+import { FileSystem } from './file-system'
 
 export interface CodeLinterResult {
-  filePath: string;
+  filePath: string
   messages: {
-    line: number;
-    column: number;
-    severity: string;
-    message: string;
-    rule: string;
-  }[];
+    line: number
+    column: number
+    severity: string
+    message: string
+    rule: string
+  }[]
 }
 
 export interface CodeLinterWorkerData {
-  codelinterPath: string;
-  workspaceRoot: string;
+  codelinterPath: string
+  workspaceRoot: string
 }
 
 export class CodeLinterExecutor extends FileSystem {
@@ -27,11 +27,11 @@ export class CodeLinterExecutor extends FileSystem {
   private getDiagnosticSeverity(severity: string): vscode.DiagnosticSeverity {
     switch (severity) {
       case 'error':
-        return vscode.DiagnosticSeverity.Error;
+        return vscode.DiagnosticSeverity.Error
       case 'warning':
-        return vscode.DiagnosticSeverity.Warning;
+        return vscode.DiagnosticSeverity.Warning
       default:
-        return vscode.DiagnosticSeverity.Information;
+        return vscode.DiagnosticSeverity.Information
     }
   }
 
@@ -42,16 +42,18 @@ export class CodeLinterExecutor extends FileSystem {
       return
     }
     const statusBarMessage = vscode.window.setStatusBarMessage('Running Code Linter...')
-    
+
     try {
       const result = await this.getJSONOutput(codelinterBinPath)
       this.diagnosticCollection.clear()
       await this.lint(result)
       vscode.window.setStatusBarMessage('Code Linter finished.', 1000)
-    } catch (error) {
+    }
+    catch (error) {
       vscode.window.showErrorMessage(`Failed to run Code Linter. Please check your configuration.`)
       console.error(error)
-    } finally {
+    }
+    finally {
       statusBarMessage.dispose()
     }
   }
@@ -64,7 +66,7 @@ export class CodeLinterExecutor extends FileSystem {
         const severity = this.getDiagnosticSeverity(message.severity)
         const range = new vscode.Range(
           new vscode.Position(message.line - 1, message.column - 1),
-          new vscode.Position(message.line - 1, message.column - 1 + message.message.length)
+          new vscode.Position(message.line - 1, message.column - 1 + message.message.length),
         )
 
         const diagnostic = new vscode.Diagnostic(range, message.message, severity)
@@ -86,7 +88,7 @@ export class CodeLinterExecutor extends FileSystem {
     this._worker.postMessage({ codelinterPath, workspaceRoot } as CodeLinterWorkerData)
     return new Promise<CodeLinterResult[]>((resolve, reject) => {
       this._worker.on('message', (result: CodeLinterResult[]) => resolve(result))
-        .on('error', (error) => reject(error))
+        .on('error', error => reject(error))
         .on('exit', (code) => {
           if (code !== 0) reject(new Error(`Code Linter exited with code ${code}`))
           else resolve([])
@@ -96,7 +98,7 @@ export class CodeLinterExecutor extends FileSystem {
 
   /**
    * Initialize the Code Linter Executor and start the linter when the extension is activated.
-   * 
+   *
    * @param context The extension context
    * @returns The Code Linter Executor
    */
@@ -104,7 +106,7 @@ export class CodeLinterExecutor extends FileSystem {
     const codelinterDiagnosticCollection = vscode.languages.createDiagnosticCollection('codelinter')
     const codelinterExecutor = new CodeLinterExecutor(codelinterDiagnosticCollection)
     context.subscriptions.push(codelinterDiagnosticCollection)
-    
+
     codelinterExecutor.run()
     vscode.workspace.onDidSaveTextDocument(async (document) => {
       if (document.languageId !== 'ets') return

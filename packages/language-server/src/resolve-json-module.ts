@@ -1,4 +1,4 @@
-import { loadTsdkByPath } from "@volar/language-server/node"
+import type { loadTsdkByPath } from '@volar/language-server/node'
 
 export interface ResolvedJsonModuleOptions {
   path: string
@@ -14,7 +14,7 @@ export function resolveJsonModule(options: ResolvedJsonModuleOptions): import('t
       target: options.tsdk.typescript.ScriptTarget.Latest,
       module: options.tsdk.typescript.ModuleKind.ESNext,
       moduleResolution: options.tsdk.typescript.ModuleResolutionKind.Bundler,
-      resolveJsonModule: true
+      resolveJsonModule: true,
     },
     options.tsdk.typescript.sys,
   )

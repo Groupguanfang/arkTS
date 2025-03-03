@@ -25,7 +25,10 @@
           "description": "Alarm severity. Set it to error, warn, suggestion, or off as appropriate.",
           "type": "string",
           "enum": [
-            "off", "suggestion", "warn", "error"
+            "off",
+            "suggestion",
+            "warn",
+            "error"
           ]
         }
       ]

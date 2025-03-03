@@ -1,6 +1,6 @@
 name: 🐛 Report Plugin Bug
 description: Please provide as much information as possible to help us understand the problem and find a solution.
-title: "[Bug]: "
+title: '[Bug]: '
 labels:
   - bug
   - triage

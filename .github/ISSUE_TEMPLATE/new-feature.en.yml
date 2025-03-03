@@ -1,6 +1,6 @@
 name: 🚀 New Feature Suggestion
 description: If you have any features you think are missing, please use this template to suggest them.
-title: "[Feature]: "
+title: '[Feature]: '
 labels:
   - enhancement
   - triage

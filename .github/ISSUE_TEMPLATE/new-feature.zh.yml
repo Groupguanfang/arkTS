@@ -1,6 +1,6 @@
 name: 🚀 新功能建议
 description: 如果有什么功能您觉得缺少，请使用此模版提出。
-title: "[Feature]: "
+title: '[Feature]: '
 labels:
   - enhancement
   - triage
@@ -20,4 +20,3 @@ body:
       options:
         - 是
         - 否
-

@@ -1,63 +1,63 @@
 {
-	"name": "@arkts/language-server",
-	"description": "ArkTS Language Server",
-	"version": "0.0.3",
-	"main": "out/index.js",
-	"author": "Naily Zero <zero@naily.cc>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Groupguanfang/arkTS",
-		"directory": "packages/language-server"
-	},
-	"bugs": {
-		"url": "https://github.com/Groupguanfang/arkTS/issues",
-		"email": "zero@naily.cc"
-	},
-	"homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/language-server",
-	"exports": {
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.mjs",
-			"default": "./out/index.js"
-		},
-		"./dist/*": "./dist/*"
-	},
-	"license": "MIT",
-	"keywords": [
-		"language-server",
-		"language-server-protocol",
-		"harmonyos",
-		"arkts",
-		"ets"
-	],
-	"engines": {
-		"node": ">=16.0.0"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"files": [
-		"out",
-		"src",
-		"bin"
-	],
-	"bin": {
-		"ets-language-server": "./bin/ets-language-server.js"
-	},
-	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.build.json",
-		"prepublishOnly": "tsup --tsconfig ./tsconfig.build.json"
-	},
-	"dependencies": {
-		"@volar/language-core": "~2.4.0",
-		"@volar/language-server": "~2.4.0",
-		"@volar/typescript": "~2.4.0",
-		"volar-service-css": "volar-2.4",
-		"volar-service-emmet": "volar-2.4",
-		"volar-service-html": "volar-2.4",
-		"volar-service-typescript": "volar-2.4",
-		"vscode-html-languageservice": "^5.3.1",
-		"vscode-uri": "^3.0.8",
-		"ts-macro": "^0.1.17"
-	}
+  "name": "@arkts/language-server",
+  "version": "0.0.3",
+  "description": "ArkTS Language Server",
+  "author": "Naily Zero <zero@naily.cc>",
+  "license": "MIT",
+  "homepage": "https://github.com/Groupguanfang/arkTS/tree/main/packages/language-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Groupguanfang/arkTS",
+    "directory": "packages/language-server"
+  },
+  "bugs": {
+    "url": "https://github.com/Groupguanfang/arkTS/issues",
+    "email": "zero@naily.cc"
+  },
+  "keywords": [
+    "language-server",
+    "language-server-protocol",
+    "harmonyos",
+    "arkts",
+    "ets"
+  ],
+  "exports": {
+    ".": {
+      "types": "./out/index.d.ts",
+      "import": "./out/index.mjs",
+      "default": "./out/index.js"
+    },
+    "./dist/*": "./dist/*"
+  },
+  "main": "out/index.js",
+  "bin": {
+    "ets-language-server": "./bin/ets-language-server.js"
+  },
+  "files": [
+    "bin",
+    "out",
+    "src"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup --tsconfig ./tsconfig.build.json",
+    "prepublishOnly": "tsup --tsconfig ./tsconfig.build.json"
+  },
+  "dependencies": {
+    "@volar/language-core": "~2.4.0",
+    "@volar/language-server": "~2.4.0",
+    "@volar/typescript": "~2.4.0",
+    "ts-macro": "^0.1.17",
+    "volar-service-css": "volar-2.4",
+    "volar-service-emmet": "volar-2.4",
+    "volar-service-html": "volar-2.4",
+    "volar-service-typescript": "volar-2.4",
+    "vscode-html-languageservice": "^5.3.1",
+    "vscode-uri": "^3.0.8"
+  }
 }

@@ -1,55 +1,55 @@
-import { createConnection, createServer, createTypeScriptProject, loadTsdkByPath } from '@volar/language-server/node';
-import { create as createTypeScriptServices } from 'volar-service-typescript';
-import { getLanguagePlugins } from './language-plugin';
-import { getCompilerOptions } from './ts-config';
+import { createConnection, createServer, createTypeScriptProject, loadTsdkByPath } from '@volar/language-server/node'
+import { create as createTypeScriptServices } from 'volar-service-typescript'
+import { getLanguagePlugins } from './language-plugin'
+import { getCompilerOptions } from './ts-config'
 
 let connection: ReturnType<typeof createConnection>
 let server: ReturnType<typeof createServer>
 
 function main() {
-	connection = createConnection();
-	server = createServer(connection);
+  connection = createConnection()
+  server = createServer(connection)
 
-	connection.listen();
+  connection.listen()
 
-	connection.onInitialize(params => {
-		const tsdk = loadTsdkByPath(params.initializationOptions.typescript.tsdk, params.locale);
+  connection.onInitialize((params) => {
+    const tsdk = loadTsdkByPath(params.initializationOptions.typescript.tsdk, params.locale)
 
-		return server.initialize(
-			params,
-			createTypeScriptProject(tsdk.typescript, tsdk.diagnosticMessages, () => {
-				const compilerOptions = getCompilerOptions(tsdk, params)
+    return server.initialize(
+      params,
+      createTypeScriptProject(tsdk.typescript, tsdk.diagnosticMessages, () => {
+        const compilerOptions = getCompilerOptions(tsdk, params)
 
-				return {
-					languagePlugins: [
-						...getLanguagePlugins(tsdk.typescript, compilerOptions),
-					],
+        return {
+          languagePlugins: [
+            ...getLanguagePlugins(tsdk.typescript, compilerOptions),
+          ],
 
-					setup(options) {
-						if (!options.project || !options.project.typescript || !options.project.typescript.languageServiceHost) return
-						const originalSettings = options.project.typescript?.languageServiceHost.getCompilationSettings() || {}
-	
-						options.project.typescript.languageServiceHost.getCompilationSettings = () => {
-							return {
-								...originalSettings,
-								...compilerOptions,
-							}
-						}
-					},
-				}
-			}),
-			[
-				...createTypeScriptServices(tsdk.typescript, {
-					disableAutoImportCache: true,
-				}),
-			],
-		)
-	});
+          setup(options) {
+            if (!options.project || !options.project.typescript || !options.project.typescript.languageServiceHost) return
+            const originalSettings = options.project.typescript?.languageServiceHost.getCompilationSettings() || {}
 
-	connection.onInitialized(server.initialized);
-	connection.onShutdown(server.shutdown);
+            options.project.typescript.languageServiceHost.getCompilationSettings = () => {
+              return {
+                ...originalSettings,
+                ...compilerOptions,
+              }
+            }
+          },
+        }
+      }),
+      [
+        ...createTypeScriptServices(tsdk.typescript, {
+          disableAutoImportCache: true,
+        }),
+      ],
+    )
+  })
 
-	return { connection, server }
+  connection.onInitialized(server.initialized)
+  connection.onShutdown(server.shutdown)
+
+  return { connection, server }
 }
 
 main()

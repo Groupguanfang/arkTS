@@ -1,6 +1,6 @@
-import fg from 'fast-glob'
 import fs from 'node:fs'
 import path from 'node:path'
+import fg from 'fast-glob'
 
 function mergeAllApi() {
   const apis = fg.sync('ets/api/**/*.d.ts')
@@ -50,9 +50,9 @@ function generateModuleDeclaration() {
 
   fs.writeFileSync(path.resolve('dist/tsconfig.base.json'), JSON.stringify({
     compilerOptions: {
-      paths: paths,
-      allowArbitraryExtensions: true
-    }
+      paths,
+      allowArbitraryExtensions: true,
+    },
   }, null, 2))
 }
 
