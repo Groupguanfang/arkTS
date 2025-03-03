@@ -2,7 +2,7 @@
   "publisher": "NailyZero",
   "name": "vscode-naily-ets",
   "displayName": "Naily's ArkTS Support",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "private": true,
   "description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
   "author": "Naily Zero <zero@naily.cc>",
@@ -83,7 +83,9 @@
         "url": "./schemas/main_pages.schema.json"
       },
       {
-        "fileMatch": ["**/resources/**/element/*.json"],
+        "fileMatch": [
+          "**/resources/**/element/*.json"
+        ],
         "url": "./schemas/element.schema.json"
       },
       {
@@ -97,9 +99,14 @@
         "extensions": [
           ".ets"
         ],
-        "aliases": ["ArkTS", "ets"],
+        "aliases": [
+          "ArkTS",
+          "ets"
+        ],
         "configuration": "./language-configuration.json",
-        "bases": ["typescript"]
+        "bases": [
+          "typescript"
+        ]
       }
     ],
     "grammars": [
