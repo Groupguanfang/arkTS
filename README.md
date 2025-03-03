@@ -113,11 +113,15 @@ npm install @arkts/declarations
 
 如果觉得这个项目对你有帮助，可以请作者喝杯咖啡 ☕️
 
-<div style="display: flex; gap: 10px;">
+也可以加入QQ群，一起交流学习 (群号: 746153004)
+
+<div style="display: flex; gap: 5px;">
 
 <img src="./screenshots/wechat-pay.JPG" width="200" />
 
 <img src="./screenshots/alipay.JPG" width="200" />
+
+<img src="./screenshots/qq.JPG" width="200" />
 
 </div>
 
