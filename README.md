@@ -1,3 +1,7 @@
+<div align="center">
+
+<img src="./packages/vscode/icon.png" width="100" />
+
 # Naily's ArkTS Support
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/groupguanfang/arkTS?style=flat)&nbsp;
@@ -8,7 +12,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/groupguanfang/arkTS)&nbsp;
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/groupguanfang/arkTS/main?label=Main%20Branch%20Last%20Commit)&nbsp;
 
-基于Volar开发的ArkTS VSCode扩展。🌹为似乎到现在还没有支持VSCode，现有的ArkTS扩展都是非常简陋的，所以决定自己写一个。
+</div>
+
+> 刚建了一个QQ群，欢迎加入一起交流学习 (群号: 746153004)
+
+这是一个基于Volar开发的ArkTS VSCode扩展。🌹为似乎到现在还没有支持VSCode，现有的VSCode市场中的ArkTS扩展大都非常简陋，所以决定自己写一个。
 
 > ⚠️注意：目前该包是基于最新的`API 13`的，所以如果鸿蒙版本低于`API 13`，可能会有一些问题，欢迎PR。
 
