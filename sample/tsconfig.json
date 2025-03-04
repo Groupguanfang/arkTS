@@ -14,7 +14,7 @@
     "strictPropertyInitialization": false,
     "declaration": true,
     "paths": {
-      "@ohos/hypium": ["./oh_modules/@ohos/hypium/index.d.ts"]
+      "*": ["./oh_modules/*"]
     }
   },
   "include": ["./**/*.ets"],
