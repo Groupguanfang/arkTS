@@ -78,6 +78,25 @@ npm install @arkts/declarations
 
 ![截图2](./screenshots/import-tip.png)
 
+## oh_modules 支持 🀄️
+
+issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) 中已经提到了一个解决方案，在你的`tsconfig.json`中添加如下配置：
+
+```json5
+{
+  "compilerOptions": {
+    "paths": {
+      // 这里直接指定oh_modules的路径，然后就可以直接导入oh_modules中的模块了
+      "*": ["./oh_modules/*"]
+    }
+  }
+}
+```
+
+此时，你就可以直接导入`oh_modules`中的模块了:
+
+![oh_modules-import-tip](./screenshots/oh_modules.png)
+
 ## Code Linter 🚧
 
 0.1.0版本开始增加对code linter的支持（你可以理解为ArkTS版的ESLint）。
