@@ -30,10 +30,12 @@
 - 🪐 得益于强大的Volar，0.0.7版本升级之后，已经完美的ArkTS几乎所有语法高亮、补全以及智能提示😋👍
 - 📦 打开项目时支持自动安装`ohpm`依赖以及同步`hvigor`配置
 - 🚧 支持像ESLint那样的行内`codelinter`提示，精准定位问题代码出在哪👍
+- 🀄️ 通过`tsconfig.json`配置即可完美支持`oh_modules`三方模块的导入⏬
+- 🆓 `$r`、`$rawfile` 补全，以及ArkTS代码格式化正在计划支持的路上，欢迎PR👀
 
 ![截图](./screenshots/edit.gif)
 
-## 安装 📦
+## 插件安装 📦
 
 Marketplace安装: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
 
@@ -49,7 +51,7 @@ npm install @arkts/declarations
 
 然后，在你的鸿蒙项目中的根目录下，创建一个`tsconfig.json`文件，或者修改现有的`tsconfig.json`文件，添加以下内容：
 
-```json
+```json5
 {
   "extends": "@arkts/declarations/dist/tsconfig.base.json",
   "compilerOptions": {
@@ -70,7 +72,7 @@ npm install @arkts/declarations
 }
 ```
 
-继承这个配置，然后，`重启你的VSCode`或者`保存一下这个文件`，ArkTS服务器会自动重载配置。
+继承这个配置，然后，`重启你的VSCode`或者`保存一下这个文件`，ArkTS服务器会自动重载配置（右下角会有提示）。
 
 ![截图](./screenshots/navigation-tip.png)
 
@@ -78,7 +80,7 @@ npm install @arkts/declarations
 
 ![截图2](./screenshots/import-tip.png)
 
-## oh_modules 支持 🀄️
+## `oh_modules` 支持 🀄️
 
 issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) 中已经提到了一个解决方案，在你的`tsconfig.json`中添加如下配置：
 
