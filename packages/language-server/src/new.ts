@@ -96,16 +96,6 @@ function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeo
     if (ts.isCallExpression(node)) {
       transformCallExpression(node)
     }
-    else if (ts.isFunctionDeclaration(node)) {
-      transformFunctionDeclaration(node)
-    }
-  }
-
-  function transformFunctionDeclaration(node: import('typescript').FunctionDeclaration) {
-    if (!node.body) return
-    const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, node.body.getStart(ast) + 1)
-    if (nextChar !== '.') return
-    replaceRange(codes, node.body.getStart(ast) + 1, node.body.getStart(ast) + 1, `new CustomComponent()`)
   }
 
   function transformCallExpression(callExpression: import('typescript').CallExpression) {
@@ -128,27 +118,23 @@ interface FirstLevelFunctionDeclarationInfo {
 }
 
 // 提取一层的所有函数声明的开始和结束位置
-function getFirstLevelFunctionDeclarationPositions(ts: typeof import('typescript'), ast: import('typescript').SourceFile): FirstLevelFunctionDeclarationInfo[] {
+function getFirstLevelFunctionDeclarationPositions(node: import('typescript').FunctionDeclaration, ast: import('typescript').SourceFile): FirstLevelFunctionDeclarationInfo[] {
   const infos: FirstLevelFunctionDeclarationInfo[] = []
 
-  ts.forEachChild(ast, (node) => {
-    if (ts.isFunctionDeclaration(node)) {
-      const currentNodeStart = node.getStart(ast)
-      const fnDeclarationText = ast.getFullText(ast).slice(currentNodeStart, node.getEnd())
-      const functionKeywordStart = currentNodeStart + fnDeclarationText.indexOf('function')
+  const currentNodeStart = node.getStart(ast)
+  const fnDeclarationText = ast.getFullText(ast).slice(currentNodeStart, node.getEnd())
+  const functionKeywordStart = currentNodeStart + fnDeclarationText.indexOf('function')
 
-      infos.push({
-        position: {
-          start: currentNodeStart,
-          end: node.getEnd(),
-        },
-        decoratorPosition: {
-          start: currentNodeStart,
-          end: functionKeywordStart,
-        },
-        decoratorText: ast.getFullText(ast).slice(currentNodeStart, functionKeywordStart),
-      })
-    }
+  infos.push({
+    position: {
+      start: currentNodeStart,
+      end: node.getEnd(),
+    },
+    decoratorPosition: {
+      start: currentNodeStart,
+      end: functionKeywordStart,
+    },
+    decoratorText: ast.getFullText(ast).slice(currentNodeStart, functionKeywordStart),
   })
   return infos
 }
@@ -160,7 +146,6 @@ function replaceDecoratorAtSymbol(codes: import('ts-macro').Code[], positions: F
     let match
     while ((match = decoratorRegex.exec(info.decoratorText)) !== null) {
       // 如果匹配到装饰器，则将`@`替换为空格
-      console.log('match', match)
       replaceRange(
         codes,
         info.decoratorPosition.start + match.index,
@@ -177,6 +162,14 @@ function replaceDecoratorAtSymbol(codes: import('ts-macro').Code[], positions: F
   }
 }
 
+function transformFunctionDeclaration(node: import('typescript').FunctionDeclaration, fullText: string, codes: import('ts-macro').Code[], ast: import('typescript').SourceFile, mixedType?: string) {
+  if (!node.body) return
+  const start = node.body.getStart(ast) + 1
+  const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, start)
+  if (nextChar !== '.') return
+  replaceRange(codes, start, start, `((new CustomComponent()) as ${mixedType ? `(CustomComponent & ${mixedType})` : 'CustomComponent'})`)
+}
+
 export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions }): import('ts-macro').TsmLanguagePlugin {
   return {
     name: 'ets-plugin',
@@ -188,17 +181,37 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
       const text = toString(codes)
       // 提取结构体
       const structs = extractStructs(text)
-      // 提取一层的所有函数声明的开始和结束位置
-      const firstLevelFunctionDeclarationPositions = getFirstLevelFunctionDeclarationPositions(ts, ast)
 
-      // 替换装饰器
-      replaceDecoratorAtSymbol(codes, firstLevelFunctionDeclarationPositions)
+      const fullFnDeclarationInfo: FirstLevelFunctionDeclarationInfo[] = []
+      ts.forEachChild(ast, (node) => {
+        if (!ts.isFunctionDeclaration(node)) return
+        // 提取一层的所有函数声明的开始和结束位置
+        const firstLevelFunctionDeclarationPositions = getFirstLevelFunctionDeclarationPositions(node, ast)
+        fullFnDeclarationInfo.push(...firstLevelFunctionDeclarationPositions)
+
+        // 替换函数装饰器：
+        // 遍历每个装饰器，将开头的`@`删掉，并在后方插入一个换行符
+        // 这样简单改一下range，就能完美实现函数装饰器
+        replaceDecoratorAtSymbol(codes, firstLevelFunctionDeclarationPositions)
+        // 处理@Extend装饰器，提取出第一个参数, 并调用transformFunctionDeclaration
+        const extendRegex = /@Extend\(([^)]*)\)/g
+        for (const info of firstLevelFunctionDeclarationPositions) {
+          const matchResult = extendRegex.exec(info.decoratorText)
+          if (matchResult) {
+            const firstArgument = matchResult[1]
+            transformFunctionDeclaration(node, text, codes, ast, `ReturnType<typeof ${firstArgument}>`)
+          }
+          else {
+            transformFunctionDeclaration(node, text, codes, ast)
+          }
+        }
+      })
 
       // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
       // 而限制是，必须保证是在一级函数声明 和 结构体 的范围内，其他地方的不受影响
       addLineBreakAfterCallExpression(text, codes, [
         ...structs,
-        ...firstLevelFunctionDeclarationPositions.map(info => info.position),
+        ...fullFnDeclarationInfo.map(info => info.position),
       ])
 
       // 替换结构体名称
