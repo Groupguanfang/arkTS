@@ -27,3 +27,8 @@ export struct Index {
     }
   }
 }
+
+@Builder
+function testBuilder(): void {
+  Column() {}
+}

@@ -1,6 +1,11 @@
 import { nanoid } from 'nanoid'
 import { replaceRange, toString } from 'ts-macro'
 
+interface Position {
+  start: number
+  end: number
+}
+
 function extractStructs(input: string) {
   /**
    * From `typescript.tmLanguage.json` - `ClassDeclaration` - `begin`
@@ -69,18 +74,20 @@ function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): 
   return ['', startIndex]
 }
 
-function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-macro').Code[]) {
+function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-macro').Code[], positions: Position[]) {
   const matchesParentheses = fullText.matchAll(/\(([^)]*)\)/g)
   for (const match of matchesParentheses) {
     const index = match.index + match[0].length
     const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, index)
     if (nextChar !== '{') continue
-    replaceRange(codes, index, index, '\n')
+    // 如果这个当前位置在结构体中，则添加换行符
+    if (positions.some(s => s.start <= index && s.end >= index)) {
+      replaceRange(codes, index, index, '\n')
+    }
   }
 }
 
-function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript')) {
-  const ast = ts.createSourceFile(`index.ts`, fullText, 99 satisfies typeof ts.ScriptTarget.Latest)
+function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript'), ast: import('typescript').SourceFile) {
   ts.forEachChild(ast, node => walk(node, []))
 
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
@@ -114,32 +121,85 @@ function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeo
   }
 }
 
+interface FirstLevelFunctionDeclarationInfo {
+  position: Position
+  decoratorPosition: Position
+  decoratorText: string
+}
+
+// 提取一层的所有函数声明的开始和结束位置
+function getFirstLevelFunctionDeclarationPositions(ts: typeof import('typescript'), ast: import('typescript').SourceFile): FirstLevelFunctionDeclarationInfo[] {
+  const infos: FirstLevelFunctionDeclarationInfo[] = []
+
+  ts.forEachChild(ast, (node) => {
+    if (ts.isFunctionDeclaration(node)) {
+      const currentNodeStart = node.getStart(ast)
+      const fnDeclarationText = ast.getFullText(ast).slice(currentNodeStart, node.getEnd())
+      const functionKeywordStart = currentNodeStart + fnDeclarationText.indexOf('function')
+
+      infos.push({
+        position: {
+          start: currentNodeStart,
+          end: node.getEnd(),
+        },
+        decoratorPosition: {
+          start: currentNodeStart,
+          end: functionKeywordStart,
+        },
+        decoratorText: ast.getFullText(ast).slice(currentNodeStart, functionKeywordStart),
+      })
+    }
+  })
+  return infos
+}
+
+// 处理装饰器的替换
+function replaceDecoratorAtSymbol(codes: import('ts-macro').Code[], positions: FirstLevelFunctionDeclarationInfo[]) {
+  for (const info of positions) {
+    const decoratorRegex = /@[\w$]+\s*(?:\([^)]*\))?/g
+    let match
+    while ((match = decoratorRegex.exec(info.decoratorText)) !== null) {
+      // 如果匹配到装饰器，则将`@`替换为空格
+      console.log('match', match)
+      replaceRange(
+        codes,
+        info.decoratorPosition.start + match.index,
+        info.decoratorPosition.start + match.index + 1,
+        '',
+      )
+      replaceRange(
+        codes,
+        info.decoratorPosition.start + match.index + match[0].length,
+        info.decoratorPosition.start + match.index + match[0].length,
+        '\n',
+      )
+    }
+  }
+}
+
 export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions }): import('ts-macro').TsmLanguagePlugin {
   return {
     name: 'ets-plugin',
     enforce: 'pre' as const,
-    resolveVirtualCode({ codes }) {
-      // codes.push([
-      //   `\nimport '@arkts/declarations';`,
-      //   `\nimport '@arkts/declarations';`,
-      //   0,
-      //   {
-      //     completion: true,
-      //     format: true,
-      //     navigation: true,
-      //     semantic: true,
-      //     structure: true,
-      //     verification: true
-      //   },
-      // ])
+    resolveVirtualCode({ ast, codes }) {
       // Add a placeholder to the end of the file
       codes.push('\n\n\n/** placeholder end */\n')
       // 获取完整的文本
       const text = toString(codes)
-      // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
-      addLineBreakAfterCallExpression(text, codes)
       // 提取结构体
       const structs = extractStructs(text)
+      // 提取一层的所有函数声明的开始和结束位置
+      const firstLevelFunctionDeclarationPositions = getFirstLevelFunctionDeclarationPositions(ts, ast)
+
+      // 替换装饰器
+      replaceDecoratorAtSymbol(codes, firstLevelFunctionDeclarationPositions)
+
+      // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
+      // 而限制是，必须保证是在一级函数声明 和 结构体 的范围内，其他地方的不受影响
+      addLineBreakAfterCallExpression(text, codes, [
+        ...structs,
+        ...firstLevelFunctionDeclarationPositions.map(info => info.position),
+      ])
 
       // 替换结构体名称
       for (const struct of structs) {
@@ -159,7 +219,7 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
       }
 
       // 转换
-      transform(text, codes, ts)
+      transform(text, codes, ts, ast)
     },
   }
 }
