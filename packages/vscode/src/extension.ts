@@ -2,7 +2,7 @@ import type * as vscode from 'vscode'
 import { CodeLinterExecutor } from './code-linter'
 import { ETSLanguageServer } from './ets-language-server'
 import { HvigorwInstaller } from './hvigorw-installer'
-import { OhpmInstaller } from './install'
+import { OhpmInstaller } from './ohpm-installer'
 
 let languageServer: ETSLanguageServer
 
