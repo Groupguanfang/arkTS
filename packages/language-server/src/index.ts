@@ -39,9 +39,7 @@ function main() {
         }
       }),
       [
-        ...createTypeScriptServices(tsdk.typescript, {
-          disableAutoImportCache: true,
-        }),
+        ...createTypeScriptServices(tsdk.typescript),
       ],
     )
   })
