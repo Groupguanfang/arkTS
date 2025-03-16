@@ -8,8 +8,12 @@ async function main() {
 
   if (!fs.existsSync('dist'))
     fs.mkdirSync('dist')
+
+  fs.copyFileSync('src/extra/global.d.ts', 'dist/global.d.ts')
+
   fs.writeFileSync('dist/index.d.ts', `
 /// <reference types="./component-all.d.ts" />
+/// <reference types="./global.d.ts" />
 declare function ___defineStruct___<T>(struct: T): T & {
   (props?: T extends new (...args: any[]) => infer R ? Omit<Partial<R>, 'build'> : Record<string | number | symbol, any>): T extends new (...args: any[]) => infer R ? R & CustomComponent : CustomComponent
 }
