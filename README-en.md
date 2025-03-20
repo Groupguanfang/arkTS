@@ -43,79 +43,79 @@ Or directly search `ArkTS Support`on VSCode.
 
 ## ArkTS Source Code跳转 🔍
 
-ArkTS源码跳转需要依赖`@arkts/declarations`，所以需要在你的鸿蒙项目中用`npm`安装`@arkts/declarations`。
+ArkTS source code jump requires `@arkts/declarations`, so you have to install `@arkts/declarations` on your HarmonyOS project via `npm`.
 
 ```bash
 npm install @arkts/declarations
 ```
 
-然后，在你的鸿蒙项目中的根目录下，创建一个`tsconfig.json`文件，或者修改现有的`tsconfig.json`文件，添加以下内容：
+Then, create or edit `tsconfig.json` on the root of your HarmonyOS project directory, adding following content:
 
 ```json5
 {
   "extends": "@arkts/declarations/dist/tsconfig.base.json",
   "compilerOptions": {
     "types": ["@arkts/declarations"],
-    "lib": ["ESNext"], // 这样设置之后会排除掉DOM相关的类型，避免和ArkTS的类型冲突
-    "experimentalDecorators": true, // ArkTS采用Stage2装饰器，所以需要开启
+    "lib": ["ESNext"], 
+    "experimentalDecorators": true,
 
-    // 基础的编译器选项和模块选项，建议这样配就行
+    // Basic compiler and module options, it is suggested the config as below
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
 
-    // 建议开启严格模式
+    // It is suggested to turn on the strict mode
     "strict": true,
-    // 建议关闭strictPropertyInitialization，这样就不用老加叹号了
+    // It is suggest to turn strictPropertyInitialization off
     "strictPropertyInitialization": false
   }
 }
 ```
 
-继承这个配置，然后，`重启你的VSCode`或者`保存一下这个文件`，ArkTS服务器会自动重载配置（右下角会有提示）。
+Heritage this configuration and `Restart VSCode` or `Save this file`, ArkTS server will auto-reload the configuration(with notice)。
 
-![截图](./screenshots/navigation-tip.png)
+![Screenshot](./screenshots/navigation-tip.png)
 
 导入模块的时候也有相应提示（前提是你的`tsconfig.json`按照上面的要求配置对了）。导入模块的原理很简单，就是扫了一遍ArkTS官方的API，然后生成了一系列的`compilerOptions.paths` alias，你只管继承就行😋
 
-![截图2](./screenshots/import-tip.png)
+![Screenshot](./screenshots/import-tip.png)
 
-## `oh_modules` 支持 🀄️
+## `oh_modules` Support 🀄️
 
-issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) 中已经提到了一个解决方案，在你的`tsconfig.json`中添加如下配置：
+Issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) has mentioned a solution, add configurations below on your `tsconfig.json`
 
 ```json5
 {
   "compilerOptions": {
     "paths": {
-      // 这里直接指定oh_modules的路径，然后就可以直接导入oh_modules中的模块了
+      // Define the path of oh_modules, then you can import modules from oh_modules directly
       "*": ["./oh_modules/*"]
     }
   }
 }
 ```
 
-此时，你就可以直接导入`oh_modules`中的模块了:
+Now, you'll able to import modules from `oh_modules` directly:
 
 ![oh_modules-import-tip](./screenshots/oh_modules.png)
 
 ## Code Linter 🚧
 
-0.1.0版本开始增加对code linter的支持（你可以理解为ArkTS版的ESLint）。
+From Version 0.1.0, we provided the support of code linter (The so-called ESLint for ArkTS).
 
-启用方法很简单，首先[点击这里](https://developer.huawei.com/consumer/cn/develop/)打开HarmonyOS SDK官网，点击这里的`下载`，然后登录你的华为账号进入下载页面:
+It's easy to enable this feature. Firstly [click here](https://developer.huawei.com/consumer/cn/develop/)to visit HarmonyOS SDK websitr, click `下载`(Download), then log in your Huawei Account to open the download page.
 
 ![HarmonyOS SDK](./screenshots/harmony-sdk.png)
 
-然后，下载你系统对应的`Command Line Tools`:
+Then download `Command Line Tools` for your opration system:
 
 ![Command Line Tools](./screenshots/command-line-tools.png)
 
-下载完成之后，解压到一个固定位置，然后你可以看到是这样一个目录结构，里头有个`bin`文件夹:
+After finish downloading, unzip and find the `bin` folder:
 
 ![command-line-tools-finder-codelinter](./screenshots/command-line-tools-finder-codelinter.png)
 
-这个就是`codelinter`的可执行文件了。复制这个文件的`绝对路径`，然后打开`IDE`的`设置`，找到下面这个配置，然后填入你刚才复制的路径即可:
+This is the executable file of `codelinter`. Copy the `absoulute path` of this file, and turning on `Settings` of `IDE`, find settings below, and enter the absoulute path.
 
 ![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
 
