@@ -103,7 +103,7 @@ Now, you'll able to import modules from `oh_modules` directly:
 
 From Version 0.1.0, we provided the support of code linter (The so-called ESLint for ArkTS).
 
-It's easy to enable this feature. Firstly [click here](https://developer.huawei.com/consumer/cn/develop/)to visit HarmonyOS SDK websitr, click `下载`(Download), then log in your Huawei Account to open the download page.
+It's easy to enable this feature. Firstly [click here](https://developer.huawei.com/consumer/cn/develop/) to visit HarmonyOS SDK websitr, click `下载`(Download), then log in your Huawei Account to open the download page.
 
 ![HarmonyOS SDK](./screenshots/harmony-sdk.png)
 
