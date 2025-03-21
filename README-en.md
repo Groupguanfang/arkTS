@@ -31,7 +31,7 @@ This is a ArkTS VSCode Extension developed basic on Volar🌹Because ArkTS is st
   - `main_pages.json5`
 - 🪐 Thanks to the powerful Volar. After upgrading to version 0.0.7, It is almost perfectly supports all ArkTS highlight, autocomplete and suggestions😋👍
 - 📦 Allow auto-installing `ohpm` dependency and sync `hvigor` configuration.
-- 🚧 Supports in-line`codelinter`提示 like ESLint, to locate issues precisely👍
+- 🚧 Supports in-line`codelinter` suggestions like ESLint, to locate issues precisely👍
 - 🀄️ Supports import `oh_modules` third-party packages via `tsconfig.json` configuration⏬
 - 🆓 `$r` `$rawfile` autocomplete, and ArkTS code formatting is coming next and welcomed to contribute👀
 
