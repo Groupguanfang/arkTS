@@ -14,6 +14,8 @@
 
 </div>
 
+Language: <a href="./README.md">简体中文</a>｜English
+
 > I've created a QQ group chat, it is welcomed to join it and chat with us (Group number: 746153004)
 
 This is a ArkTS VSCode Extension developed basic on Volar🌹Because ArkTS is still unsupport VSCode and most of the existing ArkTS extensions in the VSCode marketplace are very rudimentary, so I decided to write my own.
@@ -21,16 +23,16 @@ This is a ArkTS VSCode Extension developed basic on Volar🌹Because ArkTS is st
 > ⚠️Notice: This package is basic on `API 13`, so there might be some issues if your current HarmonyOS version is below than `API 13`. It is welcomed to contribute to this Repository.
 
 - 🖊️ Completed JSON Schema Support. Supporting JSON Schema on files below:
-  - `build-profile.json5` 模块级别/项目级别配置
-  - `oh-package.json5` 模块级别/项目级别配置
-  - `module.json5` 模块级别/项目级别配置
-  - `code-linter.json5` 模块级别/项目级别配置
-  - `resources/element/`下所有的`color.json`等的kv值配置
+  - `build-profile.json5` Module/Project Configuration
+  - `oh-package.json5` Module/Project Configuration
+  - `module.json5` Module/Project Configuration
+  - `code-linter.json5` Module/Project Configuration
+  - `resources/element/` kv config including `color.json` and others
   - `main_pages.json5`
-- 🪐 Thanks to the powerful Volar. After upgrading to version 0.0.7, It is almost perfectly supports all ArkTS 语法高亮、补全以及智能提示😋👍
+- 🪐 Thanks to the powerful Volar. After upgrading to version 0.0.7, It is almost perfectly supports all ArkTS highlight, autocomplete and suggestions😋👍
 - 📦 Allow auto-installing `ohpm` dependency and sync `hvigor` configuration.
 - 🚧 Supports in-line`codelinter`提示 like ESLint, to locate issues precisely👍
-- 🀄️ 通过`tsconfig.json`配置即可完美支持`oh_modules`三方模块的导入⏬
+- 🀄️ Supports import `oh_modules` third-party packages via `tsconfig.json` configuration⏬
 - 🆓 `$r` `$rawfile` autocomplete, and ArkTS code formatting is coming next and welcomed to contribute👀
 
 ![Screenshot](./screenshots/edit.gif)
@@ -41,7 +43,7 @@ Install it on Marketplace: [https://marketplace.visualstudio.com/items?itemName=
 
 Or directly search `ArkTS Support`on VSCode.
 
-## ArkTS Source Code跳转 🔍
+## ArkTS Source Code Jump 🔍
 
 ArkTS source code jump requires `@arkts/declarations`, so you have to install `@arkts/declarations` on your HarmonyOS project via `npm`.
 
@@ -76,7 +78,7 @@ Heritage this configuration and `Restart VSCode` or `Save this file`, ArkTS serv
 
 ![Screenshot](./screenshots/navigation-tip.png)
 
-导入模块的时候也有相应提示（前提是你的`tsconfig.json`按照上面的要求配置对了）。导入模块的原理很简单，就是扫了一遍ArkTS官方的API，然后生成了一系列的`compilerOptions.paths` alias，你只管继承就行😋
+There are notices when importing modules if you configed `tsconfig.json` correctly. The principal of importing modules is scanning the officual API of ArkTS and generate a series of `compilerOptions.paths`, you just need to heritage it😋
 
 ![Screenshot](./screenshots/import-tip.png)
 
@@ -119,11 +121,11 @@ This is the executable file of `codelinter`. Copy the `absoulute path` of this f
 
 ![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
 
-记得填写之后，一定要重启一下你的`IDE`，然后就可以看到效果了，比如：
+Remember to restart your `IDE` and you can see the effect such as: 
 
 ![codelinter-for-each-error](./screenshots/codelinter-for-each-error.png)
 
-这里的报错是提示你，为了性能，ForEach得有`keyGenerator`参数（即第三个参数）；当你填补了第三个参数之后，保存文件，`等待一会儿`（`codelinter`的运行需要时间），然后这个警告就会消失：
+The error showned here to prompt you in order for performance, ForEach requires parameter `KeyGenerator`(the third parameter). After filledthe third parameter, save the file and `wait for a moment` (for `codelinter` to run), then this warnings will disappear: 
 
 ![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
@@ -135,14 +137,14 @@ This is the executable file of `codelinter`. Copy the `absoulute path` of this f
 
 - Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
 - X (Twitter): [@GCZ_Zero](https://x.com/GCZ_Zero)
-- QQ: 1203970284，QQ群: 746153004
+- QQ: 1203970284，QQ Group Chat: 746153004
 - WeChat: gcz-zero
 
 ### Coffee ☕️
 
-如果觉得这个项目对你有帮助，可以请作者喝杯咖啡 ☕️
+If this project helped you, you can buy me a coffee☕️
 
-也可以加入QQ群，一起交流学习 (群号: 746153004)
+You can also join in the QQ group chat (Group number: 746153004)
 
 <div style="display: flex; gap: 5px;">
 
