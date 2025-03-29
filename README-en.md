@@ -16,42 +16,42 @@
 
 Language: <a href="./README.md">简体中文</a>｜English
 
-> I've created a QQ group chat, it is welcomed to join it and chat with us (Group number: 746153004)
+> A QQ group has been created. Feel free to join for learning and discussion (Group ID: 746153004)
 
-This is a ArkTS VSCode Extension developed basic on Volar🌹Because ArkTS is still unsupport VSCode and most of the existing ArkTS extensions in the VSCode marketplace are very rudimentary, so I decided to write my own.
+This is an ArkTS VSCode extension developed based on Volar. 🌹 It appears that there has been no proper support for ArkTS in VSCode until now. Most of the existing ArkTS extensions in the VSCode marketplace are very basic, so I decided to write one myself.
 
-> ⚠️Notice: This package is basic on `API 13`, so there might be some issues if your current HarmonyOS version is below than `API 13`. It is welcomed to contribute to this Repository.
+> ⚠️ Note: This package is currently based on the latest `API 13`. If your HarmonyOS version is lower than `API 13`, there might be some issues. PRs are welcomed.
 
-- 🖊️ Completed JSON Schema Support. Supporting JSON Schema on files below:
-  - `build-profile.json5` Module/Project Configuration
-  - `oh-package.json5` Module/Project Configuration
-  - `module.json5` Module/Project Configuration
-  - `code-linter.json5` Module/Project Configuration
-  - `resources/element/` kv config including `color.json` and others
+- 🖊️ Comprehensive JSON Schema support. Supports the following JSON Schema files:
+  - `build-profile.json5` Module-level/Project-level configuration
+  - `oh-package.json5` Module-level/Project-level configuration
+  - `module.json5` Module-level/Project-level configuration
+  - `code-linter.json5` Module-level/Project-level configuration
+  - All `color.json` files under `resources/element/` for kv value configuration
   - `main_pages.json5`
-- 🪐 Thanks to the powerful Volar. After upgrading to version 0.0.7, It is almost perfectly supports all ArkTS highlight, autocomplete and suggestions😋👍
-- 📦 Allow auto-installing `ohpm` dependency and sync `hvigor` configuration.
-- 🚧 Supports in-line`codelinter` suggestions like ESLint, to locate issues precisely👍
-- 🀄️ Supports import `oh_modules` third-party packages via `tsconfig.json` configuration⏬
-- 🆓 `$r` `$rawfile` autocomplete, and ArkTS code formatting is coming next and welcomed to contribute👀
+- 🪐 Thanks to the powerful Volar, since version 0.0.7, almost all syntax highlighting, autocompletion, and intelligent suggestions for ArkTS have been perfectly supported. 😋👍
+- 📦 Automatically install `ohpm` dependencies and sync `hvigor` configuration when opening a project.
+- 🚧 Supports inline `codelinter` prompts like ESLint, precisely locating problematic code. 👍
+- 🀄️ Perfectly supports the import of third-party modules from `oh_modules` via `tsconfig.json` configuration. ⏬
+- 🆓 `$r`, `$rawfile` completion and ArkTS code formatting are planned for future support. PRs are welcomed. 👀
 
 ![Screenshot](./screenshots/edit.gif)
 
 ## Extension Installation📦
 
-Install it on Marketplace: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
+Marketplace installation: https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets
 
-Or directly search `ArkTS Support`on VSCode.
+Or simply search for `ArkTS Support` in VSCode.
 
-## ArkTS Source Code Jump 🔍
+## ArkTS Source Code Navigation 🔍
 
-ArkTS source code jump requires `@arkts/declarations`, so you have to install `@arkts/declarations` on your HarmonyOS project via `npm`.
+ArkTS source code navigation requires `@arkts/declarations`, so you need to install it via `npm` in your HarmonyOS project.
 
 ```bash
 npm install @arkts/declarations
 ```
 
-Then, create or edit `tsconfig.json` on the root of your HarmonyOS project directory, adding following content:
+Then, create a `tsconfig.json` file in the root directory of your HarmonyOS project, or modify the existing `tsconfig.json` file by adding the following:
 
 ```json5
 {
@@ -74,17 +74,17 @@ Then, create or edit `tsconfig.json` on the root of your HarmonyOS project direc
 }
 ```
 
-Heritage this configuration and `Restart VSCode` or `Save this file`, ArkTS server will auto-reload the configuration(with notice)。
+After inheriting this configuration, `Restart your VSCode` or `Save this file`. The ArkTS server will automatically reload the configuration (there will be a prompt in the bottom right corner).
 
 ![Screenshot](./screenshots/navigation-tip.png)
 
-There are notices when importing modules if you configed `tsconfig.json` correctly. The principal of importing modules is scanning the officual API of ArkTS and generate a series of `compilerOptions.paths`, you just need to heritage it😋
+When importing modules, corresponding prompts will also appear 😋 (provided your `tsconfig.json` is properly configured as described above).
 
 ![Screenshot](./screenshots/import-tip.png)
 
 ## `oh_modules` Support 🀄️
 
-Issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) has mentioned a solution, add configurations below on your `tsconfig.json`
+Issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) mentions a solution. Add the following configuration to your `tsconfig.json`:
 
 ```json5
 {
@@ -97,35 +97,31 @@ Issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) has mentioned a so
 }
 ```
 
-Now, you'll able to import modules from `oh_modules` directly:
+Now you can import modules from `oh_modules` directly:
 
 ![oh_modules-import-tip](./screenshots/oh_modules.png)
 
 ## Code Linter 🚧
 
-From Version 0.1.0, we provided the support of code linter (The so-called ESLint for ArkTS).
+Support for code linter has been added since version 0.1.0 (essentially an ArkTS version of ESLint).
 
-It's easy to enable this feature. Firstly [click here](https://developer.huawei.com/consumer/cn/develop/) to visit HarmonyOS SDK websitr, click `下载 (Download)`, then log in your Huawei Account to open the download page.
+Check the [HarmonyOS SDK official website](https://developer.huawei.com/consumer/cn/develop/) to download the `Command Line Tools`.
 
 ![HarmonyOS SDK](./screenshots/harmony-sdk.png)
 
-Then download `Command Line Tools` for your opration system:
-
 ![Command Line Tools](./screenshots/command-line-tools.png)
 
-After finish downloading, unzip and find the `bin` folder:
+After finish downloading, extract the downloaded file to a fixed location.
 
 ![command-line-tools-finder-codelinter](./screenshots/command-line-tools-finder-codelinter.png)
 
-This is the executable file of `codelinter`. Copy the `absoulute path` of this file, and turning on `Settings` of `IDE`, find settings below, and enter the absoulute path.
+Copy the absolute path of the bin folder and configure it in the IDE settings.
 
 ![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
 
-Remember to restart your `IDE` and you can see the effect such as: 
-
 ![codelinter-for-each-error](./screenshots/codelinter-for-each-error.png)
 
-The error showned here to prompt you in order for performance, ForEach requires parameter `KeyGenerator`(the third parameter). After filledthe third parameter, save the file and `wait for a moment` (for `codelinter` to run), then this warnings will disappear: 
+After fixing the issue, the warning will disappear after a while:
 
 ![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
@@ -142,9 +138,9 @@ The error showned here to prompt you in order for performance, ForEach requires 
 
 ### Coffee ☕️
 
-If this project helped you, you can buy me a coffee☕️
+If this project helps you, consider buying the author a coffee. ☕️
 
-You can also join in the QQ group chat (Group number: 746153004)
+You can also join the QQ group for further discussions (Group ID: 746153004).
 
 <div style="display: flex; gap: 5px;">
 
