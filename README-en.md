@@ -105,23 +105,23 @@ Now you can import modules from `oh_modules` directly:
 
 Support for code linter has been added since version 0.1.0 (essentially an ArkTS version of ESLint).
 
-Check the [HarmonyOS SDK official website](https://developer.huawei.com/consumer/cn/develop/) to download the `Command Line Tools`. Extract the downloaded file to a fixed location.
+Check the [HarmonyOS SDK official website](https://developer.huawei.com/consumer/cn/develop/) to download the `Command Line Tools`.
 
 ![HarmonyOS SDK](./screenshots/harmony-sdk.png)
 
 ![Command Line Tools](./screenshots/command-line-tools.png)
 
-After finish downloading, unzip and find the `bin` folder:
+After finish downloading, extract the downloaded file to a fixed location.
 
 ![command-line-tools-finder-codelinter](./screenshots/command-line-tools-finder-codelinter.png)
 
-Copy the `absolute path` of the executable file and configure it in your IDE settings. Restart your IDE to see the effect.
+Copy the absolute path of the bin folder and configure it in the IDE settings.
 
 ![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
 
 ![codelinter-for-each-error](./screenshots/codelinter-for-each-error.png)
 
-The error showned here to prompt you in order for performance, ForEach requires parameter `KeyGenerator`(the third parameter). After filledthe third parameter, save the file and `wait for a moment` (for `codelinter` to run), then this warnings will disappear: 
+After fixing the issue, the warning will disappear after a while:
 
 ![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
