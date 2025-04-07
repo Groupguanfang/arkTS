@@ -14,8 +14,10 @@ export struct Index {
         ForEach([1, 2, 3], () => {
           Row() {
             Text("item")
-          }
-        }, (_, i) => i.toString())
+          }.onClick((e) => {
+            
+          })
+        })
       }
     }
   }

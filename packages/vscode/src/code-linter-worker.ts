@@ -22,7 +22,19 @@ function getJSONOutput(codelinterPath: string, workspaceRoot: string) {
       console.log(output)
       console.log('======EXECUTE CODE LINTER OUTPUT END======')
 
-      const jsonOutput = output.split('\n')[3]
+      // 找最后一行。如果最后一行是空的，那么找倒数第二行，如果倒数第二行也是空的，那么继续找，直到找到一个非空行
+      function findLastLine(outputs: string[]) {
+        if (outputs.length === 0)
+          return ''
+        const lastLine = outputs[outputs.length - 1]
+        if (lastLine.trim() === '')
+          return findLastLine(outputs.slice(0, -1))
+        return lastLine
+      }
+
+      const outputLines = output.split('\n')
+      const jsonOutput = findLastLine(outputLines)
+      console.log(`json output: ${jsonOutput}`)
 
       try {
         const result = JSON.parse(jsonOutput)
