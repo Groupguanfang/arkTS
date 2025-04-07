@@ -15,6 +15,7 @@ export class OhpmInstaller extends FileSystem {
 
     terminal.sendText(`${ohpmPath} install`)
     terminal.show()
+    this.log(`✅ ohpm install started.`)
   }
 
   public static fromContext(_context: vscode.ExtensionContext): OhpmInstaller {
@@ -23,6 +24,7 @@ export class OhpmInstaller extends FileSystem {
     if (!ohpmPath) return ohpmInstaller
     if (!fs.existsSync(ohpmPath)) {
       vscode.window.showErrorMessage('ohpm path is not found, please check the ets.ohpmPath configuration.')
+      ohpmInstaller.log(`❌ ohpm path is not found, please check the ets.ohpmPath configuration.`)
       return ohpmInstaller
     }
 

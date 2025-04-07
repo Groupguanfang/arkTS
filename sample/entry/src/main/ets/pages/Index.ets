@@ -15,9 +15,9 @@ export struct Index {
           Row() {
             Text("item")
           }.onClick((e) => {
-            
+            console.log('click')
           })
-        })
+        }, (_, i) => i.toString())
       }
     }
   }

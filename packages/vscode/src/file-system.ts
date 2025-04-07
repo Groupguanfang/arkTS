@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
+import { AbstractContext } from './context'
 
-export abstract class FileSystem {
+export abstract class FileSystem extends AbstractContext {
   /**
    * Get workspace root
    *

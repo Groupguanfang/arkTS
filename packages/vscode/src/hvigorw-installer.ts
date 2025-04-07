@@ -13,12 +13,17 @@ export class HvigorwInstaller extends FileSystem {
       name: 'hvigorw --sync',
     })
     terminal.sendText(`${hvigorwPath} --sync`)
+    this.log(`🎆 hvigorw --sync started.`)
   }
 
   public static fromContext(_context: vscode.ExtensionContext): HvigorwInstaller {
     const hvigorwInstaller = new HvigorwInstaller()
     const hvigorwPath = vscode.workspace.getConfiguration('ets').get('hvigorwPath') as string
     if (!hvigorwPath) return hvigorwInstaller
+    if (!fs.existsSync(hvigorwPath)) {
+      hvigorwInstaller.log(`❌ hvigorw path is not found, please check the ets.hvigorwPath configuration.`)
+      return hvigorwInstaller
+    }
     const hvigorwAutoSync = vscode.workspace.getConfiguration('ets').get('hvigorwAutoSync') as boolean
     if (!hvigorwAutoSync) return hvigorwInstaller
     hvigorwInstaller.sync(hvigorwPath)

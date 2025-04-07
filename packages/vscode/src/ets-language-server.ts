@@ -51,6 +51,7 @@ export class ETSLanguageServer extends LanguageServer {
 
   public async start(): Promise<LabsInfo> {
     return new Promise<LabsInfo>(async (res) => {
+      this.log(`🍿 ETS Language Server is starting...`)
       const statusBarMessage = vscode.window.setStatusBarMessage('ArkTS server is starting...')
       const serverModule = vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'server.js')
       const runOptions: ExtendedExecutableOptions = { execArgv: <string[]>[] }
@@ -89,6 +90,7 @@ export class ETSLanguageServer extends LanguageServer {
       labsInfo.addLanguageClient(this._client)
       statusBarMessage.dispose()
       vscode.window.setStatusBarMessage('ETS Language Server is Started!', 1000)
+      this.log(`🔌 ETS Language Server is started.`)
       this._isRestart = true
       const timer = setTimeout(() => {
         res(labsInfo.extensionExports)
@@ -102,6 +104,7 @@ export class ETSLanguageServer extends LanguageServer {
       if (this._client) {
         await this._client.stop()
         vscode.window.setStatusBarMessage('ETS Language Server stopped!', 1000)
+        this.log(`❌ ETS Language Server is stopped.`)
         const timer = setTimeout(() => {
           res()
           clearTimeout(timer)
@@ -111,7 +114,9 @@ export class ETSLanguageServer extends LanguageServer {
   }
 
   public async restart(): Promise<void> {
+    this.log(`🔄 ETS Language Server is trying to restart...`)
     await this.stop()
     await this.start()
+    this.log(`🔄 ETS Language Server is restarted.`)
   }
 }

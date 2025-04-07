@@ -1,3 +1,4 @@
+import type { CodeLinterWorkerMessage } from './code-linter-worker'
 import path from 'node:path'
 import { Worker } from 'node:worker_threads'
 import * as vscode from 'vscode'
@@ -87,7 +88,20 @@ export class CodeLinterExecutor extends FileSystem {
 
     this._worker.postMessage({ codelinterPath, workspaceRoot } as CodeLinterWorkerData)
     return new Promise<CodeLinterResult[]>((resolve, reject) => {
-      this._worker.on('message', (result: CodeLinterResult[]) => resolve(result))
+      this._worker.on('message', (result: CodeLinterWorkerMessage) => {
+        switch (result.type) {
+          case 'result':
+            return resolve(result.result)
+          case 'close':
+            return this.log(`✅ Code Linter finished.`)
+          case 'error':
+            return this.log(`❌ ${result.error.toString()}`)
+          case 'message':
+            return this.log(`✏️ ${result.message.toString()}`)
+          case 'spawn':
+            return this.log('✏️ Code Linter started....')
+        }
+      })
         .on('error', error => reject(error))
         .on('exit', (code) => {
           if (code !== 0) reject(new Error(`Code Linter exited with code ${code}`))
