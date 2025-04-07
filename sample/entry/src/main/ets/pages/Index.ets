@@ -28,7 +28,15 @@ export struct Index {
   }
 }
 
-@Builder
-function testBuilder(): void {
-  Column() {}
+@Entry
+@Component
+export struct Hello {
+  build() {
+    Column() {
+      Text("hello")
+     
+    }
+    
+    .width('100%')
+  }
 }

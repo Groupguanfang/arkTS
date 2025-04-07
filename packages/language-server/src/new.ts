@@ -87,7 +87,7 @@ function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-mac
   }
 }
 
-function transform(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript'), ast: import('typescript').SourceFile) {
+function transformCallExpressionWithBlock(fullText: string, codes: import('ts-macro').Code[], ts: typeof import('typescript'), ast: import('typescript').SourceFile) {
   ts.forEachChild(ast, node => walk(node, []))
 
   function walk(node: import('typescript').Node, parents: import('typescript').Node[]) {
@@ -207,20 +207,13 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         }
       })
 
-      // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
-      // 而限制是，必须保证是在一级函数声明 和 结构体 的范围内，其他地方的不受影响
-      addLineBreakAfterCallExpression(text, codes, [
-        ...structs,
-        ...fullFnDeclarationInfo.map(info => info.position),
-      ])
-
       // 替换结构体名称
       for (const struct of structs) {
         // replaceRange(codes, struct.start, struct.structNameEnd, `const ${toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd)} = ___defineStruct___(class `)
         // replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
 
         // get the raw struct name
-        const structName = toString(codes).slice(struct.structNameStart - 1, struct.structNameEnd).trim()
+        const structName = text.slice(struct.structNameStart - 1, struct.structNameEnd).trim()
         // generate a unique id for the struct
         const structNameId = nanoid(5).replace(/-/g, '_')
         // implements Partial<CustomComponent> to support custom component chain call
@@ -232,7 +225,14 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
       }
 
       // 转换
-      transform(text, codes, ts, ast)
+      transformCallExpressionWithBlock(text, codes, ts, ast)
+
+      // 修复js中`()`后不能有`{`的问题，解决方法很简单：在每个`()`后添加一个换行符
+      // 而限制是，必须保证是在一级函数声明 和 结构体 的范围内，其他地方的不受影响
+      addLineBreakAfterCallExpression(text, codes, [
+        ...structs,
+        ...fullFnDeclarationInfo.map(info => info.position),
+      ])
     },
   }
 }

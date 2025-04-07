@@ -58,7 +58,7 @@ Then, create a `tsconfig.json` file in the root directory of your HarmonyOS proj
   "extends": "@arkts/declarations/dist/tsconfig.base.json",
   "compilerOptions": {
     "types": ["@arkts/declarations"],
-    "lib": ["ESNext"], 
+    "lib": ["ESNext"],
     "experimentalDecorators": true,
 
     // Basic compiler and module options, it is suggested the config as below
