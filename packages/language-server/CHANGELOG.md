@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.7
+
+### Patch Changes
+
+- cdfafd1: fix: multiple struct bug, optimize README
+
 ## 0.0.6
 
 ### Patch Changes
