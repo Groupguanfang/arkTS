@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.9
+
+### Patch Changes
+
+- bef67f4: feat: release (#29)
+
 ## 0.0.8
 
 ### Patch Changes
