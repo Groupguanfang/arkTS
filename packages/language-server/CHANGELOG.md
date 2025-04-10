@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.8
+
+### Patch Changes
+
+- 25d71c5: fix: 修复 Windows 下的换行问题
+
 ## 0.0.7
 
 ### Patch Changes
