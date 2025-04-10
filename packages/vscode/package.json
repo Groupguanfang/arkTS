@@ -97,7 +97,8 @@
       {
         "id": "ets",
         "extensions": [
-          ".ets"
+          ".ets",
+          ".d.ets"
         ],
         "aliases": [
           "ArkTS",

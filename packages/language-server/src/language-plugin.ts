@@ -10,6 +10,7 @@ export function getLanguagePlugins(ts: typeof import('typescript'), compilerOpti
       typescript: {
         extraFileExtensions: [
           { extension: 'ets', isMixedContent: false, scriptKind: ts.ScriptKind.TS },
+          { extension: 'd.ets', isMixedContent: false, scriptKind: ts.ScriptKind.TS },
         ],
         resolveHiddenExtensions: true,
         getServiceScript(root) {
