@@ -68,7 +68,7 @@ function findClosestScopeEnd(leftBraceStartingPoint: number, sourceFile: import(
 
 function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): [string, number] {
   for (let i = startIndex; i < fullText.length; i++) {
-    if (fullText[i] === '\n' || fullText[i] === ' ') continue
+    if (fullText[i] === '\r' || fullText[i] === '\n' || fullText[i] === ' ') continue
     return [fullText[i], i]
   }
   return ['', startIndex]
