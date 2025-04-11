@@ -50,67 +50,56 @@ export class ETSLanguageServer extends LanguageServer {
   private _isRestart: boolean = false
 
   public async start(): Promise<LabsInfo> {
-    return new Promise<LabsInfo>(async (res) => {
-      this.log(`🍿 ETS Language Server is starting...`)
-      const statusBarMessage = vscode.window.setStatusBarMessage('ArkTS server is starting...')
-      const serverModule = vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'server.js')
-      const runOptions: ExtendedExecutableOptions = { execArgv: <string[]>[] }
-      const debugOptions = { execArgv: ['--nolazy', `--inspect=${6009}`] }
-      const serverOptions = this.getServerOptions(serverModule, runOptions, debugOptions)
-      const clientOptions = await this.getClientOptions()
-      if (!this._client) {
-        this._client = new LanguageClient(
-          'ets-language-server',
-          'ETS Language Server',
-          serverOptions,
-          clientOptions,
-        )
-      }
-      await this._client.start()
+    this.log(`🍿 ETS Language Server is starting...`)
+    const statusBarMessage = vscode.window.setStatusBarMessage('ArkTS server is starting...')
+    const serverModule = vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'server.js')
+    const runOptions: ExtendedExecutableOptions = { execArgv: <string[]>[] }
+    const debugOptions = { execArgv: ['--nolazy', `--inspect=${6009}`] }
+    const serverOptions = this.getServerOptions(serverModule, runOptions, debugOptions)
+    const clientOptions = await this.getClientOptions()
+    if (!this._client) {
+      this._client = new LanguageClient(
+        'ets-language-server',
+        'ETS Language Server',
+        serverOptions,
+        clientOptions,
+      )
+    }
+    await this._client.start()
 
-      // support for auto close tag
-      activateAutoInsertion('ets', this._client)
+    // support for auto close tag
+    activateAutoInsertion('ets', this._client)
 
-      // Add tsconfig.json files to watcher
-      const tsConfigPaths = super.getTsConfigPaths()
-      console.log('tsConfigPaths: ', tsConfigPaths)
-      this.watcher.add(tsConfigPaths)
-      this.watcher.on('all', () => this.restart())
+    // Add tsconfig.json files to watcher
+    const tsConfigPaths = super.getTsConfigPaths()
+    console.log('tsConfigPaths: ', tsConfigPaths)
+    this.watcher.add(tsConfigPaths)
+    this.watcher.on('all', () => this.restart())
 
-      // Add command
-      if (!this._isRestart) {
-        this.context.subscriptions.push(
-          vscode.commands.registerCommand('ets.restartServer', () => this.restart()),
-        )
-      }
+    // Add command
+    if (!this._isRestart) {
+      this.context.subscriptions.push(
+        vscode.commands.registerCommand('ets.restartServer', () => this.restart()),
+      )
+    }
 
-      // support for https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs
-      // ref: https://twitter.com/johnsoncodehk/status/1656126976774791168
-      const labsInfo = createLabsInfo(serverProtocol)
-      labsInfo.addLanguageClient(this._client)
-      statusBarMessage.dispose()
-      vscode.window.setStatusBarMessage('ETS Language Server is Started!', 1000)
-      this.log(`🔌 ETS Language Server is started.`)
-      this._isRestart = true
-      const timer = setTimeout(() => {
-        res(labsInfo.extensionExports)
-        clearTimeout(timer)
-      }, 1000)
-    })
+    // support for https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs
+    // ref: https://twitter.com/johnsoncodehk/status/1656126976774791168
+    const labsInfo = createLabsInfo(serverProtocol)
+    labsInfo.addLanguageClient(this._client)
+    statusBarMessage.dispose()
+    vscode.window.setStatusBarMessage('ETS Language Server is Started!', 1000)
+    this.log(`🔌 ETS Language Server is started.`)
+    this._isRestart = true
+    return labsInfo.extensionExports
   }
 
   public async stop(): Promise<void> {
-    return new Promise(async (res) => {
-      if (this._client) {
-        await this._client.stop()
-        vscode.window.setStatusBarMessage('ETS Language Server stopped!', 1000)
-        this.log(`❌ ETS Language Server is stopped.`)
-        const timer = setTimeout(() => {
-          res()
-          clearTimeout(timer)
-        }, 1000)
-      }
-    })
+    if (this._client) {
+      await this._client.stop()
+      vscode.window.setStatusBarMessage('ETS Language Server stopped!', 1000)
+      this.log(`❌ ETS Language Server is stopped.`)
+    }
   }
 
   public async restart(): Promise<void> {
