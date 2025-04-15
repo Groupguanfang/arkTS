@@ -23,7 +23,7 @@ export struct Index {
   }
 
   @Builder
-  testBuilder(): void {
+  testBuilder() {
     Column() {
       Text("testBuilder") {}
     }

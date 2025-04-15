@@ -217,7 +217,7 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         // generate a unique id for the struct
         const structNameId = nanoid(5).replace(/-/g, '_')
         // implements Partial<CustomComponent> to support custom component chain call
-        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} implements Partial<CustomComponent>`)
+        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} extends CustomComponent`)
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
