@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.10
+
+### Patch Changes
+
+- e2c133c: fix: 修复 struct 组件缺少内置 API 提示 (#31)
+
 ## 0.0.9
 
 ### Patch Changes
