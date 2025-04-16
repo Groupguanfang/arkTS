@@ -14,7 +14,7 @@ export struct Index {
         ForEach([1, 2, 3], () => {
           Row() {
             Text("item")
-          }.onClick((e) => {
+          }.onClick(() => {
             console.log('click')
           })
         }, (_, i) => i.toString())

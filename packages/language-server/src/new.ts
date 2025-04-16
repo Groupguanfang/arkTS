@@ -74,14 +74,41 @@ function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): 
   return ['', startIndex]
 }
 
+/**
+ * 判断当前行是否是注释行
+ *
+ * @param index 当前位置
+ * @param fullText 完整文本
+ * @returns 是否是注释行
+ */
+function isCommentLine(index: number, fullText: string) {
+  // 找到当前行的开始位置
+  let lineStart = index
+  while (lineStart > 0 && fullText[lineStart - 1] !== '\n') {
+    lineStart--
+  }
+
+  // 找到当前行的结束位置
+  let lineEnd = index
+  while (lineEnd < fullText.length && fullText[lineEnd] !== '\n') {
+    lineEnd++
+  }
+
+  // 获取当前行的内容
+  const currentLine = fullText.slice(lineStart, lineEnd).trimStart()
+
+  // 检查是否以//开头
+  return currentLine.startsWith('//')
+}
+
 function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-macro').Code[], positions: Position[]) {
   const matchesParentheses = fullText.matchAll(/\(([^)]*)\)/g)
   for (const match of matchesParentheses) {
     const index = match.index + match[0].length
     const [nextChar] = findNextCharExcludeWrapAndSpace(fullText, index)
     if (nextChar !== '{') continue
-    // 如果这个当前位置在结构体中，则添加换行符
-    if (positions.some(s => s.start <= index && s.end >= index)) {
+    // 如果这个当前位置在结构体中，而且当前行开头不是`//`，则添加换行符
+    if (positions.some(s => s.start <= index && s.end >= index) && !isCommentLine(index, fullText)) {
       replaceRange(codes, index, index, '\n')
     }
   }
