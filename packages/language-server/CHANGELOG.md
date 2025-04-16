@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.12
+
+### Patch Changes
+
+- 97a692c: fix: 代码注释之后爆红 (#32)
+
 ## 0.0.11
 
 ### Patch Changes
