@@ -19,4 +19,5 @@
   },
   "include": ["./**/*.ets"],
   "files": []
+  // 测试JSON5注释 v0.1.16版本后能正常在tsconfig.json中使用注释
 }

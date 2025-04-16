@@ -1,7 +1,7 @@
 import type * as vscode from 'vscode'
 import fs from 'node:fs'
 import path from 'node:path'
-import { parseJsonConfigFileContent, sys } from 'typescript'
+import { parseConfigFileTextToJson, parseJsonConfigFileContent, sys } from 'typescript'
 import { Watcher } from './abstract-watcher'
 
 export abstract class LanguageServer extends Watcher {
@@ -26,7 +26,7 @@ export abstract class LanguageServer extends Watcher {
 
     // 解析 tsconfig.json 文件
     const configFile = fs.readFileSync(fullConfigPath, 'utf-8')
-    const parsedConfig = parseJsonConfigFileContent(JSON.parse(configFile), sys, workspaceRoot)
+    const parsedConfig = parseJsonConfigFileContent(parseConfigFileTextToJson(fullConfigPath, configFile).config || {}, sys, workspaceRoot)
     const referencedConfigPaths: string[] = [fullConfigPath] // 当前配置文件
 
     // 如果 tsconfig 中存在 extends 字段，解析它
