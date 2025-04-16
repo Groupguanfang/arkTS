@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid'
 import { replaceRange, toString } from 'ts-macro'
+import { isCommentLine } from './comment'
 
 interface Position {
   start: number
@@ -72,33 +73,6 @@ function findNextCharExcludeWrapAndSpace(fullText: string, startIndex: number): 
     return [fullText[i], i]
   }
   return ['', startIndex]
-}
-
-/**
- * 判断当前行是否是注释行
- *
- * @param index 当前位置
- * @param fullText 完整文本
- * @returns 是否是注释行
- */
-function isCommentLine(index: number, fullText: string) {
-  // 找到当前行的开始位置
-  let lineStart = index
-  while (lineStart > 0 && fullText[lineStart - 1] !== '\n') {
-    lineStart--
-  }
-
-  // 找到当前行的结束位置
-  let lineEnd = index
-  while (lineEnd < fullText.length && fullText[lineEnd] !== '\n') {
-    lineEnd++
-  }
-
-  // 获取当前行的内容
-  const currentLine = fullText.slice(lineStart, lineEnd).trimStart()
-
-  // 检查是否以//开头
-  return currentLine.startsWith('//')
 }
 
 function addLineBreakAfterCallExpression(fullText: string, codes: import('ts-macro').Code[], positions: Position[]) {
