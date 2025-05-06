@@ -129,6 +129,14 @@ issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) 中已经提到了
 
 ![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
 
+## VSCode 文件图标包 🖼️
+
+推荐使用[Material Icon Theme](marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)，我已经给`Material Icon Theme`提交了PR，目前将`.ets`、`.d.ets`直接用上了`TypeScript官方的文件图标包`，升级到`v5.22.0`之后的版本都可用，这样至少好看一些了 👇
+
+![Material icon theme](./screenshots/icon-theme.png)
+
+PR地址: [https://github.com/material-extensions/vscode-material-icon-theme/pull/2966](https://github.com/material-extensions/vscode-material-icon-theme/pull/2966)
+
 ## Star History 🌟
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
