@@ -5,7 +5,7 @@ export struct Index {
   message = 'hello world'
 
   world() {
-    Hello({ helloProp: '1' })
+    Hello({ helloProp: this.message })
   }
 }
 

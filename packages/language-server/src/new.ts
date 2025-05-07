@@ -171,6 +171,20 @@ function transformFunctionDeclaration(node: import('typescript').FunctionDeclara
   replaceRange(codes, start, start, `((new CustomComponent()) as ${mixedType ? `(CustomComponent & ${mixedType})` : 'CustomComponent'})`)
 }
 
+function find$$thisMatches(str: string): Position[] {
+  const regex = /\$\$this/g // 正则表达式匹配$$this，注意转义$
+  const matches = []
+  let match
+
+  while ((match = regex.exec(str)) !== null) {
+    const start = match.index
+    const end = start + match[0].length - 1 // 计算结束索引
+    matches.push({ start, end })
+  }
+
+  return matches
+}
+
 export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOptions: import('typescript').CompilerOptions }): import('ts-macro').TsmLanguagePlugin {
   return {
     name: 'ets-plugin',
@@ -182,6 +196,8 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
       const text = toString(codes)
       // 提取结构体
       const structs = extractStructs(text)
+      // 查找所有的$$this
+      const $$thisItems = find$$thisMatches(text)
 
       const fullFnDeclarationInfo: FirstLevelFunctionDeclarationInfo[] = []
       ts.forEachChild(ast, (node) => {
@@ -225,6 +241,11 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
         replaceRange(codes, struct.end, struct.end, `interface ${transformConstructorStructName} extends ${transformStructName} { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformConstructorStructName};${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformConstructorStructName} {}`)
+      }
+
+      // 替换所有的`$$this`为`  this` （两个空格子 + this）
+      for (const $$thisItem of $$thisItems) {
+        replaceRange(codes, $$thisItem.start, $$thisItem.start + 2, '  ')
       }
 
       // 转换
