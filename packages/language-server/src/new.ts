@@ -224,7 +224,7 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
-        replaceRange(codes, struct.end, struct.end, `interface ${transformConstructorStructName} extends ${transformStructName} { (): ${transformStructName}; new (): ${transformStructName}; };${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformConstructorStructName};${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformConstructorStructName} {}`)
+        replaceRange(codes, struct.end, struct.end, `interface ${transformConstructorStructName} extends ${transformStructName} { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformConstructorStructName};${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformConstructorStructName} {}`)
       }
 
       // 转换
