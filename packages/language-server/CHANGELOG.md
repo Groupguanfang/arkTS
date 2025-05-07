@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.14
+
+### Patch Changes
+
+- 82087f9: feat: add $this support
+
 ## 0.0.13
 
 ### Patch Changes

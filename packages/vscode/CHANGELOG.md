@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 0.1.19
+
+### Patch Changes
+
+- 82087f9: feat: add $this support
+
 ## 0.1.18
 
 ### Patch Changes

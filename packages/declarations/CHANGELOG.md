@@ -1,5 +1,11 @@
 # @arkts/declarations
 
+## 0.0.17
+
+### Patch Changes
+
+- 82087f9: feat: add $this support
+
 ## 0.0.16
 
 ### Patch Changes
