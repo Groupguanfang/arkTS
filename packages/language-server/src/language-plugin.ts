@@ -30,7 +30,7 @@ export function getLanguagePlugins(ts: typeof import('typescript'), compilerOpti
             ? 'ets'
             : undefined
       },
-      createVirtualCode(uri, _languageId, snapshot) {
+      createVirtualCode(uri, languageId, snapshot) {
         return new EtsVirtualCode({
           filePath: typeof uri === 'string' ? uri : uri.path,
           ast: ts.createSourceFile(
@@ -38,7 +38,7 @@ export function getLanguagePlugins(ts: typeof import('typescript'), compilerOpti
             snapshot.getText(0, snapshot.getLength()).toString(),
             99 satisfies typeof ts.ScriptTarget.Latest,
           ),
-          languageId: 'ets',
+          languageId,
           plugins: resolvePlugins([etsPlugin({ ts, compilerOptions })]),
         })
       },

@@ -175,7 +175,7 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
   return {
     name: 'ets-plugin',
     enforce: 'pre' as const,
-    resolveVirtualCode({ ast, codes }) {
+    resolveVirtualCode({ ast, codes, filePath }) {
       // Add a placeholder to the end of the file
       codes.push('\n\n\n/** placeholder end */\n')
       // 获取完整的文本
@@ -214,15 +214,17 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         // replaceRange(codes, struct.structBodyEnd, struct.structBodyEnd, ')\n')
 
         // get the raw struct name
-        const structName = text.slice(struct.structNameStart - 1, struct.structNameEnd).trim()
+        const originalStructName = text.slice(struct.structNameStart - 1, struct.structNameEnd).trim()
         // generate a unique id for the struct
         const structNameId = nanoid(5).replace(/-/g, '_')
+        const transformStructName = `_${structNameId}_${originalStructName}`
+        const transformConstructorStructName = `_${structNameId}_${originalStructName}Constructor`
         // implements Partial<CustomComponent> to support custom component chain call
-        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `_${structNameId}_${structName} extends CustomComponent`)
+        replaceRange(codes, struct.structNameStart, struct.structNameEnd, `${transformStructName} extends CustomComponent`)
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
-        replaceRange(codes, struct.end, struct.end, `${struct.isExport ? 'export' : ''} const ${structName} = ___defineStruct___(_${structNameId}_${structName});`)
+        replaceRange(codes, struct.end, struct.end, `interface ${transformConstructorStructName} extends ${transformStructName} { (): ${transformStructName}; new (): ${transformStructName}; };${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformConstructorStructName};${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformConstructorStructName} {}`)
       }
 
       // 转换
@@ -234,6 +236,9 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         ...structs,
         ...fullFnDeclarationInfo.map(info => info.position),
       ])
+
+      if (filePath.endsWith('.d.ets'))
+        codes.unshift(`\n// @ts-nocheck\n`)
     },
   }
 }
