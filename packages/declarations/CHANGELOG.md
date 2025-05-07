@@ -1,5 +1,11 @@
 # @arkts/declarations
 
+## 0.0.16
+
+### Patch Changes
+
+- b878c07: 修复 struct reference 与.d.ets 内出现装饰器时报错
+
 ## 0.0.15
 
 ### Patch Changes
