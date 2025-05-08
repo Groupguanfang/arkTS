@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 0.0.16
+
+### Patch Changes
+
+- 1604e2a: fix: `static`上下文不一致 (#42)
+
 ## 0.0.15
 
 ### Patch Changes

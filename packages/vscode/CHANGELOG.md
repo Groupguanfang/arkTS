@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 0.1.21
+
+### Patch Changes
+
+- 1604e2a: fix: `static`上下文不一致 (#42)
+
 ## 0.1.20
 
 ### Patch Changes

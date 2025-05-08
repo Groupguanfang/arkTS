@@ -1,5 +1,11 @@
 # @arkts/declarations
 
+## 0.0.19
+
+### Patch Changes
+
+- 1604e2a: fix: `static`上下文不一致 (#42)
+
 ## 0.0.18
 
 ### Patch Changes
