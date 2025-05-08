@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 0.1.20
+
+### Patch Changes
+
+- ec55308: fix: 上下文\`this\`不能赋值给 struct reference (#41)
+
 ## 0.1.19
 
 ### Patch Changes
