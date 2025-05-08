@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 0.1.22
+
+### Patch Changes
+
+- 29de400: feat: 添加 lincode jsdoc 以方面跳转到组件源码
+
 ## 0.1.21
 
 ### Patch Changes
