@@ -234,13 +234,12 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         // generate a unique id for the struct
         const structNameId = nanoid(5).replace(/-/g, '_')
         const transformStructName = `_${structNameId}_${originalStructName}`
-        const transformConstructorStructName = `_${structNameId}_${originalStructName}Constructor`
         // implements Partial<CustomComponent> to support custom component chain call
         replaceRange(codes, struct.structNameStart, struct.structNameEnd, `${transformStructName} extends CustomComponent`)
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
-        replaceRange(codes, struct.end, struct.end, `interface ${transformConstructorStructName} extends ${transformStructName} { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformConstructorStructName};${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformConstructorStructName} {}`)
+        replaceRange(codes, struct.end, struct.end, `\n${struct.isExport ? 'export' : ''} declare var ${originalStructName}: ${transformStructName} & { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };\n${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformStructName} {}\n`)
       }
 
       // 替换所有的`$$this`为`  this` （两个空格子 + this）
