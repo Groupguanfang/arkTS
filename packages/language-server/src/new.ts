@@ -239,7 +239,7 @@ export function etsPlugin({ ts }: { ts: typeof import('typescript'), compilerOpt
         // Replace the struct keyword to class
         replaceRange(codes, struct.structKeywordStart, struct.structKeywordEnd, `class`)
         // Add to the end of the struct
-        replaceRange(codes, struct.end, struct.end, `\n${struct.isExport ? 'export' : ''} declare var ${originalStructName}: typeof ${transformStructName} & { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };\n${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformStructName} {}\n`)
+        replaceRange(codes, struct.end, struct.end, `\n/** Go to this \`${originalStructName}\` component definition: {@linkcode ${transformStructName}} */\n${struct.isExport ? 'export' : ''} declare var ${originalStructName}: typeof ${transformStructName} & { (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; new (props?: Omit<Partial<${transformStructName}>, keyof CustomComponent>): ${transformStructName}; };\n${struct.isExport ? 'export' : ''} interface ${originalStructName} extends ${transformStructName} {}\n`)
       }
 
       // 替换所有的`$$this`为`  this` （两个空格子 + this）
