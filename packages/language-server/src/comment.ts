@@ -4,8 +4,7 @@
  * @param index 当前位置
  * @returns 标记当前位置的状态：字符串、行注释、块注释或普通代码
  */
-function getPositionContext(text: string, index: number):
-{ inString: boolean, inLineComment: boolean, inBlockComment: boolean } {
+function getPositionContext(text: string, index: number): { inString: boolean, inLineComment: boolean, inBlockComment: boolean } {
   let inSingleQuote = false
   let inDoubleQuote = false
   let inTemplateLiteral = false
