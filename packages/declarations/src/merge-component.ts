@@ -1,14 +1,14 @@
 import fs from 'node:fs'
 
 export function mergeComponent() {
-  const components = fs.readdirSync('ets/component').filter(file => file.endsWith('.d.ts'))
+  const components = fs.readdirSync('ets/component').filter(file => file.endsWith('.d.ts') || file.endsWith('.d.ets'))
 
   const content = components.map((filename) => {
     return `/// <reference types="./component/${filename}" />`
   })
 
-  if (!fs.existsSync('dist'))
-    fs.mkdirSync('dist')
+  if (!fs.existsSync('dist/component'))
+    fs.mkdirSync('dist/component', { recursive: true })
   fs.writeFileSync('dist/component-all.d.ts', content.join('\n'))
 
   for (const component of components) {
