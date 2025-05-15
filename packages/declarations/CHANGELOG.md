@@ -1,5 +1,11 @@
 # @arkts/declarations
 
+## 0.0.21
+
+### Patch Changes
+
+- 6248cb5: fix: @arkts/declarations script
+
 ## 0.0.20
 
 ### Patch Changes
