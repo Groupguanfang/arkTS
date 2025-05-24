@@ -6,6 +6,7 @@
   "private": true,
   "description": "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support.",
   "author": "Naily Zero <zero@naily.cc>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Groupguanfang/arkTS",
