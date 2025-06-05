@@ -101,7 +101,7 @@ function parseEtsConfig(etsPath: string, logger: Logger) {
   }
 }
 
-connection.onInitialize((params: { initializationOptions: { typescript: { tsdk: string }; ohos: { sdkPath: any } }; locale: string | undefined; rootPath: string }) => {
+connection.onInitialize((params) => {
   const logger = new Logger()
   const tsdk = loadTsdkByPath(params.initializationOptions.typescript.tsdk, params.locale)
   
