@@ -53,6 +53,7 @@
     "@volar/language-core": "catalog:prod",
     "@volar/language-server": "catalog:prod",
     "@volar/typescript": "catalog:prod",
+    "json5": "^2.2.3",
     "ohos-typescript": "workspace:*",
     "volar-service-css": "catalog:prod",
     "volar-service-emmet": "catalog:prod",

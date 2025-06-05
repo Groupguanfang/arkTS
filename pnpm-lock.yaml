@@ -293,6 +293,9 @@ importers:
       '@volar/typescript':
         specifier: catalog:prod
         version: 2.4.4
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
       ohos-typescript:
         specifier: workspace:*
         version: link:../../ohos-typescript
