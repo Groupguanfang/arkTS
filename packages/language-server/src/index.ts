@@ -9,6 +9,8 @@ import { Logger } from './log/logger'
 import fs from 'node:fs'
 // 添加 JSON5 导入
 import JSON5 from 'json5'
+// 导入全局类型定义
+import { getGlobalTypesDefinition, getGlobalTypesVirtualPath, isGlobalTypesVirtualFile } from './global'
 
 const connection = createConnection()
 const server = createServer(connection)
@@ -241,6 +243,49 @@ connection.onInitialize((params) => {
 
           logger.getConsola().info(`Compiler options configured successfully`)
           return settings
+        }
+
+        // 覆盖 getScriptSnapshot 方法以支持虚拟全局类型文件
+        const originalGetScriptSnapshot = options.project.typescript?.languageServiceHost.getScriptSnapshot
+        if (options.project.typescript?.languageServiceHost) {
+          options.project.typescript.languageServiceHost.getScriptSnapshot = (fileName: string): ts.IScriptSnapshot | undefined => {
+            // 如果请求的是全局类型虚拟文件，返回全局类型定义
+            if (isGlobalTypesVirtualFile(fileName)) {
+              const globalTypesText = getGlobalTypesDefinition()
+              logger.getConsola().debug(`Providing global types for virtual file: ${fileName}`)
+              return ts.ScriptSnapshot.fromString(globalTypesText)
+            }
+            
+            // 否则使用原始的实现
+            return originalGetScriptSnapshot?.call(options.project.typescript!.languageServiceHost, fileName)
+          }
+
+          // 覆盖 getScriptFileNames 方法以包含虚拟全局类型文件
+          const originalGetScriptFileNames = options.project.typescript.languageServiceHost.getScriptFileNames
+          options.project.typescript.languageServiceHost.getScriptFileNames = (): string[] => {
+            const originalFileNames = originalGetScriptFileNames?.call(options.project.typescript!.languageServiceHost) || []
+            const globalTypesPath = getGlobalTypesVirtualPath()
+            
+            // 确保全局类型文件被包含在文件列表中
+            if (!originalFileNames.includes(globalTypesPath)) {
+              originalFileNames.push(globalTypesPath)
+              logger.getConsola().debug(`Added global types virtual file to script files: ${globalTypesPath}`)
+            }
+            
+            return originalFileNames
+          }
+
+          // 覆盖 fileExists 方法以支持虚拟全局类型文件
+          const originalFileExists = options.project.typescript.languageServiceHost.fileExists
+          options.project.typescript.languageServiceHost.fileExists = (fileName: string): boolean => {
+            // 如果查询的是全局类型虚拟文件，返回 true
+            if (isGlobalTypesVirtualFile(fileName)) {
+              return true
+            }
+            
+            // 否则使用原始的实现
+            return originalFileExists?.call(options.project.typescript!.languageServiceHost, fileName) || false
+          }
         }
         
         // 如果有项目脚本，可以在这里进一步处理
