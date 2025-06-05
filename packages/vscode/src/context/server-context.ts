@@ -6,6 +6,7 @@ import { OhosSdkManager } from '../sdk-manager'
 export abstract class LanguageServerContext extends AbstractWatcher {
   protected sdkManager: OhosSdkManager | undefined
   private restartTimeout: NodeJS.Timeout | undefined
+  private watcherInitialized: boolean = false
 
   /** Start the language server. */
   abstract start(context: vscode.ExtensionContext): Promise<LabsInfo | undefined>
@@ -30,7 +31,22 @@ export abstract class LanguageServerContext extends AbstractWatcher {
       this.getConsola().info(`Listening ${vscode.Uri.joinPath(workspaceFolder.uri, 'local.properties').fsPath}`)
     }
 
-    this.watcher.on('all', (event, path) => this.localPropertiesWatcher(event, path, context))
+    // 使用 ready 事件确保监听器完全初始化后再监听 add 事件
+    this.watcher.on('ready', () => {
+      this.watcherInitialized = true
+      this.getConsola().info('Local properties file watcher is ready')
+    })
+
+    // 监听文件变化事件
+    this.watcher.on('change', (path: string) => this.localPropertiesWatcher('change', path, context))
+    this.watcher.on('unlink', (path: string) => this.localPropertiesWatcher('unlink', path, context))
+    
+    // 监听文件添加事件，但只在初始化完成后响应
+    this.watcher.on('add', (path: string) => {
+      if (this.watcherInitialized && path.endsWith('local.properties')) {
+        this.localPropertiesWatcher('add', path, context)
+      }
+    })
   }
 
   private async localPropertiesWatcher(event: string, path: string, context: vscode.ExtensionContext): Promise<void> {
