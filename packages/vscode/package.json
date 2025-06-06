@@ -31,6 +31,62 @@
   },
   "activationEvents": [],
   "contributes": {
+    "commands": [
+      {
+        "command": "ets.restartServer",
+        "title": "Restart ETS Language Server",
+        "category": "ETS",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ets.installSdk",
+        "title": "Install OpenHarmony SDK",
+        "category": "ETS",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "ets.selectSdkPath",
+        "title": "Select SDK Path",
+        "category": "ETS",
+        "icon": "$(folder)"
+      },
+      {
+        "command": "ets.restartLanguageServer",
+        "title": "Restart Language Server",
+        "category": "ETS",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ets.showSdkStatus",
+        "title": "Show SDK Status",
+        "category": "ETS",
+        "icon": "$(info)"
+      },
+      {
+        "command": "ets.reinitializeSdk",
+        "title": "Reinitialize SDK",
+        "category": "ETS",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "ets.configureSdk",
+        "title": "Configure OpenHarmony SDK",
+        "category": "ETS",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "ets.quickFixSdk",
+        "title": "Quick Fix SDK Issues",
+        "category": "ETS",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "ets.openSdkDocs",
+        "title": "Open SDK Documentation",
+        "category": "ETS",
+        "icon": "$(book)"
+      }
+    ],
     "jsonValidation": [
       {
         "fileMatch": "module.json5",
@@ -71,7 +127,9 @@
           "ets"
         ],
         "configuration": "./syntaxes/language-configuration.json",
-        "bases": ["typescript"]
+        "bases": [
+          "typescript"
+        ]
       }
     ],
     "grammars": [
@@ -79,13 +137,6 @@
         "language": "ets",
         "scopeName": "source.ets",
         "path": "./syntaxes/ets.tmLanguage.json"
-      }
-    ],
-    "commands": [
-      {
-        "command": "ets.restartServer",
-        "title": "Restart ETS Language Server",
-        "category": "ETS"
       }
     ]
   },
@@ -97,7 +148,10 @@
   },
   "devDependencies": {
     "@arkts/language-server": "workspace:*",
+    "@types/node": "18.11.7",
     "@types/properties-parser": "catalog:dev",
+    "@types/tar": "^6.1.13",
+    "@types/unzipper": "^0.10.11",
     "@types/vscode": "catalog:dev",
     "@volar/language-server": "catalog:prod",
     "@volar/vscode": "catalog:prod",
@@ -106,5 +160,9 @@
     "kleur": "catalog:prod",
     "properties-parser": "catalog:prod",
     "vsce": "catalog:scripts"
+  },
+  "dependencies": {
+    "tar": "^7.4.3",
+    "unzipper": "^0.12.3"
   }
 }

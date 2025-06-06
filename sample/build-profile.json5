@@ -1,0 +1,49 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "autosign",
+        "material": {
+          "storePassword": "123456",
+          "certpath": "./autosign/OpenHarmonyProfileRelease.pem",
+          "keyAlias": "OpenHarmony Application Profile Release",
+          "keyPassword": "123456",
+          "profile": "./autosign/autosign.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "./autosign/OpenHarmony.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "autosign",
+        "compileSdkVersion": 11,
+        "compatibleSdkVersion": 11,
+        "runtimeOS": "OpenHarmony"
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
