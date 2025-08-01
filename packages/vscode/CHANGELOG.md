@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 1.0.22
+
+### Patch Changes
+
+- [#79](https://github.com/Groupguanfang/arkTS/pull/79) [`9ba4308`](https://github.com/Groupguanfang/arkTS/commit/9ba43080331108778424e7a5bc94bec3477baa84) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix: compiled webview
+
 ## 1.0.21
 
 ### Patch Changes
