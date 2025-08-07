@@ -15,9 +15,12 @@ catalogs:
     type-fest: ^4.41.0
     vscode-ext-gen: ^1.0.2
   frontend:
+    '@iconify-json/carbon': ^1.2.11
     '@vitejs/plugin-vue': ^5.2.4
     '@vitejs/plugin-vue-jsx': ^4.2.0
+    '@vueuse/components': ^13.6.0
     '@vueuse/core': ^13.3.0
+    naive-ui: ^2.42.0
     pinia: ^3.0.3
     unocss: ^66.2.0
     vite: npm:rolldown-vite@latest

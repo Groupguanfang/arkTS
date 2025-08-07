@@ -17,10 +17,13 @@
     "prepare": "pnpm -F \"{packages/*}\" build"
   },
   "dependencies": {
+    "@iconify-json/carbon": "catalog:frontend",
     "@types/progress-stream": "catalog:dev",
     "@vitejs/plugin-vue": "catalog:frontend",
     "@vitejs/plugin-vue-jsx": "catalog:frontend",
+    "@vueuse/components": "catalog:frontend",
     "@vueuse/core": "catalog:frontend",
+    "naive-ui": "catalog:frontend",
     "pinia": "catalog:frontend",
     "reflect-metadata": "catalog:polyfill",
     "unocss": "catalog:frontend",

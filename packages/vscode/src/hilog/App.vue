@@ -1,33 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useConnectionStore } from './composables/connection'
-
-const connectionStore = useConnectionStore()
-const text = ref('')
-async function sendMessage(): Promise<void> {
-  try {
-    const response = await connectionStore.connection.sendRequest({
-      method: 'hilog',
-      params: [1],
-      id: 1,
-    })
-    text.value = `${text.value}\n${JSON.stringify(response)}`
-  }
-  catch (error) {
-    text.value = `${text.value}\n${error instanceof Error ? `${error.name}: ${error.message}` : String(error)}`
-  }
-}
+import Logview from './components/logview.vue'
 </script>
 
 <template>
-  <div :style="{ width: `100%`, height: `100%`, display: 'flex', flexDirection: 'column' }">
-    <div>
-      <button @click="sendMessage">
-        发送消息！！
-      </button>
-      <span>{{ text }}</span>
-      <span>{{ connectionStore.event }}</span>
-    </div>
+  <div>
+    <Logview />
   </div>
 </template>
 

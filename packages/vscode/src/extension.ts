@@ -13,7 +13,7 @@ import type { IClassWrapper } from 'unioc'
 import * as vscode from 'vscode'
 import type { JSONRPC } from '@arkts/headless-jsonrpc'
 import { createConnection, createVSCodeWebviewAdapter } from '@arkts/headless-jsonrpc'
-import { HiLogController } from './hilog/server/hilog.controller'
+import { HiLogControllerImpl } from './hilog/server/hilog.controller'
 
 class ArkTSExtension extends VSCodeBootstrap<Promise<LabsInfo | undefined>> {
   beforeInitialize(context: ExtensionContext): Promise<void> | void {
@@ -40,25 +40,25 @@ class ArkTSExtension extends VSCodeBootstrap<Promise<LabsInfo | undefined>> {
     })
 
     const globalContainer = this.getGlobalContainer()
-    const webview = useCompiledWebview(vscode.Uri.joinPath(context.extensionUri, 'build', 'hilog.html').fsPath)
-    const closeWatch = watch(() => webview.view.value?.webview, async (webView) => {
-      if (!webView)
-        return
-      const connection = createConnection({
-        adapter: createVSCodeWebviewAdapter(webView, context),
-        functions: await globalContainer.findOne<JSONRPC.Dictionary<(...args: unknown[]) => unknown>>(HiLogController)?.resolve(),
-      })
-      await connection.listen()
-      await this.createValue(connection, 'hilog/connection').resolve()
-      await globalContainer.findOne(HiLogServerService)?.resolve()
-      closeWatch()
-    }, { immediate: true })
-
     const languageServer = globalContainer.findOne(EtsLanguageServer) as IClassWrapper<typeof EtsLanguageServer> | undefined
     const runResult = await languageServer?.getClassExecutor().execute({
       methodName: 'run',
       arguments: [],
     })
+
+    const webview = useCompiledWebview(vscode.Uri.joinPath(context.extensionUri, 'build', 'hilog.html').fsPath)
+    watch(() => webview.view.value?.webview, async (webView) => {
+      if (!webView)
+        return
+      const connection = createConnection({
+        adapter: createVSCodeWebviewAdapter(webView, context),
+        functions: await globalContainer.findOne<JSONRPC.Dictionary<(...args: unknown[]) => unknown>>(HiLogControllerImpl)?.resolve(),
+      })
+      await connection.listen()
+      await this.createValue(connection, 'hilog/connection').resolve()
+      await globalContainer.findOne(HiLogServerService)?.resolve()
+    }, { immediate: true })
+
     if (runResult?.type === 'result')
       return await runResult.value
   }
