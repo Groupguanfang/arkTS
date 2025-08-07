@@ -222,7 +222,7 @@ export class LanguageServerConfigManager {
     return this
   }
 
-  private convertPaths<CompilerOpts extends { paths?: import('ohos-typescript').MapLike<string[]>, [key: string]: any }>(compilerOptions: CompilerOpts): CompilerOpts {
+  private convertPaths<TCompilerOptions extends { paths?: import('ohos-typescript').MapLike<string[]>, [key: string]: any }>(compilerOptions: TCompilerOptions): TCompilerOptions {
     if (typeof compilerOptions.configFilePath === 'string') {
       const configFilePathDir = path.dirname(compilerOptions.configFilePath)
       const baseUrl = this.getBaseUrl()
@@ -239,11 +239,38 @@ export class LanguageServerConfigManager {
     return compilerOptions
   }
 
+  /**
+   * 将最终合并完成的`compilerOptions`检查一下
+   * 看是否缺少必要的配置项，如`ets.syntaxComponents`
+   */
+  private fixTsConfig(finalCompilerOptions: ets.CompilerOptions): ets.CompilerOptions {
+    // 如果没有ets配置则不进行处理
+    if (!finalCompilerOptions.ets || typeof finalCompilerOptions.ets !== 'object')
+      return finalCompilerOptions
+    // 修复ets.syntaxComponents不存在的问题（可能会在`API10`等API版本中出现）
+    // 因为插件同步的是最新版的`ohos-typescript`，而`ets.syntaxComponents`在API10这些老API版本里是不存在的 因此应当补齐一下相关配置
+    if (!finalCompilerOptions.ets.syntaxComponents || typeof finalCompilerOptions.ets.syntaxComponents !== 'object') {
+      finalCompilerOptions.ets.syntaxComponents = {
+        paramsUICallback: [
+          'ForEach',
+          'LazyForEach',
+        ],
+        attrUICallback: [
+          {
+            name: 'Repeat',
+            attributes: ['each', 'template'],
+          },
+        ],
+      }
+    }
+    return finalCompilerOptions
+  }
+
   getTsConfig(originalSettings: ets.CompilerOptions): ets.CompilerOptions {
     // 将 originalSettings.paths 中的路径转换为相对于 baseUrl 的路径，这样用户就仍然能使用tsconfig配置paths
     originalSettings = defu({ paths: this.getRelativeWithConfigFilePaths() }, originalSettings)
     originalSettings = this.convertPaths(originalSettings)
-    return defu(originalSettings, {
+    const finalCompilerOptions = defu(originalSettings, {
       etsLoaderPath: this.getEtsLoaderPath(),
       typeRoots: this.getTypeRoots(),
       baseUrl: this.getBaseUrl(),
@@ -259,5 +286,6 @@ export class LanguageServerConfigManager {
       module: ets.ModuleKind.ESNext,
       target: ets.ScriptTarget.ESNext,
     } satisfies ets.CompilerOptions, this.getEtsLoaderConfigCompilerOptions())
+    return this.fixTsConfig(finalCompilerOptions)
   }
 }
