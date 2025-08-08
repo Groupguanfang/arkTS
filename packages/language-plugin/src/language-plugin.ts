@@ -12,13 +12,13 @@ function isEts(tsOrEts: typeof ets | typeof ts): tsOrEts is typeof ets {
 }
 
 export interface ETSLanguagePluginOptions {
-  sdkPath?: string
+  sdkPaths?: string[]
   tsdk?: string
 }
 
 export function ETSLanguagePlugin(tsOrEts: typeof ts, options?: ETSLanguagePluginOptions): LanguagePlugin<URI | string>
 export function ETSLanguagePlugin(tsOrEts: typeof ets, options?: ETSLanguagePluginOptions): LanguagePlugin<URI | string>
-export function ETSLanguagePlugin(tsOrEts: typeof ets | typeof ts, { sdkPath = '', tsdk = '' }: ETSLanguagePluginOptions = {}): LanguagePlugin<URI | string> {
+export function ETSLanguagePlugin(tsOrEts: typeof ets | typeof ts, { sdkPaths = [], tsdk = '' }: ETSLanguagePluginOptions = {}): LanguagePlugin<URI | string> {
   const isETSServerMode = isEts(tsOrEts)
   const isTSPluginMode = !isETSServerMode
 
@@ -33,7 +33,7 @@ export function ETSLanguagePlugin(tsOrEts: typeof ets | typeof ts, { sdkPath = '
     },
     createVirtualCode(uri, languageId, snapshot) {
       const filePath = path.resolve(typeof uri === 'string' ? uri : uri.fsPath)
-      const isInSdkPath = filePath.startsWith(sdkPath)
+      const isInSdkPath = sdkPaths.some(sdkPath => filePath.startsWith(sdkPath))
       const isInTsdkPath = filePath.startsWith(tsdk)
       const isDTS = filePath.endsWith('.d.ts')
       const isDETS = filePath.endsWith('.d.ets')

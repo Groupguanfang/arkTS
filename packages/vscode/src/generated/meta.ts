@@ -4,7 +4,7 @@
 // Meta info
 export const publisher = "NailyZero"
 export const name = "vscode-naily-ets"
-export const version = "1.0.10"
+export const version = "1.0.22"
 export const displayName = "Naily's ArkTS Support"
 export const description = "自用ArkTS扩展,支持代码跳转,欢迎PR! Naily's ArkTS Support."
 export const extensionId = `${publisher}.${name}`
@@ -38,28 +38,36 @@ export const commands = {
 export type ConfigKey = 
   | "ets.sdkPath"
   | "ets.baseSdkPath"
+  | "ets.hmsPath"
   | "ets.lspDebugMode"
+  | "ets.hdcPath"
   | "ets.sdkList"
 
 export interface ConfigKeyTypeMap {
   "ets.sdkPath": string,
   "ets.baseSdkPath": string,
+  "ets.hmsPath": string,
   "ets.lspDebugMode": boolean,
-  "ets.sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string },
+  "ets.hdcPath": string,
+  "ets.sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },
 }
 
 export interface ConfigShorthandMap {
   etsSdkPath: "ets.sdkPath",
   etsBaseSdkPath: "ets.baseSdkPath",
+  etsHmsPath: "ets.hmsPath",
   etsLspDebugMode: "ets.lspDebugMode",
+  etsHdcPath: "ets.hdcPath",
   etsSdkList: "ets.sdkList",
 }
 
 export interface ConfigShorthandTypeMap {
   etsSdkPath: string,
   etsBaseSdkPath: string,
+  etsHmsPath: string,
   etsLspDebugMode: boolean,
-  etsSdkList: { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string },
+  etsHdcPath: string,
+  etsSdkList: { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },
 }
 
 export interface ConfigItem<T extends keyof ConfigKeyTypeMap> {
@@ -83,7 +91,7 @@ export const configs = {
     default: "",
   } as ConfigItem<"ets.sdkPath">,
   /**
-   * %configuration.ets.baseSdkPath.description%
+   * 
    * @key `ets.baseSdkPath`
    * @default `"${os.homedir}/OpenHarmony"`
    * @type `string`
@@ -92,6 +100,16 @@ export const configs = {
     key: "ets.baseSdkPath",
     default: "${os.homedir}/OpenHarmony",
   } as ConfigItem<"ets.baseSdkPath">,
+  /**
+   * %configuration.ets.hmsPath.description%
+   * @key `ets.hmsPath`
+   * @default `""`
+   * @type `string`
+   */
+  etsHmsPath: {
+    key: "ets.hmsPath",
+    default: "",
+  } as ConfigItem<"ets.hmsPath">,
   /**
    * %configuration.ets.lspDebugMode.description%
    * @key `ets.lspDebugMode`
@@ -102,6 +120,16 @@ export const configs = {
     key: "ets.lspDebugMode",
     default: false,
   } as ConfigItem<"ets.lspDebugMode">,
+  /**
+   * %configuration.ets.hdcPath.description%
+   * @key `ets.hdcPath`
+   * @default `""`
+   * @type `string`
+   */
+  etsHdcPath: {
+    key: "ets.hdcPath",
+    default: "",
+  } as ConfigItem<"ets.hdcPath">,
   /**
    * A list of installed OpenHarmony SDK paths. Keys should follow the pattern API[number] (e.g., API9, API10).
    * @key `ets.sdkList`
@@ -127,8 +155,10 @@ export interface NestedConfigs {
   "ets": {
     "sdkPath": string,
     "baseSdkPath": string,
+    "hmsPath": string,
     "lspDebugMode": boolean,
-    "sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string },
+    "hdcPath": string,
+    "sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },
   },
 }
 

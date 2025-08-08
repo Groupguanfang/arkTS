@@ -84,6 +84,13 @@ export abstract class LanguageServerContext extends AbstractWatcher {
   private _analyzedSdkPath: string | undefined
   private _analyzerSdkAnalyzer: SdkAnalyzer<SdkAnalyzerMetadata> | undefined
 
+  public async getAnalyzedHmsSdkPath(): Promise<vscode.Uri | undefined> {
+    const hmsSdkPath = vscode.workspace.getConfiguration('ets').get('hmsPath')
+    if (!hmsSdkPath || typeof hmsSdkPath !== 'string')
+      return undefined
+    return vscode.Uri.file(hmsSdkPath)
+  }
+
   /** Get the path of the Ohos SDK from `local.properties` file or configuration. */
   public async getAnalyzedSdkPath(force: boolean = false): Promise<string | undefined> {
     if (!force && this._analyzedSdkPath)
@@ -91,17 +98,35 @@ export abstract class LanguageServerContext extends AbstractWatcher {
 
     // Check the local.properties file first
     const localSdkPath = await this.getOhosSdkPathFromLocalProperties()
-    const localSdkAnalyzer = localSdkPath ? new SdkAnalyzer<SdkAnalyzerMetadata>(vscode.Uri.file(localSdkPath), this, this.translator, { type: 'local' }) : undefined
+    const localSdkAnalyzer = localSdkPath ? new SdkAnalyzer<SdkAnalyzerMetadata>(
+      vscode.Uri.file(localSdkPath),
+      await this.getAnalyzedHmsSdkPath(),
+      this,
+      this.translator,
+      { type: 'local' },
+    ) : undefined
 
     // Check the workspace folder configuration
     const inspectedConfiguration = vscode.workspace.getConfiguration('ets').inspect<string>('sdkPath') || {} as ReturnType<ReturnType<typeof vscode.workspace.getConfiguration>['inspect']>
     const workspaceFolderAnalyzer = inspectedConfiguration?.workspaceFolderValue && typeof inspectedConfiguration.workspaceFolderValue === 'string'
-      ? new SdkAnalyzer<SdkAnalyzerMetadata>(vscode.Uri.file(inspectedConfiguration.workspaceFolderValue), this, this.translator, { type: 'workspaceFolder' })
+      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
+        vscode.Uri.file(inspectedConfiguration.workspaceFolderValue),
+        await this.getAnalyzedHmsSdkPath(),
+        this,
+        this.translator,
+        { type: 'workspaceFolder' },
+      )
       : undefined
 
     // Check the global configuration
     const globalAnalyzer = inspectedConfiguration?.globalValue && typeof inspectedConfiguration.globalValue === 'string'
-      ? new SdkAnalyzer<SdkAnalyzerMetadata>(vscode.Uri.file(inspectedConfiguration.globalValue), this, this.translator, { type: 'global' })
+      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
+        vscode.Uri.file(inspectedConfiguration.globalValue),
+        await this.getAnalyzedHmsSdkPath(),
+        this,
+        this.translator,
+        { type: 'global' },
+      )
       : undefined
 
     // Choose a valid SDK path

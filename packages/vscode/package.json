@@ -136,8 +136,13 @@
         },
         "ets.baseSdkPath": {
           "type": "string",
-          "description": "%configuration.ets.baseSdkPath.description%",
+          "markdownDescription": "%configuration.ets.baseSdkPath.description%",
           "default": "${os.homedir}/OpenHarmony"
+        },
+        "ets.hmsPath": {
+          "type": "string",
+          "description": "%configuration.ets.hmsPath.description%",
+          "default": ""
         },
         "ets.lspDebugMode": {
           "type": "boolean",
@@ -147,12 +152,14 @@
         "ets.hdcPath": {
           "type": "string",
           "description": "%configuration.ets.hdcPath.description%",
+          "deprecationMessage": "Currently this setting is not used.",
           "default": ""
         },
         "ets.sdkList": {
           "type": "object",
           "description": "A list of installed OpenHarmony SDK paths. Keys should follow the pattern API[number] (e.g., API9, API10).",
           "default": {},
+          "deprecationMessage": "Currently this setting is not used.",
           "properties": {
             "API10": {
               "type": "string",
@@ -181,6 +188,10 @@
             "API18": {
               "type": "string",
               "description": "SDK path for API version 18"
+            },
+            "API20": {
+              "type": "string",
+              "description": "SDK path for API version 20"
             }
           },
           "additionalProperties": {

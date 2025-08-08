@@ -36,8 +36,9 @@ const plugin: ts.server.PluginModuleFactory = createLanguageServicePlugin((ts, i
   if (env?.lspOptions?.ohos?.sdkPath)
     info.config = env
   const sdkPath = info.config?.lspOptions?.ohos?.sdkPath
+  const hmsSdkPath = info.config?.lspOptions?.ohos?.hmsSdkPath
 
-  console.warn(`ETS typescript plugin loaded! sdkPath: ${sdkPath}`)
+  console.warn(`ETS typescript plugin loaded! sdkPath: ${sdkPath}, hmsSdkPath: ${hmsSdkPath}`)
   console.warn(`Current config: ${JSON.stringify(info.config)}`)
 
   // 如果没有传递这个配置，则不启用插件
@@ -47,7 +48,7 @@ const plugin: ts.server.PluginModuleFactory = createLanguageServicePlugin((ts, i
 
   return {
     languagePlugins: [
-      ETSLanguagePlugin(ts, { sdkPath, tsdk: info.config?.lspOptions?.typescript?.tsdk }),
+      ETSLanguagePlugin(ts, { sdkPaths: [sdkPath, hmsSdkPath].filter(Boolean) as string[], tsdk: info.config?.lspOptions?.typescript?.tsdk }),
     ],
   }
 })

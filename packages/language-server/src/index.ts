@@ -71,7 +71,7 @@ connection.onInitialize(async (params) => {
     params,
     createTypeScriptProject(ets as any, tsdk.diagnosticMessages, () => {
       return {
-        languagePlugins: [ETSLanguagePlugin(ets, { sdkPath: lspConfiguration.getSdkPath(), tsdk: lspConfiguration.getTsdkPath() })],
+        languagePlugins: [ETSLanguagePlugin(ets, { sdkPaths: [lspConfiguration.getSdkPath(), lspConfiguration.getHmsSdkPath()].filter(Boolean) as string[], tsdk: lspConfiguration.getTsdkPath() })],
         setup(options) {
           if (!options.project || !options.project.typescript || !options.project.typescript.languageServiceHost)
             return

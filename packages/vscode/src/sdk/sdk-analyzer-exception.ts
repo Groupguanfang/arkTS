@@ -25,5 +25,11 @@ export namespace SdkAnalyzerException {
     EtsComponentPathNotDirectory = 'ETS_COMPONENT_PATH_NOT_DIRECTORY',
     EtsLoaderConfigPathNotFound = 'ETS_LOADER_CONFIG_PATH_NOT_FOUND',
     EtsLoaderConfigPathNotFile = 'ETS_LOADER_CONFIG_PATH_NOT_FILE',
+    HmsSdkPathNotFound = 'HMS_SDK_PATH_NOT_FOUND',
+    HmsSdkPathNotDirectory = 'HMS_SDK_PATH_NOT_DIRECTORY',
+    HmsApiPathNotFound = 'HMS_API_PATH_NOT_FOUND',
+    HmsApiPathNotDirectory = 'HMS_API_PATH_NOT_DIRECTORY',
+    HmsKitsPathNotFound = 'HMS_KITS_PATH_NOT_FOUND',
+    HmsKitsPathNotDirectory = 'HMS_KITS_PATH_NOT_DIRECTORY',
   }
 }

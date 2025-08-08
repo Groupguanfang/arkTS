@@ -11,6 +11,7 @@ export class LanguageServerConfigManager {
   private config: EtsServerClientOptions = {
     ohos: {
       sdkPath: '',
+      hmsSdkPath: '',
       etsComponentPath: '',
       etsLoaderConfigPath: '',
       etsLoaderPath: '',
@@ -66,6 +67,16 @@ export class LanguageServerConfigManager {
 
   getSdkPath(): string {
     return this.config.ohos.sdkPath || ''
+  }
+
+  setHmsSdkPath(hmsSdkPath: string): this {
+    this.logger.getConsola().info(`ohos.hmsSdkPath changed: new: ${hmsSdkPath}, old: ${this.config.ohos.hmsSdkPath}`)
+    this.config.ohos.hmsSdkPath = hmsSdkPath
+    return this
+  }
+
+  getHmsSdkPath(): string {
+    return this.config.ohos.hmsSdkPath || ''
   }
 
   setEtsComponentPath(etsComponentPath: string): this {

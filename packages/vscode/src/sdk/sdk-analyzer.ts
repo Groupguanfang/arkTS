@@ -6,6 +6,7 @@ import process from 'node:process'
 import fg from 'fast-glob'
 import * as vscode from 'vscode'
 import { SdkAnalyzerException } from './sdk-analyzer-exception'
+import fs from 'node:fs'
 
 interface ChoiceValidSdkPathStatus<TMetadata extends Record<string, any>> {
   isValid: boolean
@@ -27,6 +28,7 @@ interface ChoiceValidSdkPathOptions<TMetadata extends Record<string, any>> {
 export class SdkAnalyzer<TMetadata = Record<string, any>> {
   constructor(
     private readonly sdkUri: vscode.Uri,
+    private readonly hmsSdkUri: vscode.Uri | undefined,
     private readonly fileSystem: AbstractWatcher,
     private readonly translator: Translator,
     private readonly extraMetadata?: TMetadata,
@@ -213,6 +215,118 @@ export class SdkAnalyzer<TMetadata = Record<string, any>> {
     return relativeWithConfigFilePaths
   }
 
+  private isHmsSdkUriExists = false
+  /**
+   * Get the HMS SDK path.
+   *
+   * @param force Whether to force the HMS SDK path to be re-obtained.
+   * @returns The HMS SDK path.
+   * @throws {SdkAnalyzerException} If the HMS SDK path does not exist.
+   */
+  async getHmsSdkUri(force: boolean = false): Promise<vscode.Uri | undefined> {
+    if (this.isHmsSdkUriExists && !force)
+      return this.hmsSdkUri
+    if (!this.hmsSdkUri)
+      return undefined
+    try {
+      await this.fileSystem.mustBeDirectory(this.hmsSdkUri, SdkAnalyzerException.Code.HmsSdkPathNotFound, SdkAnalyzerException.Code.HmsSdkPathNotDirectory)
+      this.isHmsSdkUriExists = true
+      return this.hmsSdkUri
+    }
+    catch (error) {
+      if (error instanceof SdkAnalyzerException) {
+        throw SdkAnalyzerException.fromFileSystemException(error, this.translator)
+      }
+      throw error
+    }
+  }
+
+  private _cachedHmsApiFolder: vscode.Uri | undefined
+  /**
+   * Get the `ets/api` folder of the HMS SDK.
+   *
+   * @param force Whether to force the HMS API folder to be re-obtained.
+   * @returns The HMS API folder.
+   * @throws {SdkAnalyzerException} If the HMS API folder does not exist.
+   */
+  async getHmsApiFolder(force: boolean = false): Promise<vscode.Uri | undefined> {
+    if (this._cachedHmsApiFolder && !force)
+      return this._cachedHmsApiFolder
+    const hmsSdkPath = await this.getHmsSdkUri(force)
+    if (!hmsSdkPath)
+      return undefined
+    const hmsApiFolder = vscode.Uri.joinPath(hmsSdkPath, 'ets', 'api')
+    try {
+      await this.fileSystem.mustBeDirectory(hmsApiFolder, SdkAnalyzerException.Code.HmsApiPathNotFound, SdkAnalyzerException.Code.HmsApiPathNotDirectory)
+      this._cachedHmsApiFolder = hmsApiFolder
+      return hmsApiFolder
+    }
+    catch (error) {
+      if (error instanceof SdkAnalyzerException) {
+        throw SdkAnalyzerException.fromFileSystemException(error, this.translator)
+      }
+      throw error
+    }
+  }
+
+  private _cachedHmsKitsFolder: vscode.Uri | undefined
+  /**
+   * Get the `ets/kits` folder of the HMS SDK.
+   *
+   * @param force Whether to force the HMS kits folder to be re-obtained.
+   * @returns The HMS kits folder.
+   * @throws {SdkAnalyzerException} If the HMS kits folder does not exist.
+   */
+  async getHmsKitsFolder(force: boolean = false): Promise<vscode.Uri | undefined> {
+    if (this._cachedHmsKitsFolder && !force)
+      return this._cachedHmsKitsFolder
+    const hmsSdkPath = await this.getHmsSdkUri(force)
+    if (!hmsSdkPath)
+      return undefined
+    const hmsKitsFolder = vscode.Uri.joinPath(hmsSdkPath, 'ets', 'kits')
+    try {
+      await this.fileSystem.mustBeDirectory(hmsKitsFolder, SdkAnalyzerException.Code.HmsKitsPathNotFound, SdkAnalyzerException.Code.HmsKitsPathNotDirectory)
+      this._cachedHmsKitsFolder = hmsKitsFolder
+      return hmsKitsFolder
+    }
+    catch (error) {
+      if (error instanceof SdkAnalyzerException) {
+        throw SdkAnalyzerException.fromFileSystemException(error, this.translator)
+      }
+      throw error
+    }
+  }
+
+  private getFileNameWithoutExtension(fileNameWithExtension: string): string {
+    if (fileNameWithExtension.endsWith('.d.ts') || fileNameWithExtension.endsWith('.d.ets')) {
+      return fileNameWithExtension.replace(/\.d\.ts$/, '').replace(/\.d\.ets$/, '')
+    }
+    return path.basename(fileNameWithExtension, path.extname(fileNameWithExtension))
+  }
+
+  private async hmsToTypeScriptCompilerOptionsPaths(force: boolean = false): Promise<import('typescript').MapLike<string[]>> {
+    const hmsSdkPath = await this.getHmsSdkUri(force)
+    const hmsApiFolder = await this.getHmsApiFolder(force)
+    const hmsKitsFolder = await this.getHmsKitsFolder(force)
+    if (!hmsSdkPath || !hmsApiFolder || !hmsKitsFolder)
+      return {}
+
+    const paths: import('typescript').MapLike<string[]> = {}
+    const apiFiles = fs.readdirSync(hmsApiFolder.fsPath)
+    const kitsFiles = fs.readdirSync(hmsKitsFolder.fsPath)
+    for (const fileNameWithExtension of apiFiles) {
+      const fileName = this.getFileNameWithoutExtension(fileNameWithExtension)
+      paths[fileName] = [vscode.Uri.joinPath(hmsApiFolder, fileNameWithExtension).fsPath]
+      paths[`${fileName}/*`] = [vscode.Uri.joinPath(hmsApiFolder, fileNameWithExtension, '*').fsPath]
+    }
+    for (const fileNameWithExtension of kitsFiles) {
+      const fileName = this.getFileNameWithoutExtension(fileNameWithExtension)
+      paths[fileName] = [vscode.Uri.joinPath(hmsKitsFolder, fileNameWithExtension).fsPath]
+      paths[`${fileName}/*`] = [vscode.Uri.joinPath(hmsKitsFolder, fileNameWithExtension, '*').fsPath]
+    }
+    return paths
+  }
+
   /**
    * Convert the `SdkAnalyzer` to client options.
    *
@@ -284,6 +398,7 @@ export class SdkAnalyzer<TMetadata = Record<string, any>> {
       'lib.es2020.symbol.wellknown.d.ts',
     ]
 
+    // issue: https://github.com/Groupguanfang/arkTS/pull/68
     const declarationsLib = process.platform === 'win32'
       ? [
           fg.convertPathToPattern(vscode.Uri.joinPath(etsComponentPath, '**', '*.d.ts').fsPath),
@@ -298,6 +413,7 @@ export class SdkAnalyzer<TMetadata = Record<string, any>> {
 
     return {
       sdkPath: sdkPath.fsPath,
+      hmsSdkPath: this.hmsSdkUri?.fsPath,
       etsComponentPath: etsComponentPath.fsPath,
       etsLoaderConfigPath: etsLoaderConfigPath.fsPath,
       lib: [
@@ -318,6 +434,7 @@ export class SdkAnalyzer<TMetadata = Record<string, any>> {
           './arkts/*',
         ].filter(Boolean) as string[],
         '@internal/full/*': ['./api/@internal/full/*'],
+        ...await this.hmsToTypeScriptCompilerOptionsPaths(),
       },
       relativeWithConfigFilePaths: this.getRelativeWithConfigFilePaths(),
       etsLoaderPath: etsLoaderPath.fsPath,
