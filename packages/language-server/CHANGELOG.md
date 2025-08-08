@@ -1,5 +1,11 @@
 # @arkts/language-server
 
+## 1.0.3
+
+### Patch Changes
+
+- b9a93ed: feat: 添加\`hms\`SDK 支持 (#35)
+
 ## 1.0.2
 
 ### Patch Changes
