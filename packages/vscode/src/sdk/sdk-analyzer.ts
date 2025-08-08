@@ -1,12 +1,12 @@
 import type { OhosClientOptions } from '@arkts/shared'
 import type { AbstractWatcher } from '../abstract-watcher'
 import type { Translator } from '../translate'
+import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import fg from 'fast-glob'
 import * as vscode from 'vscode'
 import { SdkAnalyzerException } from './sdk-analyzer-exception'
-import fs from 'node:fs'
 
 interface ChoiceValidSdkPathStatus<TMetadata extends Record<string, any>> {
   isValid: boolean

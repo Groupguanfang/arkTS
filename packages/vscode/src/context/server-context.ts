@@ -98,13 +98,15 @@ export abstract class LanguageServerContext extends AbstractWatcher {
 
     // Check the local.properties file first
     const localSdkPath = await this.getOhosSdkPathFromLocalProperties()
-    const localSdkAnalyzer = localSdkPath ? new SdkAnalyzer<SdkAnalyzerMetadata>(
-      vscode.Uri.file(localSdkPath),
-      await this.getAnalyzedHmsSdkPath(),
-      this,
-      this.translator,
-      { type: 'local' },
-    ) : undefined
+    const localSdkAnalyzer = localSdkPath
+      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
+        vscode.Uri.file(localSdkPath),
+        await this.getAnalyzedHmsSdkPath(),
+        this,
+        this.translator,
+        { type: 'local' },
+      )
+      : undefined
 
     // Check the workspace folder configuration
     const inspectedConfiguration = vscode.workspace.getConfiguration('ets').inspect<string>('sdkPath') || {} as ReturnType<ReturnType<typeof vscode.workspace.getConfiguration>['inspect']>
