@@ -234,7 +234,7 @@
     "build": "tsdown",
     "watch": "cross-env NODE_ENV=development tsdown",
     "pack": "npm run build && vsce package",
-    "release": "npm run build && vsce publish --pre-release && ovsx publish --pre-release",
+    "release": "npm run build && vsce publish && ovsx publish",
     "update": "vscode-ext-gen --output src/generated/meta.ts",
     "ovsx": "ovsx",
     "vsce": "vsce"

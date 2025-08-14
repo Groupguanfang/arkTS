@@ -65,7 +65,7 @@ jobs:
         with:
           commit: 'chore(release): release packages'
           title: 'chore(release): release packages'
-          publish: pnpm run release --pre-release
+          publish: pnpm run release
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
