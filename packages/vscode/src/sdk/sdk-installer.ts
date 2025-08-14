@@ -79,7 +79,7 @@ export class SdkInstaller extends Environment implements Command {
       return
 
     if (choice?.label === choiceSwitch) {
-      await this.sdkManager.setOhosSdkPath(path.join(await this.sdkManager.getOhosSdkBasePath!(), versionChoice.version.split('API')[1]))
+      await this.sdkManager.setOhosSdkPath(path.join(await this.sdkManager.getOhosSdkBasePath(), versionChoice.version.split('API')[1]))
       vscode.window.showInformationMessage(this.translator.t('sdk.install.switchOrReinstall.switch.success', { args: [versionChoice.version] }))
     }
     else if (choice?.label === choiceReinstall) {

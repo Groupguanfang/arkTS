@@ -41,7 +41,7 @@ export class SdkAnalyzer<TMetadata = Record<string, any>> {
       if (!analyzers[i].analyzer) {
         analyzerStatus[i] = {
           isValid: false,
-          error: new Error('Analyzer is undefined'),
+          error: new Error(`Analyzer in index ${i}'s ${analyzers[i].metadata?.type || 'unknown'} type is undefined`),
           analyzer: undefined,
           metadata: analyzers[i].metadata,
         }

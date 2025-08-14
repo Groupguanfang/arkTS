@@ -6,11 +6,6 @@ import type { Translator } from '../translate'
 import { executeCommand } from 'reactive-vscode'
 import * as vscode from 'vscode'
 import { AbstractWatcher } from '../abstract-watcher'
-import { SdkAnalyzer } from '../sdk/sdk-analyzer'
-
-interface SdkAnalyzerMetadata {
-  type: 'local' | 'workspaceFolder' | 'global'
-}
 
 export abstract class LanguageServerContext extends AbstractWatcher {
   /** Start the language server. */
@@ -33,6 +28,45 @@ export abstract class LanguageServerContext extends AbstractWatcher {
         // @ts-ignore
         func.apply(this, args)
       }, delay)
+    }
+  }
+
+  protected errorToString(error: unknown): string {
+    if (error instanceof Error || (error && typeof error === 'object' && 'message' in error))
+      return this.translator.t('sdk.error.languageServerError', { args: [`${error.message} ${'code' in error ? `[${error.code}]` : ''}`] })
+    return this.translator.t('sdk.error.languageServerError', { args: [typeof error === 'string' || typeof error === 'number' || typeof error === 'boolean' ? error : JSON.stringify(error)] })
+  }
+
+  protected async handleLanguageServerError(error: unknown): Promise<void> {
+    this.getConsola().error(`ArkTS语言服务器启动失败! 捕获到错误:`)
+    this.getConsola().error(error)
+    console.error(error)
+    const choiceSdkPath = this.translator.t('sdk.error.choiceSdkPathMasually')
+    const downloadOrChoiceSdkPath = this.translator.t('sdk.error.downloadOrChoiceSdkPath')
+    const detail = this.errorToString(error)
+    const result = await vscode.window.showWarningMessage(
+      'ArkTS Language Server Warning',
+      { modal: true, detail },
+      choiceSdkPath,
+      downloadOrChoiceSdkPath,
+    )
+
+    if (result === choiceSdkPath) {
+      const [sdkPath] = await vscode.window.showOpenDialog({
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+        title: this.translator.t('sdk.error.choiceSdkPathMasually'),
+      }) || []
+      if (!sdkPath) {
+        vscode.window.showErrorMessage(this.translator.t('sdk.error.validSdkPath'))
+      }
+      else {
+        vscode.workspace.getConfiguration().update('ets.sdkPath', sdkPath.fsPath, vscode.ConfigurationTarget.Global)
+      }
+    }
+    else if (result === downloadOrChoiceSdkPath) {
+      executeCommand('ets.installSDK')
     }
   }
 
@@ -81,76 +115,11 @@ export abstract class LanguageServerContext extends AbstractWatcher {
     catch {}
   }
 
-  private _analyzedSdkPath: string | undefined
-  private _analyzerSdkAnalyzer: SdkAnalyzer<SdkAnalyzerMetadata> | undefined
-
   public async getAnalyzedHmsSdkPath(): Promise<vscode.Uri | undefined> {
     const hmsSdkPath = vscode.workspace.getConfiguration('ets').get('hmsPath')
     if (!hmsSdkPath || typeof hmsSdkPath !== 'string')
       return undefined
     return vscode.Uri.file(hmsSdkPath)
-  }
-
-  /** Get the path of the Ohos SDK from `local.properties` file or configuration. */
-  public async getAnalyzedSdkPath(force: boolean = false): Promise<string | undefined> {
-    if (!force && this._analyzedSdkPath)
-      return this._analyzedSdkPath
-
-    // Check the local.properties file first
-    const localSdkPath = await this.getOhosSdkPathFromLocalProperties()
-    const localSdkAnalyzer = localSdkPath
-      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
-        vscode.Uri.file(localSdkPath),
-        await this.getAnalyzedHmsSdkPath(),
-        this,
-        this.translator,
-        { type: 'local' },
-      )
-      : undefined
-
-    // Check the workspace folder configuration
-    const inspectedConfiguration = vscode.workspace.getConfiguration('ets').inspect<string>('sdkPath') || {} as ReturnType<ReturnType<typeof vscode.workspace.getConfiguration>['inspect']>
-    const workspaceFolderAnalyzer = inspectedConfiguration?.workspaceFolderValue && typeof inspectedConfiguration.workspaceFolderValue === 'string'
-      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
-        vscode.Uri.file(inspectedConfiguration.workspaceFolderValue),
-        await this.getAnalyzedHmsSdkPath(),
-        this,
-        this.translator,
-        { type: 'workspaceFolder' },
-      )
-      : undefined
-
-    // Check the global configuration
-    const globalAnalyzer = inspectedConfiguration?.globalValue && typeof inspectedConfiguration.globalValue === 'string'
-      ? new SdkAnalyzer<SdkAnalyzerMetadata>(
-        vscode.Uri.file(inspectedConfiguration.globalValue),
-        await this.getAnalyzedHmsSdkPath(),
-        this,
-        this.translator,
-        { type: 'global' },
-      )
-      : undefined
-
-    // Choose a valid SDK path
-    const sdkAnalyzer = await SdkAnalyzer.choiceValidSdkPath<SdkAnalyzerMetadata>(
-      { analyzer: localSdkAnalyzer, metadata: { type: 'global' } },
-      { analyzer: workspaceFolderAnalyzer, metadata: { type: 'workspaceFolder' } },
-      { analyzer: globalAnalyzer, metadata: { type: 'global' } },
-    )
-    const sdkPath = await sdkAnalyzer.choicedAnalyzer?.getSdkUri(force)
-    this.getConsola().info(`Analyzed OHOS SDK path: ${sdkPath}, current using analyzer: ${sdkAnalyzer.choicedAnalyzer?.getExtraMetadata()?.type}`)
-    for (const status of sdkAnalyzer.analyzerStatus)
-      this.getConsola().info(`(${status.analyzer?.getExtraMetadata()?.type || status.metadata?.type || 'unknown type'}) Analyzer status: ${status.isValid ? 'available ✅' : 'no available ❌'} ${status.error ? status.error : ''}`)
-    this._analyzedSdkPath = sdkPath?.fsPath
-    this._analyzerSdkAnalyzer = sdkAnalyzer.choicedAnalyzer
-    return this._analyzedSdkPath
-  }
-
-  protected async getAnalyzedSdkAnalyzer(force: boolean = false): Promise<SdkAnalyzer<SdkAnalyzerMetadata> | undefined> {
-    if (!force && this._analyzerSdkAnalyzer)
-      return this._analyzerSdkAnalyzer
-    await this.getAnalyzedSdkPath(force)
-    return this._analyzerSdkAnalyzer
   }
 
   /** Configure the volar typescript plugin by `ClientOptions`. */

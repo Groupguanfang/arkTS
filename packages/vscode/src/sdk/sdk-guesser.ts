@@ -30,11 +30,12 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
     if (!guessedOhosSdkVersion)
       return
     const [sdkStringVersion, sdkNumberVersion] = guessedOhosSdkVersion
-    const currentSdkPath = await this.sdkManager.getOhosSdkPath()
+    const currentSdkPath = await this.sdkManager.getAnalyzedSdkPath()
+    const currentSdkAnalyzer = await this.sdkManager.getAnalyzedSdkAnalyzer()
 
     // Check if the current SDK is the same as the guessed SDK.
     if (currentSdkPath) {
-      const ohUniPackageJsonPath = path.resolve(currentSdkPath, 'js', 'oh-uni-package.json')
+      const ohUniPackageJsonPath = path.resolve(currentSdkPath, 'ets', 'oh-uni-package.json')
       if (fs.existsSync(ohUniPackageJsonPath)) {
         const ohUniPackageJson = JSON.parse(fs.readFileSync(ohUniPackageJsonPath, 'utf-8'))
         const compileSdkVersion: string = ohUniPackageJson?.apiVersion || ''
@@ -44,8 +45,7 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
     }
 
     // Check if the guessed SDK is installed.
-    const isInstalled = await this.sdkManager.isInstalled(sdkNumberVersion.toString())
-    if (isInstalled) {
+    if (await this.sdkManager.isInstalled(sdkNumberVersion.toString())) {
       const choiceYes = this.translator.t('sdk.guess.switch.yes')
       const choiceNo = this.translator.t('sdk.guess.switch.no')
       const choiceResult = await vscode.window.showInformationMessage(
@@ -54,21 +54,24 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
         choiceNo,
       )
       if (choiceResult === choiceYes) {
-        await this.sdkManager.setOhosSdkPath(path.join(await this.sdkManager.getOhosSdkBasePath(), sdkNumberVersion.toString()))
+        const inferredSdkPosition = currentSdkAnalyzer?.getExtraMetadata()?.type
+        const targetSdkPath = path.join(await this.sdkManager.getOhosSdkBasePath(), sdkNumberVersion.toString())
+        await this.sdkManager.setOhosSdkPath(targetSdkPath, inferredSdkPosition === 'global' ? vscode.ConfigurationTarget.Global : vscode.ConfigurationTarget.Workspace)
         vscode.window.showInformationMessage(this.translator.t('sdk.guess.switch.success', { args: [sdkStringVersion] }))
       }
+      return
     }
-    else {
-      const choiceYes = this.translator.t('sdk.guess.install.yes')
-      const choiceNo = this.translator.t('sdk.guess.install.no')
-      const choiceResult = await vscode.window.showInformationMessage(
-        this.translator.t('sdk.guess.install.title', { args: [sdkStringVersion] }),
-        choiceYes,
-        choiceNo,
-      )
-      if (choiceResult === choiceYes)
-        await this.sdkInstaller.installSdk(sdkStringVersion)
-    }
+
+    // If not installed, ask the user install the SDK or not in the base SDK path.
+    const choiceYes = this.translator.t('sdk.guess.install.yes')
+    const choiceNo = this.translator.t('sdk.guess.install.no')
+    const choiceResult = await vscode.window.showInformationMessage(
+      this.translator.t('sdk.guess.install.title', { args: [sdkStringVersion] }),
+      choiceYes,
+      choiceNo,
+    )
+    if (choiceResult === choiceYes)
+      await this.sdkInstaller.installSdk(sdkStringVersion)
   }
 
   /** Guess the OpenHarmony SDK version from the current workspace's build-profile.json5 file. */

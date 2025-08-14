@@ -1,8 +1,8 @@
 import process from 'node:process'
 import { SdkArch as SdkArchEnum, SdkOS as SdkOSEnum } from '@arkts/sdk-downloader'
-import { FileSystem } from './fs/file-system'
+import { AbstractWatcher } from './abstract-watcher'
 
-export abstract class Environment extends FileSystem {
+export abstract class Environment extends AbstractWatcher {
   getArch(): SdkArchEnum {
     const arch = process.arch
 

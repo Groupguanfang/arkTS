@@ -10,6 +10,7 @@ import { Autowired } from 'unioc'
 import { Command, Disposable, ExtensionContext, IOnActivate, WatchConfiguration } from 'unioc/vscode'
 import * as vscode from 'vscode'
 import { LanguageServerContext } from './context/server-context'
+import { SdkManager } from './sdk/sdk-manager'
 import { Translator } from './translate'
 import { sleep } from './utils'
 
@@ -22,8 +23,11 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
   @Autowired(ExtensionContext)
   protected readonly context: ExtensionContext
 
+  @Autowired
+  protected readonly sdkManager: SdkManager
+
   onExecuteCommand(): void {
-    this.restart().catch(e => this.handleLspError(e))
+    this.restart().catch(e => this.handleLanguageServerError(e))
   }
 
   async onActivate(context: vscode.ExtensionContext): Promise<void> {
@@ -44,7 +48,7 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
 
   @WatchConfiguration()
   async onConfigurationChanged(e: vscode.ConfigurationChangeEvent): Promise<unknown> {
-    if (!e.affectsConfiguration('ets'))
+    if (!e.affectsConfiguration('ets.sdkPath'))
       return
     if (!this.getCurrentLanguageClient()?.isRunning()) {
       this.getConsola().info(`[underwrite] sdk path changed, start language server...`)
@@ -54,49 +58,10 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
     try {
       // Wait the workspace/configurationChanged event send, then restart the language server
       await sleep(100)
-      await this.restart(undefined, true).catch(e => this.handleLspError(e))
+      await this.restart(undefined, true).catch(e => this.handleLanguageServerError(e))
     }
     catch (error) {
-      this.handleLspError(error)
-    }
-  }
-
-  private errorToString(error: unknown): string {
-    if (error instanceof Error || (error && typeof error === 'object' && 'message' in error))
-      return `${error.message} ${'code' in error ? `[${error.code}]` : ''}`
-    return `${typeof error === 'string' || typeof error === 'number' || typeof error === 'boolean' ? error : JSON.stringify(error)}`
-  }
-
-  private async handleLspError(error: unknown): Promise<void> {
-    this.getConsola().error(`捕获到错误：`)
-    this.getConsola().error(error)
-    console.error(error)
-    const choiceSdkPath = this.translator.t('sdk.error.choiceSdkPathMasually')
-    const downloadOrChoiceSdkPath = this.translator.t('sdk.error.downloadOrChoiceSdkPath')
-    const detail = this.errorToString(error)
-    const result = await vscode.window.showWarningMessage(
-      'OpenHarmony SDK Warning',
-      { modal: true, detail },
-      choiceSdkPath,
-      downloadOrChoiceSdkPath,
-    )
-
-    if (result === choiceSdkPath) {
-      const [sdkPath] = await vscode.window.showOpenDialog({
-        canSelectFiles: false,
-        canSelectFolders: true,
-        canSelectMany: false,
-        title: this.translator.t('sdk.error.choiceSdkPathMasually'),
-      }) || []
-      if (!sdkPath) {
-        vscode.window.showErrorMessage(this.translator.t('sdk.error.validSdkPath'))
-      }
-      else {
-        vscode.workspace.getConfiguration().update('ets.sdkPath', sdkPath.fsPath, vscode.ConfigurationTarget.Global)
-      }
-    }
-    else if (result === downloadOrChoiceSdkPath) {
-      executeCommand('ets.installSDK')
+      this.handleLanguageServerError(error)
     }
   }
 
@@ -107,7 +72,7 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
       return labsInfo!
     }
     catch (error) {
-      this.handleLspError(error)
+      this.handleLanguageServerError(error)
       return undefined
     }
   }
@@ -143,8 +108,8 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
    * @throws {SdkAnalyzerException} If the SDK path have any no right, it will throw an error.
    */
   async getClientOptions(force: boolean = false): Promise<LanguageClientOptions> {
-    const sdkPath = await this.getAnalyzedSdkPath(force)
-    const sdkAnalyzer = await this.getAnalyzedSdkAnalyzer(force)
+    const sdkPath = await this.sdkManager.getAnalyzedSdkPath(force)
+    const sdkAnalyzer = await this.sdkManager.getAnalyzedSdkAnalyzer(force)
     if (!sdkPath || !sdkAnalyzer) {
       vscode.window.showErrorMessage(this.translator.t('sdk.error.validSdkPath'))
       throw new Error(this.translator.t('sdk.error.validSdkPath'))
@@ -204,7 +169,6 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
     )
     this._client.start()
     this._client.sendRequest('ets/waitForEtsConfigurationChangedRequested', clientOptions.initializationOptions)
-    this.listenAllLocalPropertiesFile()
     // support for auto close tag
     activateAutoInsertion('ets', this._client)
     this.getConsola().info('ETS Language Server started!')

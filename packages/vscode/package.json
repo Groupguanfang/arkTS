@@ -155,6 +155,11 @@
           "deprecationMessage": "Currently this setting is not used.",
           "default": ""
         },
+        "ets.ignoreWorkspaceLocalPropertiesFile": {
+          "type": "boolean",
+          "markdownDescription": "%configuration.ets.ignoreWorkspaceLocalPropertiesFile.description%",
+          "default": false
+        },
         "ets.sdkList": {
           "type": "object",
           "description": "A list of installed OpenHarmony SDK paths. Keys should follow the pattern API[number] (e.g., API9, API10).",
