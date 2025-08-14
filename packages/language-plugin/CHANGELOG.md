@@ -1,5 +1,11 @@
 # @arkts/language-plugin
 
+## 1.0.4
+
+### Patch Changes
+
+- df60843: feat: 移除 hilog 相关逻辑等待后续实现；还原并增强猜测 SDK 版本功能
+
 ## 1.0.3
 
 ### Patch Changes
