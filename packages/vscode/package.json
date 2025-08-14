@@ -27,7 +27,7 @@
   "main": "./dist/client.js",
   "icon": "icon.png",
   "engines": {
-    "vscode": "^1.87.0"
+    "vscode": "^1.103.1"
   },
   "activationEvents": [],
   "contributes": {
@@ -134,9 +134,9 @@
   },
   "devDependencies": {
     "@arkts/language-server": "workspace:*",
-    "@types/vscode": "^1.82.0",
-    "@volar/language-server": "~2.4.0",
-    "@volar/vscode": "~2.4.0",
+    "@types/vscode": "^1.102.0",
+    "@volar/language-server": "~2.4.23",
+    "@volar/vscode": "~2.4.23",
     "esbuild": "latest",
     "vsce": "latest"
   }

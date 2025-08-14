@@ -27,7 +27,7 @@ jobs:
       - name: 设置 pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 8.15.9
           run_install: false
 
       - name: 获取 pnpm 缓存目录
