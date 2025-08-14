@@ -212,25 +212,6 @@
         "enableForWorkspaceTypeScriptVersions": true
       }
     ],
-    "viewsContainers": {
-      "panel": [
-        {
-          "id": "ets-hilog",
-          "title": "HiLog",
-          "icon": "$(debug-console)"
-        }
-      ]
-    },
-    "views": {
-      "ets-hilog": [
-        {
-          "id": "ets-hilog-view",
-          "name": "HiLog",
-          "type": "webview",
-          "icon": "$(debug-console)"
-        }
-      ]
-    },
     "walkthroughs": [
       {
         "id": "ArkTS-Walkthrough",

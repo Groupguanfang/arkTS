@@ -40,7 +40,7 @@ export default defineConfig({
   outputOptions: {
     chunkFileNames: `dist/[name].js`,
   },
-  onSuccess: 'vite build && tsx ./scripts/reflect-fixer.mts',
+  onSuccess: 'tsx ./scripts/reflect-fixer.mts',
   alias: {
     '@arkts/shared': path.join(process.cwd(), '../shared/src/index.ts'),
     '@arkts/shared/vscode': path.join(process.cwd(), '../shared/src/vscode.ts'),
