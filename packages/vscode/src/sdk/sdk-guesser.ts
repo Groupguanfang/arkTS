@@ -26,6 +26,7 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
 
   async guessOhosSdkVersion(): Promise<keyof typeof SdkVersion | undefined> {
     const guessedOhosSdkVersion = this.getGuessedOhosSdkVersion()
+    this.getConsola().info(`Guessed OpenHarmony SDK version: ${guessedOhosSdkVersion}`)
     if (!guessedOhosSdkVersion)
       return
     const [sdkStringVersion, sdkNumberVersion] = guessedOhosSdkVersion
@@ -47,12 +48,12 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
     if (isInstalled) {
       const choiceYes = this.translator.t('sdk.guess.switch.yes')
       const choiceNo = this.translator.t('sdk.guess.switch.no')
-      const result = await vscode.window.showInformationMessage(
+      const choiceResult = await vscode.window.showInformationMessage(
         this.translator.t('sdk.guess.switch.title', { args: [sdkStringVersion] }),
         choiceYes,
         choiceNo,
       )
-      if (result === choiceYes) {
+      if (choiceResult === choiceYes) {
         await this.sdkManager.setOhosSdkPath(path.join(await this.sdkManager.getOhosSdkBasePath(), sdkNumberVersion.toString()))
         vscode.window.showInformationMessage(this.translator.t('sdk.guess.switch.success', { args: [sdkStringVersion] }))
       }
@@ -60,12 +61,12 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
     else {
       const choiceYes = this.translator.t('sdk.guess.install.yes')
       const choiceNo = this.translator.t('sdk.guess.install.no')
-      const result = await vscode.window.showInformationMessage(
+      const choiceResult = await vscode.window.showInformationMessage(
         this.translator.t('sdk.guess.install.title', { args: [sdkStringVersion] }),
         choiceYes,
         choiceNo,
       )
-      if (result === choiceYes)
+      if (choiceResult === choiceYes)
         await this.sdkInstaller.installSdk(sdkStringVersion)
     }
   }

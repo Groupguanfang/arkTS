@@ -7,13 +7,13 @@ import { CommandPlugin, DisposablePlugin, LanguageProviderPlugin, VSCodeBootstra
 import { useCompiledWebview } from './hook/compiled-webview'
 import { EtsLanguageServer } from './language-server'
 import './res/resource-provider'
-import './sdk/sdk-guesser'
 import { HiLogServerService } from './hilog/server'
 import type { IClassWrapper } from 'unioc'
 import * as vscode from 'vscode'
 import type { JSONRPC } from '@arkts/headless-jsonrpc'
 import { createConnection, createVSCodeWebviewAdapter } from '@arkts/headless-jsonrpc'
 import { HiLogController } from './hilog/server/hilog.controller'
+import { SdkVersionGuesser } from './sdk/sdk-guesser'
 
 class ArkTSExtension extends VSCodeBootstrap<Promise<LabsInfo | undefined>> {
   beforeInitialize(context: ExtensionContext): Promise<void> | void {
@@ -54,6 +54,7 @@ class ArkTSExtension extends VSCodeBootstrap<Promise<LabsInfo | undefined>> {
       closeWatch()
     }, { immediate: true })
 
+    globalContainer.findOne(SdkVersionGuesser)?.resolve()
     const languageServer = globalContainer.findOne(EtsLanguageServer) as IClassWrapper<typeof EtsLanguageServer> | undefined
     const runResult = await languageServer?.getClassExecutor().execute({
       methodName: 'run',
