@@ -25,7 +25,7 @@ catalogs:
   lint:
     '@antfu/eslint-config': latest
     eslint: latest
-    oxlint: ^0.18.1
+    oxlint: ^1.11.2
   polyfill:
     reflect-metadata: ^0.2.2
   prod:
