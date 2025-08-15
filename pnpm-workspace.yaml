@@ -15,7 +15,7 @@ catalogs:
     type-fest: ^4.41.0
     vscode-ext-gen: ^1.1.0
   frontend:
-    '@vitejs/plugin-vue': ^5.2.4
+    '@vitejs/plugin-vue': ^6.0.1
     '@vitejs/plugin-vue-jsx': ^4.2.0
     '@vueuse/core': ^13.6.0
     pinia: ^3.0.3
