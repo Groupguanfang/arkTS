@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   lint:
-    name: Run lint
+    name: Lint & Release or Create Pull Request
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -36,28 +36,6 @@ jobs:
 
       - name: Run Lint
         run: pnpm run lint
-
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v5
-        with:
-          submodules: recursive
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10.14.0
-          run_install: true
 
       - name: Create Release Pull Request
         id: changesets
