@@ -1,7 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "schedule:weekly", "group:allNonMajor"],
-  "baseBranchPatterns": ["next"],
   "labels": ["dependencies"],
   "rangeStrategy": "bump",
   "packageRules": [
@@ -12,7 +11,5 @@
   ],
   "ignoreDeps": ["node"],
   "postUpdateOptions": ["pnpmDedupe"],
-  "dependencyDashboard": true,
-  "dependencyDashboardTitle": "📦 Dependency Dashboard",
-  "dependencyDashboardAutoclose": false
+  "dependencyDashboardTitle": "📦 Dependency Dashboard"
 }
