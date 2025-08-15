@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 1.0.26
+
+### Patch Changes
+
+- 915e262: ci: release
+
 ## 1.0.25
 
 ### Patch Changes
