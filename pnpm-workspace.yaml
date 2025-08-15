@@ -68,7 +68,7 @@ catalogs:
     ovsx: ^0.10.4
     oxc-parser: ^0.75.0
     oxc-walker: ^0.3.0
-    pnpm: ^10.11.1
+    pnpm: 10.11.1
     simple-git-hooks: ^2.13.0
     tsx: ^4.19.4
 onlyBuiltDependencies:

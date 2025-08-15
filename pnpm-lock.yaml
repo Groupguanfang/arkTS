@@ -190,7 +190,7 @@ catalogs:
       specifier: ^0.3.0
       version: 0.3.0
     pnpm:
-      specifier: ^10.11.1
+      specifier: 10.11.1
       version: 10.11.1
     simple-git-hooks:
       specifier: ^2.13.0
