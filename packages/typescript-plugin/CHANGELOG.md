@@ -1,5 +1,11 @@
 # @arkts/typescript-plugin
 
+## 1.0.5
+
+### Patch Changes
+
+- 66c21bd: chore: update deps
+
 ## 1.0.4
 
 ### Patch Changes
