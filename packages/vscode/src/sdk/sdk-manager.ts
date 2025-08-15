@@ -11,7 +11,7 @@ import { SdkAnalyzer } from './sdk-analyzer'
 type IsInstalledVersion = keyof typeof SdkVersion extends `API${infer N}` ? N : never
 
 interface SdkAnalyzerMetadata {
-  type: 'local' | 'workspaceFolder' | 'global'
+  type: 'local' | 'workspace' | 'global'
 }
 
 @Service
@@ -142,7 +142,7 @@ export class SdkManager extends Environment {
         await this.getAnalyzedHmsSdkPath(),
         this,
         this.translator,
-        { type: 'workspaceFolder' },
+        { type: 'workspace' },
       )
       : undefined
 
@@ -160,7 +160,7 @@ export class SdkManager extends Environment {
     // Choose a valid SDK path
     const { choicedAnalyzer, analyzerStatus } = await SdkAnalyzer.choiceValidSdkPath<SdkAnalyzerMetadata>(
       { analyzer: localSdkAnalyzer, metadata: { type: 'local' } },
-      { analyzer: workspaceFolderAnalyzer, metadata: { type: 'workspaceFolder' } },
+      { analyzer: workspaceFolderAnalyzer, metadata: { type: 'workspace' } },
       { analyzer: globalAnalyzer, metadata: { type: 'global' } },
     )
     const sdkPath = await choicedAnalyzer?.getSdkUri(force)

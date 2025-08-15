@@ -11,10 +11,18 @@
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
-
     "noUnusedParameters": true,
     "declaration": true,
+    "noEmit": true,
     "sourceMap": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": [
+    "**/ohos-typescript/**/*",
+    "**/out/**/*",
+    "**/node_modules/**/*",
+    "**/dist/**/*",
+    "**/*.d.ts",
+    "**/packages/*/out/**/*"
+  ]
 }
