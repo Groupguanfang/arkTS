@@ -1,6 +1,6 @@
 {
   "name": "@arkts/typescript-plugin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "description": "ArkTS Typescript Plugin.",
   "author": "Naily Zero <zero@naily.cc>",

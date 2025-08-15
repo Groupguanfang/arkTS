@@ -1,5 +1,12 @@
 # vscode-naily-ets
 
+## 1.0.25
+
+### Patch Changes
+
+- abf2a30: feat: update README
+- 66c21bd: chore: update deps
+
 ## 1.0.24
 
 ### Patch Changes
