@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./packages/vscode/icon.png" width="100" />
+<img src="./packages/vscode/assets/icon.png" width="100" />
 
 # Naily's ArkTS Support
 
@@ -20,8 +20,9 @@ Language: <a href="./README.md">简体中文</a>｜English
 
 This is an ArkTS VSCode extension developed based on Volar. 🌹 It appears that there has been no proper support for ArkTS in VSCode until now. Most of the existing ArkTS extensions in the VSCode marketplace are very basic, so I decided to write one myself.
 
-> ⚠️ Note: This package is currently based on the latest `API 13`. If your HarmonyOS version is lower than `API 13`, there might be some issues. PRs are welcomed.
+## Features
 
+- 🌹 Starting from version 1.x, complete `ArkTS` language support is available, fully supporting all `ArkTS` syntax.
 - 🖊️ Comprehensive JSON Schema support. Supports the following JSON Schema files:
   - `build-profile.json5` Module-level/Project-level configuration
   - `oh-package.json5` Module-level/Project-level configuration
@@ -29,101 +30,104 @@ This is an ArkTS VSCode extension developed based on Volar. 🌹 It appears that
   - `code-linter.json5` Module-level/Project-level configuration
   - All `color.json` files under `resources/element/` for kv value configuration
   - `main_pages.json5`
-- 🪐 Thanks to the powerful Volar, since version 0.0.7, almost all syntax highlighting, autocompletion, and intelligent suggestions for ArkTS have been perfectly supported. 😋👍
-- 📦 Automatically install `ohpm` dependencies and sync `hvigor` configuration when opening a project.
-- 🚧 Supports inline `codelinter` prompts like ESLint, precisely locating problematic code. 👍
-- 🀄️ Perfectly supports the import of third-party modules from `oh_modules` via `tsconfig.json` configuration. ⏬
-- 🆓 `$r`, `$rawfile` completion and ArkTS code formatting are planned for future support. PRs are welcomed. 👀
+- 📦 Starting from version 1.x, supports installation and management of `OpenHarmony SDK`, and automatically detects the `API version` of the currently opened project, showing popup prompts for `download` or `switch`
+- 🆓 `$r`, `$rawfile` completion, code formatting, `hilog` logging and other features are planned for future support. PRs are welcomed 👀
 
 ![Screenshot](./screenshots/edit.gif)
 
-## Extension Installation📦
+## Extension Installation 📦
 
-Marketplace installation: https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets
+- Marketplace installation: [https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets](https://marketplace.visualstudio.com/items?itemName=NailyZero.vscode-naily-ets)
+- Open VSX installation: [https://open-vsx.org/extension/NailyZero/vscode-naily-ets](https://open-vsx.org/extension/NailyZero/vscode-naily-ets)
 
 Or simply search for `ArkTS Support` in VSCode.
 
-## ArkTS Source Code Navigation 🔍
+## Usage Guide 📖
 
-ArkTS source code navigation requires `@arkts/declarations`, so you need to install it via `npm` in your HarmonyOS project.
+### When DevEco Studio is already installed
 
-```bash
-npm install @arkts/declarations
+After installing this extension, configure the `OpenHarmony SDK` path and `HMS SDK` path (optional), then restart the IDE. These two `SDK paths` are usually found in a folder called `sdk` in the `DevEco Studio` installation directory.
+
+On macOS, right-click on `DevEco Studio` itself, select `Show Package Contents`, and you'll see a `sdk` folder inside the package containing `OpenHarmony SDK` and `HMS SDK`.
+
+Generally, `OpenHarmony SDK` has the following directory structure (referenced from version `DevEco Studio 6.0 Beta 2`):
+
+```
+ets/
+js/
+native/
+previewer/
+toolchains/
 ```
 
-Then, create a `tsconfig.json` file in the root directory of your HarmonyOS project, or modify the existing `tsconfig.json` file by adding the following:
+`HMS SDK` generally has the following directory structure (referenced from version `DevEco Studio 6.0 Beta 2`):
 
-```json5
-{
-  "extends": "@arkts/declarations/dist/tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["@arkts/declarations"],
-    "lib": ["ESNext"],
-    "experimentalDecorators": true,
-
-    // Basic compiler and module options, it is suggested the config as below
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-
-    // It is suggested to turn on the strict mode
-    "strict": true,
-    // It is suggest to turn strictPropertyInitialization off
-    "strictPropertyInitialization": false
-  }
-}
+```
+ets/
+native/
+previewer/
+toolchains/
 ```
 
-After inheriting this configuration, `Restart your VSCode` or `Save this file`. The ArkTS server will automatically reload the configuration (there will be a prompt in the bottom right corner).
+### When DevEco Studio is not installed
 
-![Screenshot](./screenshots/navigation-tip.png)
+Currently, this extension still cannot completely replace HarmonyOS development. It's recommended that you install `DevEco Studio`. If you really don't want to install it, the extension also provides `download`, `extract and install`, and `seamless switching` features for `OpenHarmony SDK`. After installing this extension, you can search for `> ETS: Install OpenHarmony SDK` in the command palette and follow the prompts step by step.
 
-When importing modules, corresponding prompts will also appear 😋 (provided your `tsconfig.json` is properly configured as described above).
+Additionally, the extension currently doesn't support `download`, `extract and install`, and `seamless switching` features for `HMS SDK`. Please download `DevEco Studio` or download HarmonyOS's `Command Line Tool` for installation.
 
-![Screenshot](./screenshots/import-tip.png)
+## About `ets.baseSdkPath` ⚠️
 
-## `oh_modules` Support 🀄️
+This setting is used to configure the `base path` for `OpenHarmony SDK`. All versions of `OpenHarmony SDK` will be installed under this path.
 
-Issue [#19](https://github.com/Groupguanfang/arkTS/issues/19) mentions a solution. Add the following configuration to your `tsconfig.json`:
+If the path is configured as `${os.homedir}/OpenHarmony`, the extension will automatically install `OpenHarmony SDK` in the `~/OpenHarmony/[API version, number]` folder and automatically detect the `API version` used by the current project, automatically switching to the corresponding `OpenHarmony SDK`. For example, if you want to install `OpenHarmony SDK` for `API20`, the extension will automatically install it in the `~/OpenHarmony/20` folder:
 
-```json5
-{
-  "compilerOptions": {
-    "paths": {
-      // Define the path of oh_modules, then you can import modules from oh_modules directly
-      "*": ["./oh_modules/*"]
-    }
-  }
-}
+```
+~/OpenHarmony
+├── 10
+├── 18
+└── 20
+    └── ets/
+    └── js/
+    └── native/
+    └── previewer/
+    └── toolchains/
 ```
 
-Now you can import modules from `oh_modules` directly:
+This behavior is completely consistent with the `Settings -> OpenHarmony SDK` feature in `DevEco Studio`.
 
-![oh_modules-import-tip](./screenshots/oh_modules.png)
+## VSCode File Icon Pack 🖼️
 
-## Code Linter 🚧
+It's recommended to use [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme). I've submitted a PR to `Material Icon Theme`, and currently `.ets` and `.d.ets` files directly use the `TypeScript official file icon pack`. This is available in versions after upgrading to `v5.22.0`, making it look much better 👇
 
-Support for code linter has been added since version 0.1.0 (essentially an ArkTS version of ESLint).
+![Material icon theme](./screenshots/icon-theme.png)
 
-Check the [HarmonyOS SDK official website](https://developer.huawei.com/consumer/cn/develop/) to download the `Command Line Tools`.
+PR address: [https://github.com/material-extensions/vscode-material-icon-theme/pull/2966](https://github.com/material-extensions/vscode-material-icon-theme/pull/2966)
 
-![HarmonyOS SDK](./screenshots/harmony-sdk.png)
+## Configuration
 
-![Command Line Tools](./screenshots/command-line-tools.png)
+<!-- configs -->
 
-After finish downloading, extract the downloaded file to a fixed location.
+| Key                | Description                                                                                                | Type      | Default                       |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- | --------- | ----------------------------- |
+| `ets.sdkPath`      | %configuration.ets.sdkPath.description%                                                                    | `string`  | `""`                          |
+| `ets.baseSdkPath`  | %configuration.ets.baseSdkPath.description%                                                                | `string`  | `"${os.homedir}/OpenHarmony"` |
+| `ets.hmsPath`      | %configuration.ets.hmsPath.description%                                                                    | `string`  | `""`                          |
+| `ets.lspDebugMode` | %configuration.ets.lspDebugMode.description%                                                               | `boolean` | `false`                       |
+| `ets.hdcPath`      | %configuration.ets.hdcPath.description%                                                                    | `string`  | `""`                          |
+| `ets.sdkList`      | A list of installed OpenHarmony SDK paths. Keys should follow the pattern API[number] (e.g., API9, API10). | `object`  | `{}`                          |
 
-![command-line-tools-finder-codelinter](./screenshots/command-line-tools-finder-codelinter.png)
+<!-- configs -->
 
-Copy the absolute path of the bin folder and configure it in the IDE settings.
+## Commands
 
-![vscode-codelinter-bin-path-setting](./screenshots/vscode-codelinter-bin-path-setting.png)
+<!-- commands -->
 
-![codelinter-for-each-error](./screenshots/codelinter-for-each-error.png)
+| Command             | Title                        |
+| ------------------- | ---------------------------- |
+| `ets.restartServer` | ETS: %command.restartServer% |
+| `ets.installSDK`    | ETS: %command.installSDK%    |
 
-After fixing the issue, the warning will disappear after a while:
-
-![codelinter-for-each-error-fixed](./screenshots/codelinter-for-each-error-fixed.png)
+<!-- commands -->
 
 ## Star History 🌟
 
@@ -133,14 +137,14 @@ After fixing the issue, the warning will disappear after a while:
 
 - Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
 - X (Twitter): [@GCZ_Zero](https://x.com/GCZ_Zero)
-- QQ: 1203970284，QQ Group Chat: 746153004
+- QQ: 1203970284，QQ Group: 746153004
 - WeChat: gcz-zero
 
 ### Coffee ☕️
 
-If this project helps you, consider buying the author a coffee. ☕️
+If this project helps you, consider buying the author a coffee ☕️
 
-You can also join the QQ group for further discussions (Group ID: 746153004).
+You can also join the QQ group for further discussions (Group ID: 746153004)
 
 <div style="display: flex; gap: 5px;">
 
