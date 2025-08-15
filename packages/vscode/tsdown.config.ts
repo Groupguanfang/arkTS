@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import process from 'node:process'
-import { defineConfig, logger } from 'tsdown'
+import { defineConfig, globalLogger as logger } from 'tsdown'
 import swc from 'unplugin-swc'
 
 const require = createRequire(import.meta.url)
