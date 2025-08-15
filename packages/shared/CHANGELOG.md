@@ -1,5 +1,11 @@
 # @arkts/shared
 
+## 1.0.5
+
+### Patch Changes
+
+- 915e262: ci: release
+
 ## 1.0.4
 
 ### Patch Changes
