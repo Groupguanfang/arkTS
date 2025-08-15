@@ -1,10 +1,6 @@
 // Only using type check.
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "noEmit": true
-  },
   "references": [
     {
       "path": "./packages/language-server/tsconfig.json"
@@ -20,5 +16,5 @@
     }
   ],
   "files": [],
-  "include": []
+  "exclude": ["node_modules", "dist", "out", "ohos-typescript"]
 }

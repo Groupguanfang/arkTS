@@ -1,15 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "out"
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo",
+    "rootDir": "src"
   },
-  "references": [
-    {
-      "path": "../shared/tsconfig.json"
-    }
-  ],
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["**/ohos-typescript/**/*", "**/out/**/*", "**/node_modules/**/*", "**/dist/**/*"]
 }
