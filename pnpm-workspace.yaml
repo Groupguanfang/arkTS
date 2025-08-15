@@ -16,7 +16,7 @@ catalogs:
     vscode-ext-gen: ^1.1.0
   frontend:
     '@vitejs/plugin-vue': ^5.2.4
-    '@vitejs/plugin-vue-jsx': ^4.2.0
+    '@vitejs/plugin-vue-jsx': ^5.0.1
     '@vueuse/core': ^13.6.0
     pinia: ^3.0.3
     unocss: ^66.4.2
