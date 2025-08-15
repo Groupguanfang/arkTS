@@ -27,7 +27,7 @@
   "main": "./dist/client.js",
   "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.87.0"
+    "vscode": "^1.103.1"
   },
   "activationEvents": [
     "onLanguage:typescript",
@@ -243,7 +243,7 @@
     "@arkts/headless-jsonrpc": "catalog:prod",
     "@arkts/language-server": "workspace:*",
     "@arkts/sdk-downloader": "catalog:prod",
-    "@types/vscode": "^1.82.0",
+    "@types/vscode": "^1.102.0",
     "@volar/language-server": "catalog:prod",
     "@volar/vscode": "catalog:prod",
     "@vscode/l10n": "catalog:prod",

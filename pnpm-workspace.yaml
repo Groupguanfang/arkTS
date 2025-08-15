@@ -3,42 +3,42 @@ packages:
   - ohos-typescript
 catalogs:
   build:
-    tsdown: ^0.12.6
+    tsdown: ^0.14.1
     unplugin-swc: ^1.5.5
   dev:
     '@types/node': latest
     '@types/progress-stream': ^2.0.5
-    '@types/vscode': ^1.82.0
+    '@types/vscode': ^1.102.0
     fast-glob: ^3.3.3
-    reactive-vscode: ^0.2.19
-    ts-macro: ^0.1.32
+    reactive-vscode: ^0.3.1
+    ts-macro: ^0.3.4
     type-fest: ^4.41.0
-    vscode-ext-gen: ^1.0.2
+    vscode-ext-gen: ^1.1.0
   frontend:
     '@vitejs/plugin-vue': ^5.2.4
     '@vitejs/plugin-vue-jsx': ^4.2.0
-    '@vueuse/core': ^13.3.0
+    '@vueuse/core': ^13.6.0
     pinia: ^3.0.3
-    unocss: ^66.2.0
+    unocss: ^66.4.2
     vite: npm:rolldown-vite@latest
-    vue: ^3.5.16
+    vue: ^3.5.18
   lint:
     '@antfu/eslint-config': latest
     eslint: latest
-    oxlint: ^0.17.0
+    oxlint: ^0.18.1
   polyfill:
     reflect-metadata: ^0.2.2
   prod:
     '@arkts/headless-jsonrpc': ^0.0.9
-    '@arkts/sdk-downloader': ^0.1.22
-    '@types/lodash': ^4.17.17
+    '@arkts/sdk-downloader': ^0.1.29
+    '@types/lodash': ^4.17.20
     '@types/unzipper': ^0.10.11
-    '@volar/language-core': ~2.4.0
-    '@volar/language-server': ~2.4.0
-    '@volar/typescript': ~2.4.0
-    '@volar/vscode': ~2.4.0
+    '@volar/language-core': ~2.4.23
+    '@volar/language-server': ~2.4.23
+    '@volar/typescript': ~2.4.23
+    '@volar/vscode': ~2.4.23
     '@vscode/l10n': ^0.0.18
-    axios: ^1.9.0
+    axios: ^1.11.0
     chokidar: ^4.0.3
     consola: ^3.4.2
     defu: ^6.1.4
@@ -54,23 +54,23 @@ catalogs:
     volar-service-emmet: volar-2.4
     volar-service-html: volar-2.4
     volar-service-typescript: volar-2.4
-    vscode-html-languageservice: ^5.3.1
+    vscode-html-languageservice: ^5.5.1
     vscode-languageserver-textdocument: ^1.0.12
     vscode-nls: ^5.2.0
-    vscode-uri: ^3.0.8
+    vscode-uri: ^3.1.0
   scripts:
     '@antfu/nip': ^0.1.0
     '@changesets/changelog-github': ^0.5.1
-    '@changesets/cli': ^2.29.4
+    '@changesets/cli': ^2.29.5
     '@release-it/bumper': ^7.0.5
     '@vscode/vsce': latest
     cross-env: ^7.0.3
-    ovsx: ^0.10.4
-    oxc-parser: ^0.75.0
-    oxc-walker: ^0.3.0
-    pnpm: 10.11.1
-    simple-git-hooks: ^2.13.0
-    tsx: ^4.19.4
+    ovsx: ^0.10.5
+    oxc-parser: ^0.82.1
+    oxc-walker: ^0.4.0
+    pnpm: ^10.14.0
+    simple-git-hooks: ^2.13.1
+    tsx: ^4.20.4
 onlyBuiltDependencies:
   - '@swc/core'
   - '@vscode/vsce-sign'
