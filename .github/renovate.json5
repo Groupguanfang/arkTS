@@ -11,5 +11,6 @@
   ],
   "ignoreDeps": ["node"],
   "postUpdateOptions": ["pnpmDedupe"],
-  "dependencyDashboardTitle": "📦 Dependency Dashboard"
+  "dependencyDashboardTitle": "📦 Dependency Dashboard",
+  "binarySource": "global"
 }
