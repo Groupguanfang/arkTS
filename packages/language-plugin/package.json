@@ -1,6 +1,6 @@
 {
   "name": "@arkts/language-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "ArkTS Volar Language Plugin.",
   "author": "Naily Zero <zero@naily.cc>",
   "license": "MIT",
