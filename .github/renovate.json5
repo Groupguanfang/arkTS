@@ -11,5 +11,8 @@
   ],
   "ignoreDeps": ["node"],
   "postUpdateOptions": ["pnpmDedupe"],
-  "dependencyDashboardTitle": "📦 Dependency Dashboard"
+  "dependencyDashboardTitle": "📦 Dependency Dashboard",
+  "git-submodules": {
+    "enabled": true
+  }
 }
