@@ -31,6 +31,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:lint",
     "@antfu/nip": "catalog:scripts",
+    "@arkts/sdk-downloader": "catalog:prod",
     "@arkts/shared": "workspace:*",
     "@changesets/changelog-github": "catalog:scripts",
     "@changesets/cli": "catalog:scripts",

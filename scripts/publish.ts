@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { logger } from 'tsdown'
+import { globalLogger as logger } from 'tsdown'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url))
 

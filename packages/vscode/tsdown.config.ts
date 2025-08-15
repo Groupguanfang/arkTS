@@ -45,6 +45,7 @@ export default defineConfig({
     '@arkts/shared': path.join(process.cwd(), '../shared/src/index.ts'),
     '@arkts/shared/vscode': path.join(process.cwd(), '../shared/src/vscode.ts'),
     '@arkts/language-plugin': path.join(process.cwd(), '../language-plugin/src/index.ts'),
+    '@arkts/sdk-downloader': path.join(process.cwd(), 'node_modules/@arkts/sdk-downloader/dist/index.js'),
   },
   watch: isDev
     ? [

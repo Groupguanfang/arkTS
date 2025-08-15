@@ -190,8 +190,8 @@ catalogs:
       specifier: ^0.4.0
       version: 0.4.0
     pnpm:
-      specifier: 10.11.1
-      version: 10.11.1
+      specifier: ^10.14.0
+      version: 10.14.0
     simple-git-hooks:
       specifier: ^2.13.1
       version: 2.13.1
@@ -240,6 +240,9 @@ importers:
       '@antfu/nip':
         specifier: catalog:scripts
         version: 0.1.0
+      '@arkts/sdk-downloader':
+        specifier: catalog:prod
+        version: 0.1.29
       '@arkts/shared':
         specifier: workspace:*
         version: link:packages/shared
