@@ -64,7 +64,7 @@ catalogs:
     '@changesets/cli': ^2.29.5
     '@release-it/bumper': ^7.0.5
     '@vscode/vsce': latest
-    cross-env: ^7.0.3
+    cross-env: ^10.0.0
     ovsx: ^0.10.5
     oxc-parser: ^0.82.1
     oxc-walker: ^0.4.0
