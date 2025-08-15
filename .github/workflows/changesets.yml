@@ -31,7 +31,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 10
+          version: 10.14.0
           run_install: true
 
       - name: Run Lint
@@ -56,7 +56,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 10
+          version: 10.14.0
           run_install: true
 
       - name: Create Release Pull Request

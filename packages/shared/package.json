@@ -54,6 +54,6 @@
     "kleur": "^4.1.5"
   },
   "devDependencies": {
-    "@types/vscode": "^1.82.0"
+    "@types/vscode": "^1.102.0"
   }
 }
