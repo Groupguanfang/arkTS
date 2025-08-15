@@ -23,3 +23,41 @@ pnpm install
 ## `volar labs` 插件
 
 请在你的`vscode`中安装[volar labs](https://volarjs.dev/core-concepts/volar-labs/)插件，这样就能看到`virtual code`的转换过程。
+
+## 代码检查与类型检查
+
+本项目使用`@antfu/eslint-config`作为`eslint`代码检查规则，并使用了`tsc`的`Project reference`模式进行类型检查。提交`Pull Request`前，可以运行以下命令进行代码检查与类型检查：
+
+```bash
+pnpm run lint
+```
+
+这实际上是运行了以下命令：
+
+```bash
+pnpm eslint
+pnpm oxlint
+pnpm tsc --build --noEmit # 类型检查, 使用 tsc 的 Project reference 模式
+```
+
+如果您忘记了运行检查，`Pull Request`的`CI`会自动运行检查，并提示您修复问题。
+
+## 编译
+
+运行`pnpm install`除了会安装依赖之外，还会调用`tsdown`编译整个项目，实际上就是运行了以下命令：
+
+```bash
+pnpm -F \"{packages/*}\" build
+```
+
+您也可以手动运行此命令进行编译。
+
+## 打包扩展
+
+打包之前请务必先运行`pnpm run build`编译项目，并且检查`git sub-module`是否已经克隆在了本地。然后运行以下命令进行打包：
+
+```bash
+pnpm run pack
+```
+
+该命令会使用`vsce`命令打包扩展。打包完成后，会在`packages/vscode`目录下生成一个`vscode-naily-ets-<version>.vsix`文件，可以将其直接使用类`vscode`的编辑器在`扩展`页面中安装。
