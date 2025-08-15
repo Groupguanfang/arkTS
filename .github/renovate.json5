@@ -14,5 +14,6 @@
   "dependencyDashboardTitle": "📦 Dependency Dashboard",
   "git-submodules": {
     "enabled": true
-  }
+  },
+  "cloneSubmodules": true
 }
