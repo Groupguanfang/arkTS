@@ -53,7 +53,7 @@
   "configuration.ets.baseSdkPath.description": "The default OpenHarmony SDK base path. All versions of SDKs will be installed under this path. (You can use `${os.homedir}` to get the home directory)",
   "configuration.ets.hdcPath.description": "The path to the HDC tool, used for `hilog` and others.",
   "configuration.ets.hmsPath.description": "The path to the HMS SDK path. Because HMS SDK is independent of OpenHarmony SDK, it needs to be set separately. Generally, you can find the SDK in the DevEco Studio installation directory.",
-  "configuration.ets.lspDebugMode.description": "Enable ETS Language Server debug logging.",
+  "configuration.ets.lspDebugMode.description": "Enable ETS Language Server debug logging. Please do not enable it unless necessary, it may affect performance.",
   "configuration.ets.ignoreWorkspaceLocalPropertiesFile.description": "Ignore auto infer the base SDK path from `local.properties` file in the local workspace.",
   "ets.language-server.restart.reloadWindow": "ETS Language Server restarted! If the internal lib have any error or uncorrect, you can click this button to reload window.",
   "ets.language-server.restart.reloadWindow.button": "Reload Window",

@@ -98,6 +98,19 @@
         "bases": [
           "typescript"
         ]
+      },
+      {
+        "id": "hml",
+        "extensions": [
+          ".hml"
+        ],
+        "aliases": [
+          "hml"
+        ],
+        "configuration": "./syntaxes/hml-language-configuration.json",
+        "bases": [
+          "html"
+        ]
       }
     ],
     "snippets": [
@@ -111,6 +124,11 @@
         "language": "ets",
         "scopeName": "source.ets",
         "path": "./syntaxes/ets.tmLanguage.json"
+      },
+      {
+        "language": "hml",
+        "scopeName": "source.hml",
+        "path": "./syntaxes/hml.tmLanguage.json"
       }
     ],
     "commands": [
