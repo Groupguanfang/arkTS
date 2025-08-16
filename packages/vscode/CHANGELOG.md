@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 1.0.27
+
+### Patch Changes
+
+- 0926e57: fix: add check to prevent duplicate Reflect fix application (#112)
+
 ## 1.0.26
 
 ### Patch Changes
