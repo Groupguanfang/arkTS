@@ -243,7 +243,7 @@
     "@arkts/headless-jsonrpc": "catalog:prod",
     "@arkts/language-server": "workspace:*",
     "@arkts/sdk-downloader": "catalog:prod",
-    "@types/vscode": "^1.102.0",
+    "@types/vscode": "^1.22.0",
     "@volar/language-server": "catalog:prod",
     "@volar/vscode": "catalog:prod",
     "@vscode/l10n": "catalog:prod",
