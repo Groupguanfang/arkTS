@@ -1,5 +1,11 @@
 # vscode-naily-ets
 
+## 1.0.28
+
+### Patch Changes
+
+- 00db764: fix: update engines.vscode to ^1.22.0
+
 ## 1.0.27
 
 ### Patch Changes
