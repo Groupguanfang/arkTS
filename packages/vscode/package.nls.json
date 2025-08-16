@@ -1,7 +1,7 @@
 {
   "extension.name": "Naily's ArkTS Support",
   "extension.description": "OpenHarmony ArkTS language support for VS Code",
-  "command.installSDK": "Install OpenHarmony SDK",
+  "command.installSDK": "Install/Switch OpenHarmony SDK",
   "command.restartServer": "Restart ETS Language Server",
   "sdk.install.success": "OpenHarmony SDK {0} installed successfully.",
   "sdk.install.cancelled": "OpenHarmony SDK {0} installation cancelled.",
