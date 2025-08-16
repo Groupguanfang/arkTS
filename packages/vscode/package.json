@@ -27,7 +27,7 @@
   "main": "./dist/client.js",
   "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.103.1"
+    "vscode": "^1.22.0"
   },
   "activationEvents": [
     "onLanguage:typescript",
