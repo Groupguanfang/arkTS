@@ -86,10 +86,33 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
     const [buildProfileFilePath, buildProfile] = buildProfileJson5 || []
 
     try {
-      let sdkVersion: string | number | undefined = buildProfile?.app?.products?.[0]?.compileSdkVersion
-      if (typeof sdkVersion === 'string')
-        sdkVersion = Number(sdkVersion)
-      if (!sdkVersion || typeof sdkVersion !== 'number' || Number.isNaN(sdkVersion))
+      const compileSdkVersion: string | number | undefined = buildProfile?.app?.products?.[0]?.compileSdkVersion
+      if (!compileSdkVersion)
+        return
+
+      let sdkVersion: number
+
+      // Handle different formats of compileSdkVersion
+      if (typeof compileSdkVersion === 'string') {
+        // For HarmonyOS format like "6.0.0(20)", extract the number in parentheses
+        const harmonyOsMatch = compileSdkVersion.match(/\((\d+)\)$/)
+        if (harmonyOsMatch) {
+          sdkVersion = Number(harmonyOsMatch[1])
+        }
+        else {
+          // For OpenHarmony format like "20", parse directly
+          sdkVersion = Number(compileSdkVersion)
+        }
+      }
+      else if (typeof compileSdkVersion === 'number') {
+        // Legacy numeric format
+        sdkVersion = compileSdkVersion
+      }
+      else {
+        return
+      }
+
+      if (!sdkVersion || Number.isNaN(sdkVersion))
         return
 
       if (sdkVersion === 10)
@@ -106,6 +129,8 @@ export class SdkVersionGuesser extends Environment implements IOnActivate {
         return ['API15', 15]
       else if (sdkVersion === 18)
         return ['API18', 18]
+      else if (sdkVersion === 20)
+        return ['API20', 20]
     }
     catch (error) {
       this.getConsola().error(error)
