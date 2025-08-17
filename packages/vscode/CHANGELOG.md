@@ -1,5 +1,17 @@
 # vscode-naily-ets
 
+## 1.0.28
+
+### Patch Changes
+
+- 00db764: fix: update engines.vscode to ^1.22.0
+
+## 1.0.27
+
+### Patch Changes
+
+- 0926e57: fix: add check to prevent duplicate Reflect fix application (#112)
+
 ## 1.0.26
 
 ### Patch Changes
