@@ -65,7 +65,7 @@ export class BuildToolsManager implements vscode.Disposable {
       else if (config.path) {
         if (config.installationType === 'auto'
           || config.installationType === 'command-line-tools'
-          || config.installationType === 'deveco-studio') {
+        if (['auto', 'command-line-tools', 'deveco-studio'].includes(config.installationType)) {
           await this.configureFromUserPath(config.path, config.installationType)
         }
       }
