@@ -15,7 +15,6 @@ export class ToolsDetector {
   private static readonly REQUIRED_COMMAND_LINE_TOOLS = [
     'hvigorw',
     'ohpm',
-    'hdc',
     'codelinter',
     'hstack',
   ]
@@ -23,7 +22,7 @@ export class ToolsDetector {
   private static readonly REQUIRED_DEVECO_TOOLS = [
     'hvigor',
     'ohpm',
-    'hdc',
+    'hstack',
   ]
 
   /**
@@ -225,7 +224,7 @@ export class ToolsDetector {
         return false
 
       // 检查必要的工具目录
-      const requiredDirs = ['hvigor', 'ohpm', 'hdc', 'node']
+      const requiredDirs = ['hvigor', 'ohpm', 'node']
       for (const dir of requiredDirs) {
         const dirPath = path.join(toolsPath, dir)
         if (!await this.pathExists(dirPath))
