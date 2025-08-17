@@ -73,10 +73,9 @@ export class EnvironmentManager {
       // 2. 各个工具路径
       const hvigorPath = path.join(toolPath, 'hvigor', 'bin')
       const ohpmPath = path.join(toolPath, 'ohpm', 'bin')
-      const hdcPath = path.join(toolPath, 'hdc', 'bin')
       const nodePath = path.join(toolPath, 'node', 'bin')
 
-      pathAdditions.push(hvigorPath, ohpmPath, hdcPath, nodePath)
+      pathAdditions.push(hvigorPath, ohpmPath, nodePath)
 
       // 3. 环境变量
       const sdkPath = path.join(devecoPath, 'sdk')
