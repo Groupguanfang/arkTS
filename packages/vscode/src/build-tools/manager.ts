@@ -26,6 +26,27 @@ export class BuildToolsManager implements vscode.Disposable {
   }
 
   /**
+   * 获取环境管理器实例
+   */
+  getEnvironmentManager(): EnvironmentManager {
+    return this.environmentManager
+  }
+
+  /**
+   * 获取检测器实例
+   */
+  getDetector(): ToolsDetector {
+    return this.detector
+  }
+
+  /**
+   * 获取配置解析器实例
+   */
+  getConfigResolver(): ConfigurationResolver {
+    return this.configResolver
+  }
+
+  /**
    * 初始化构建工具系统
    */
   async initialize(): Promise<void> {

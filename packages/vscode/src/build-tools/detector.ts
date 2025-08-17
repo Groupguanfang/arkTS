@@ -219,7 +219,7 @@ export class ToolsDetector {
   /**
    * 验证 DevEco Studio 安装结构
    */
-  private async validateDevEcoStudioStructure(toolsPath: string): Promise<boolean> {
+  async validateDevEcoStudioStructure(toolsPath: string): Promise<boolean> {
     try {
       if (!await this.pathExists(toolsPath))
         return false
@@ -242,7 +242,7 @@ export class ToolsDetector {
   /**
    * 验证 command-line-tools 安装结构
    */
-  private async validateCommandLineToolsStructure(rootPath: string): Promise<boolean> {
+  async validateCommandLineToolsStructure(rootPath: string): Promise<boolean> {
     try {
       const binPath = path.join(rootPath, 'bin')
       if (!await this.pathExists(binPath))

@@ -44,7 +44,7 @@ function registerAdditionalCommands(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand('ets.example.checkBuildTools', async () => {
       if (buildToolsManager) {
         // 获取构建工具状态
-        const envConfig = buildToolsManager.environmentManager.getCurrentConfig()
+        const envConfig = buildToolsManager.getEnvironmentManager().getCurrentConfig()
         if (envConfig?.appliedEnvironment) {
           const env = envConfig.appliedEnvironment
           vscode.window.showInformationMessage(
@@ -73,13 +73,13 @@ export function getBuildToolsManager(): BuildToolsManager | undefined {
  * 检查构建工具是否已配置
  */
 export function isBuildToolsConfigured(): boolean {
-  return buildToolsManager?.environmentManager.isConfigured() ?? false
+  return buildToolsManager?.getEnvironmentManager().isConfigured() ?? false
 }
 
 /**
  * 获取当前构建工具类型
  */
 export function getCurrentBuildToolsType(): 'deveco-studio' | 'command-line-tools' | undefined {
-  const config = buildToolsManager?.environmentManager.getCurrentConfig()
-  return config?.appliedEnvironment?.type
+  const config = buildToolsManager?.getEnvironmentManager().getCurrentConfig()
+  return config?.appliedEnvironment?.type === 'unknown' ? undefined : config?.appliedEnvironment?.type
 }
