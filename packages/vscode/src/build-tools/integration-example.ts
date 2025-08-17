@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // 注册其他扩展功能...
     registerAdditionalCommands(context)
 
-    console.warn('ArkTS扩展已激活，构建工具管理器已初始化')
+    console.log('ArkTS扩展已激活，构建工具管理器已初始化')
   }
   catch (error) {
     console.error('扩展激活失败:', error)
