@@ -59,6 +59,7 @@
   "configuration.ets.buildTools.path.description": "构建工具安装路径 (command-line-tools 根目录或 DevEco Studio 安装目录)",
   "configuration.ets.buildTools.manageEnvironment.description": "自动管理构建工具相关的环境变量",
   "configuration.ets.buildTools.environmentVariables.description": "额外的环境变量配置",
+  "configuration.ets.buildTools.legacyMigrated.description": "标记是否已完成遗留配置迁移（内部使用）",
   "configuration.ets.ignoreWorkspaceLocalPropertiesFile.description": "忽略从本地工作区 `local.properties` 文件中自动推断基础 SDK 路径。",
   "ets.language-server.restart.reloadWindow": "ETS 语言服务器已重启！如果内部库存在错误或不正确，您可以单击此按钮重新加载窗口。",
   "ets.language-server.restart.reloadWindow.button": "重新加载窗口",

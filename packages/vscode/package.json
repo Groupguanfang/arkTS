@@ -195,6 +195,11 @@
             "description": "额外的环境变量"
           }
         },
+        "ets.buildTools.legacyMigrated": {
+          "type": "boolean",
+          "description": "%configuration.ets.buildTools.legacyMigrated.description%",
+          "default": false
+        },
         "ets.ignoreWorkspaceLocalPropertiesFile": {
           "type": "boolean",
           "markdownDescription": "%configuration.ets.ignoreWorkspaceLocalPropertiesFile.description%",

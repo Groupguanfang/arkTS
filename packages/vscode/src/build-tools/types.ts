@@ -45,6 +45,8 @@ export interface BuildToolsConfig {
   environmentVariables?: Record<string, string>
   /** 是否启用环境变量管理 */
   manageEnvironment: boolean
+  /** 是否已完成遗留配置迁移 */
+  legacyMigrated?: boolean
 }
 
 export interface ToolValidation {

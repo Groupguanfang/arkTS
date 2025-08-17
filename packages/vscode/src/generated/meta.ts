@@ -59,6 +59,7 @@ export type ConfigKey =
   | "ets.buildTools.path"
   | "ets.buildTools.manageEnvironment"
   | "ets.buildTools.environmentVariables"
+  | "ets.buildTools.legacyMigrated"
   | "ets.ignoreWorkspaceLocalPropertiesFile"
   | "ets.sdkList"
 
@@ -73,6 +74,7 @@ export interface ConfigKeyTypeMap {
   "ets.buildTools.path": string,
   "ets.buildTools.manageEnvironment": boolean,
   "ets.buildTools.environmentVariables": { 'DEVECO_SDK_HOME'?: string; 'DevEco Studio'?: string },
+  "ets.buildTools.legacyMigrated": boolean,
   "ets.ignoreWorkspaceLocalPropertiesFile": boolean,
   "ets.sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },
 }
@@ -88,6 +90,7 @@ export interface ConfigShorthandMap {
   etsBuildToolsPath: "ets.buildTools.path",
   etsBuildToolsManageEnvironment: "ets.buildTools.manageEnvironment",
   etsBuildToolsEnvironmentVariables: "ets.buildTools.environmentVariables",
+  etsBuildToolsLegacyMigrated: "ets.buildTools.legacyMigrated",
   etsIgnoreWorkspaceLocalPropertiesFile: "ets.ignoreWorkspaceLocalPropertiesFile",
   etsSdkList: "ets.sdkList",
 }
@@ -103,6 +106,7 @@ export interface ConfigShorthandTypeMap {
   etsBuildToolsPath: string,
   etsBuildToolsManageEnvironment: boolean,
   etsBuildToolsEnvironmentVariables: { 'DEVECO_SDK_HOME'?: string; 'DevEco Studio'?: string },
+  etsBuildToolsLegacyMigrated: boolean,
   etsIgnoreWorkspaceLocalPropertiesFile: boolean,
   etsSdkList: { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },
 }
@@ -218,6 +222,16 @@ export const configs = {
     default: {},
   } as ConfigItem<"ets.buildTools.environmentVariables">,
   /**
+   * %configuration.ets.buildTools.legacyMigrated.description%
+   * @key `ets.buildTools.legacyMigrated`
+   * @default `false`
+   * @type `boolean`
+   */
+  etsBuildToolsLegacyMigrated: {
+    key: "ets.buildTools.legacyMigrated",
+    default: false,
+  } as ConfigItem<"ets.buildTools.legacyMigrated">,
+  /**
    * 
    * @key `ets.ignoreWorkspaceLocalPropertiesFile`
    * @default `false`
@@ -261,6 +275,7 @@ export interface NestedConfigs {
       "path": string,
       "manageEnvironment": boolean,
       "environmentVariables": { 'DEVECO_SDK_HOME'?: string; 'DevEco Studio'?: string },
+      "legacyMigrated": boolean,
     },
     "ignoreWorkspaceLocalPropertiesFile": boolean,
     "sdkList": { 'API10'?: string; 'API11'?: string; 'API12'?: string; 'API13'?: string; 'API14'?: string; 'API15'?: string; 'API18'?: string; 'API20'?: string },

@@ -19,6 +19,7 @@ export class ConfigurationResolver {
       hdcPath: ConfigUtil['ets.hdcPath'],
       environmentVariables: ConfigUtil['ets.buildTools.environmentVariables'],
       manageEnvironment: ConfigUtil['ets.buildTools.manageEnvironment'] ?? true,
+      legacyMigrated: ConfigUtil['ets.buildTools.legacyMigrated'] ?? false,
     }
   }
 
@@ -82,6 +83,11 @@ export class ConfigurationResolver {
    * 检查是否需要迁移遗留配置
    */
   needsLegacyMigration(): boolean {
+    // 如果已经标记为迁移完成，则不需要再迁移
+    if (ConfigUtil['ets.buildTools.legacyMigrated']) {
+      return false
+    }
+
     const hasNewConfig = !!ConfigUtil['ets.buildTools.path']
       || ConfigUtil['ets.buildTools.installationType'] !== 'auto'
 
@@ -112,8 +118,7 @@ export class ConfigurationResolver {
         })
 
         // 标记迁移完成，不再使用遗留配置
-        // TODO: 添加 legacyMigrated 配置项
-        // await ConfigUtil.$update('ets.buildTools.legacyMigrated', true)
+        await ConfigUtil.$update('ets.buildTools.legacyMigrated', true)
       }
     }
   }
