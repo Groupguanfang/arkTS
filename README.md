@@ -135,6 +135,8 @@ PR地址: [https://github.com/material-extensions/vscode-material-icon-theme/pul
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Groupguanfang/arkTS&type=Date)](https://star-history.com/#Groupguanfang/arkTS&Date)
 
+![Alt](https://repobeats.axiom.co/api/embed/03ffa3957a86b00b0a96b449852ce4e5518850cf.svg "Repobeats analytics image")
+
 ## Contact to Author 📧
 
 - Telegram: [@GCZ_Zero](https://t.me/GCZ_Zero)
