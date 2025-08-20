@@ -7,6 +7,7 @@ import * as ets from 'ohos-typescript'
 import { create as createTypeScriptServices } from 'volar-service-typescript'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import { LanguageServerConfigManager } from './config-manager'
+import { create$$ThisService } from './services/$$this.service'
 import { createETSLinterDiagnosticService } from './services/diagnostic.service'
 import { createETSDocumentSymbolService } from './services/symbol.service'
 
@@ -90,6 +91,7 @@ connection.onInitialize(async (params) => {
       ...tsOtherServices,
       createETSLinterDiagnosticService(ets, logger),
       createETSDocumentSymbolService(),
+      create$$ThisService(lspConfiguration.getLocale()),
     ],
   )
 })
