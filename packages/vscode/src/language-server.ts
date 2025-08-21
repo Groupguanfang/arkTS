@@ -58,7 +58,7 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
     try {
       // Wait the workspace/configurationChanged event send, then restart the language server
       await sleep(100)
-      await this.restart(undefined, true).catch(e => this.handleLanguageServerError(e))
+      await this.restart(true).catch(e => this.handleLanguageServerError(e))
     }
     catch (error) {
       this.handleLanguageServerError(error)
@@ -199,10 +199,11 @@ export class EtsLanguageServer extends LanguageServerContext implements Command,
   /**
    * Restart the ETS Language Server.
    *
+   * @param force Whether to force the restart.
    * @param overrideClientOptions The override client options.
    * @throws {SdkAnalyzerException} If the SDK path have any no right, it will throw an error.
    */
-  async restart(overrideClientOptions: LanguageClientOptions = {}, force: boolean = false): Promise<void> {
+  async restart(force: boolean = false, overrideClientOptions: LanguageClientOptions = {}): Promise<void> {
     this.getConsola().info(`======================= Restarting ETS Language Server =======================`)
     await executeCommand('typescript.restartTsServer')
     await this.stop(true)
