@@ -57,7 +57,8 @@ export function create$$ThisService(locale: string): LanguageServicePlugin {
             // 如果当前的position位于start和end的范围内，则直接返回
             const positionStart = document.offsetAt(position)
             const positionEnd = document.offsetAt(position)
-            if (positionStart >= start && positionEnd <= end) {
+            const positionOffset = document.offsetAt(position)
+            if (positionOffset >= start && positionOffset <= end) {
               cancelToken.dispose()
               return {
                 contents: {
