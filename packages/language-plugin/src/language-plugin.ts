@@ -4,7 +4,7 @@ import type * as ts from 'typescript'
 import type { URI } from 'vscode-uri'
 import path from 'node:path'
 import { $$thisFixerPlugin } from './$$this-fixer-plugin'
-import { createEmptyVirtualCode, createVirtualCode, ETSVitrualCode } from './ets-code'
+import { createEmptyVirtualCode, createVirtualCode, ETSVirtualCode } from './ets-code'
 import '@volar/typescript'
 
 function isEts(tsOrEts: typeof ets | typeof ts): tsOrEts is typeof ets {
@@ -62,7 +62,7 @@ export function ETSLanguagePlugin(tsOrEts: typeof ets | typeof ts, { sdkPaths = 
 
       // ets files
       if (languageId === 'ets' && filePath.endsWith('.ets')) {
-        return new ETSVitrualCode(
+        return new ETSVirtualCode(
           filePath,
           tsOrEts.createSourceFile(filePath, snapshot.getText(0, snapshot.getLength()), 99 as any) as ts.SourceFile,
           'typescript',

@@ -1,4 +1,4 @@
-import type { ETSMacroPlugin, ETSVitrualCode } from './ets-code'
+import type { ETSMacroPlugin, ETSVirtualCode } from './ets-code'
 import { replaceRange } from 'ts-macro'
 
 export function $$thisFixerPlugin(): ETSMacroPlugin {
@@ -6,7 +6,7 @@ export function $$thisFixerPlugin(): ETSMacroPlugin {
 
   return {
     name: 'ets:$$this-fixer',
-    resolveVirtualCode(virtualCode: ETSVitrualCode) {
+    resolveVirtualCode(virtualCode: ETSVirtualCode) {
       const text = virtualCode.ast.getText()
       const matches = text.matchAll($$thisRegex)
       for (const match of matches) {
