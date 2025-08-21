@@ -1,5 +1,7 @@
 import type { CodeInformation, VirtualCode } from '@volar/language-core'
+import type { TsmLanguagePlugin } from 'ts-macro'
 import type * as ts from 'typescript'
+import { TsmVirtualCode } from 'ts-macro'
 
 export function createVirtualCode(snapshot: ts.IScriptSnapshot, languageId: string, data: CodeInformation): VirtualCode {
   return {
@@ -31,4 +33,10 @@ export function createEmptyVirtualCode(snapshot: ts.IScriptSnapshot, languageId:
       data,
     }],
   }
+}
+
+export class ETSVirtualCode extends TsmVirtualCode {}
+
+export type ETSMacroPlugin = Omit<TsmLanguagePlugin, 'resolveVirtualCode'> & {
+  resolveVirtualCode?: (virtualCode: ETSVirtualCode) => void
 }
