@@ -1,5 +1,11 @@
 # @arkts/language-plugin
 
+## 1.1.0
+
+### Minor Changes
+
+- e8fcbef: feat: 添加`$this`语法支持 (#122)
+
 ## 1.0.6
 
 ### Patch Changes
